@@ -89,4 +89,4 @@ app.get('/api/stats', async (req, res) => {
 });
 
 const PORT = 3000;
-app.listen(PORT, () => console.log(`Brio SQL Engine running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`DevPath SQL Engine running on http://localhost:${PORT}`));
