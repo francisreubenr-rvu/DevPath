@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevPath — Interactive DBMS Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F4F0;
+    --text: #111111;
+    --border: #000000;
+    --accent-yellow: #FFE800;
+    --accent-pink: #FF90E8;
+    --accent-blue: #90A8ED;
+    --accent-cyan: #38DBFF;
+    --accent-green: #3FB950;
+    --shadow: 4px 4px 0px #000000;
+    --shadow-hover: 6px 6px 0px #000000;
+    --shadow-active: 0px 0px 0px #000000;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Syne', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    padding: 2rem;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  
+  header {
+    background-color: var(--accent-yellow);
+    border: 3px solid var(--border);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  h1 { font-size: 3rem; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+  h1 span { font-family: var(--font-mono); font-size: 1rem; display: block; letter-spacing: 0; font-weight: 700; margin-top: 0.5rem; }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  .stat-card {
+    background-color: #FFFFFF;
+    border: 3px solid var(--border);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .stat-card.blue { background-color: var(--accent-blue); }
+  .stat-card.pink { background-color: var(--accent-pink); }
+  .stat-card.cyan { background-color: var(--accent-cyan); }
+  
+  .stat-num { font-size: 3.5rem; font-family: var(--font-mono); font-weight: 800; line-height: 1; margin-bottom: 0.5rem; }
+  .stat-label { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; }
+
+  .section {
+    background-color: #FFFFFF;
+    border: 3px solid var(--border);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+  }
+  h2 { font-size: 2rem; margin-bottom: 1.5rem; font-weight: 800; border-bottom: 3px solid var(--border); padding-bottom: 0.5rem; display: inline-block;}
+  
+  .controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  select, button {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border: 3px solid var(--border);
+    background-color: #FFFFFF;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: all 0.1s ease;
+    outline: none;
+  }
+  select { flex: 1; min-width: 250px; appearance: none; }
+  button { background-color: var(--accent-cyan); }
+  button:hover { box-shadow: var(--shadow-hover); transform: translate(-2px, -2px); }
+  button:active { box-shadow: var(--shadow-active); transform: translate(4px, 4px); }
+  
+  .code-block {
+    background-color: #111;
+    color: #00FF41;
+    font-family: var(--font-mono);
+    padding: 1.5rem;
+    border: 3px solid var(--border);
+    border-radius: 0;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+    border: 3px solid var(--border);
+    box-shadow: var(--shadow);
+    background: #FFF;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+  th, td {
+    padding: 1rem;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  th {
+    background-color: var(--accent-yellow);
+    font-weight: 800;
+    text-transform: uppercase;
+    border-bottom: 3px solid var(--border);
+  }
+  tr:nth-child(even) { background-color: #F9F9F9; }
+
+  .trigger-demo { background-color: var(--accent-pink); }
+  .trigger-demo .code-block { background-color: #FFF; color: #111; border-color: #111; }
+  
+  .pill {
+    padding: 0.25rem 0.5rem;
+    border: 2px solid var(--border);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .pill.locked { background: #CCC; }
+  .pill.in_progress { background: var(--accent-cyan); }
+  .pill.done { background: var(--accent-green); color: #FFF; }
+  
+  .badge { background: #000; color: #FFF; padding: 0.3rem 0.6rem; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div>
+      <h1>DevPath <span class="badge">v1.0</span><br><span>Interactive DBMS Demo</span></h1>
+    </div>
+    <div>
+      <p style="font-family: var(--font-mono); font-weight: 700;">CS1211 Project<br>MySQL 8.0</p>
+    </div>
+  </header>
+
+  <div class="stats-grid">
+    <div class="stat-card blue">
+      <div class="stat-num" id="stat-users">--</div>
+      <div class="stat-label">Users</div>
+    </div>
+    <div class="stat-card pink">
+      <div class="stat-num" id="stat-projects">--</div>
+      <div class="stat-label">Projects</div>
+    </div>
+    <div class="stat-card cyan">
+      <div class="stat-num" id="stat-subs">--</div>
+      <div class="stat-label">Submissions</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Interactive SQL Explorer</h2>
+    <p style="margin-bottom: 1rem; font-family: var(--font-mono);">Select a query or view from the project report to execute it live against the MySQL database.</p>
+    
+    <div class="controls">
+      <select id="query-select">
+        <option value="">Loading queries...</option>
+      </select>
+      <button id="run-btn" type="button">EXECUTE QUERY</button>
+    </div>
+
+    <div class="code-block" id="sql-display">-- SQL will appear here</div>
+    
+    <div class="table-wrapper">
+      <table id="results-table">
+        <thead>
+          <tr id="results-head"><th>Results</th></tr>
+        </thead>
+        <tbody id="results-body">
+          <tr><td>Run a query to see results.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section trigger-demo">
+    <h2>Trigger Showcase: Skill-Gate</h2>
+    <p style="margin-bottom: 1rem; font-weight: 600;">This demonstrates the <code>trg_unlock_task_after_submission</code> trigger. When a user submits code with a score >= 70, locked tasks depending on that lesson are automatically unlocked at the DB layer.</p>
+    
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 300px;">
+        <button id="trigger-btn" type="button" style="background: #FFF; margin-bottom: 1rem;">SIMULATE SUBMISSION (Score: 85)</button>
+        <div class="code-block">
+INSERT INTO submission (user_id, lesson_id, ai_score) 
+VALUES (4, 9, 85);
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 300px;">
+        <h3 style="font-family: var(--font-mono); margin-bottom: 0.5rem; border-bottom: 2px solid #000;">Task: Integrate Supabase Auth</h3>
+        <p style="font-family: var(--font-mono); margin-bottom: 0.5rem;">State Before: <span id="tg-before" class="pill locked">LOCKED</span></p>
+        <p style="font-family: var(--font-mono);">State After: <span id="tg-after" class="pill">---</span></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const API_URL = 'http://localhost:3000/api';
+
+  // Load stats
+  async function loadStats() {
+    try {
+      const res = await fetch(`${API_URL}/stats`);
+      const data = await res.json();
+      document.getElementById('stat-users').innerText = data.users;
+      document.getElementById('stat-projects').innerText = data.projects;
+      document.getElementById('stat-subs').innerText = data.submissions;
+    } catch(e) { console.error('Failed to load stats'); }
+  }
+
+  // Load queries
+  async function loadQueries() {
+    try {
+      const res = await fetch(`${API_URL}/queries`);
+      const data = await res.json();
+      const sel = document.getElementById('query-select');
+      sel.innerHTML = '';
+      data.forEach(q => {
+        const opt = document.createElement('option');
+        opt.value = q.id;
+        opt.innerText = q.name;
+        sel.appendChild(opt);
+      });
+    } catch(e) { console.error('Failed to load queries'); }
+  }
+
+  // Run query
+  document.getElementById('run-btn').addEventListener('click', async () => {
+    const qid = document.getElementById('query-select').value;
+    if (!qid) return;
+    
+    document.getElementById('sql-display').innerText = 'Executing...';
+    document.getElementById('results-head').innerHTML = '';
+    document.getElementById('results-body').innerHTML = '<tr><td>Loading...</td></tr>';
+    
+    try {
+      const res = await fetch(`${API_URL}/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ queryId: qid })
+      });
+      const data = await res.json();
+      
+      document.getElementById('sql-display').innerText = data.sql;
+      
+      if (data.rows && data.rows.length > 0) {
+        const cols = Object.keys(data.rows[0]);
+        document.getElementById('results-head').innerHTML = cols.map(c => `<th>${c}</th>`).join('');
+        document.getElementById('results-body').innerHTML = data.rows.map(r => 
+          `<tr>${cols.map(c => {
+            let val = r[c];
+            if (c === 'status') {
+               const pClass = val === 'done' ? 'done' : (val === 'locked' ? 'locked' : 'in_progress');
+               return `<td><span class="pill ${pClass}">${val}</span></td>`;
+            }
+            return `<td>${val !== null ? val : '<em>NULL</em>'}</td>`;
+          }).join('')}</tr>`
+        ).join('');
+      } else {
+         document.getElementById('results-head').innerHTML = '<th>Results</th>';
+         document.getElementById('results-body').innerHTML = '<tr><td>0 rows returned.</td></tr>';
+      }
+    } catch(e) {
+      document.getElementById('sql-display').innerText = 'Error: ' + e.message;
+    }
+  });
+
+  // Trigger Demo
+  document.getElementById('trigger-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('trigger-btn');
+    btn.innerText = 'PROCESSING...';
+    
+    try {
+      const res = await fetch(`${API_URL}/trigger`, { method: 'POST' });
+      const data = await res.json();
+      
+      if(data.before && data.before[0]) {
+        const s = data.before[0].status;
+        document.getElementById('tg-before').className = `pill ${s}`;
+        document.getElementById('tg-before').innerText = s;
+      }
+      
+      if(data.after && data.after[0]) {
+        const s = data.after[0].status;
+        document.getElementById('tg-after').className = `pill ${s}`;
+        document.getElementById('tg-after').innerText = s;
+      }
+    } catch(e) {
+      console.error(e);
+    }
+    btn.innerText = 'SIMULATE SUBMISSION (Score: 85)';
+  });
+
+  loadStats();
+  loadQueries();
+</script>
+
+</body>
+</html>
