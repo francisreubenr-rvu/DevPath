@@ -109,7 +109,7 @@ const doc = new Document({
       BR(),
       new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Mini Project Report', bold: true, size: 28, font: 'Arial', color: C.h2 })] }),
       BR(), BR(),
-      new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'DevPath', bold: true, italics: true, size: 52, font: 'Georgia', color: C.h1 })] }),
+      new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Brio', bold: true, italics: true, size: 52, font: 'Georgia', color: C.h1 })] }),
       new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 240 }, children: [new TextRun({ text: 'Project-Driven Programming Learning Platform', italics: true, size: 28, font: 'Georgia', color: C.h2 })] }),
       BR(),
       new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'Submitted By', size: 24, font: 'Calibri' })] }), BR(),
@@ -128,16 +128,16 @@ const doc = new Document({
       new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'School of Computer Science and Engineering', bold: true, size: 28, font: 'Arial' })] }),
       BR(), BR(),
       new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 360 }, children: [new TextRun({ text: 'CERTIFICATE', bold: true, underline: {}, size: 28, font: 'Arial' })] }),
-      para('Certified that the CS1211 Database Management Systems Mini Project work titled DevPath — Project-Driven Programming Learning Platform is carried out by Darshan Jain, Francis Reuben R, and Harshith B A (USN) who are bonafide students of the School of Computer Science and Engineering, RV University, Bengaluru, during the year 2025-26. It is certified that all corrections/suggestions from all the continuous internal evaluations have been incorporated into the project and in this report.'),
+      para('Certified that the CS1211 Database Management Systems Mini Project work titled Brio — Project-Driven Programming Learning Platform is carried out by Darshan Jain, Francis Reuben R, and Harshith B A (USN) who are bonafide students of the School of Computer Science and Engineering, RV University, Bengaluru, during the year 2025-26. It is certified that all corrections/suggestions from all the continuous internal evaluations have been incorporated into the project and in this report.'),
       BR(), BR(), BR(),
       new Paragraph({ children: [new TextRun({ text: 'Dr./Prof. ______________________', size: 22, font: 'Calibri' })] }),
       new Paragraph({ children: [new TextRun({ text: 'Faculty Guide                                                    Program Director', size: 22, font: 'Calibri' })] }),
 
       // ABSTRACT
       pageBreak(), h1('Abstract'),
-      para('DevPath is an AI-augmented, project-driven programming learning platform that treats the learning path and product lifecycle as a single co-dependent workflow. The platform addresses the core failure of traditional online courses — passive, certificate-driven learning — by requiring learners to produce a concrete, portfolio-ready deliverable as the output of every learning track.'),
-      para('This project implements the relational database backend for DevPath using MySQL, translating the formal Chen ER Model design into a fully functional schema of thirteen tables. The schema normalizes seven strong entities (USERS, PROJECT, COURSE, LESSON, TEAM, BLUEPRINT) and two weak entities (KANBAN_TASK, SUBMISSION) to Third Normal Form (3NF) / BCNF, with junction tables for M:N relationships (ENROLLMENT, TEAM_MEMBER) and separate tables for multivalued attributes (LESSON_TAG, BLUEPRINT_TECH, TEAM_ROLE).'),
-      para("The implementation\'s signature feature is the skill-gate mechanism: KANBAN_TASK rows carry a lesson_id foreign key, and a BEFORE INSERT trigger on SUBMISSION automatically promotes locked tasks to in_progress when a qualifying AI score (>= 70) is submitted. This enforces DevPath\'s core pedagogical rule — lesson mastery as a prerequisite to task progression — at the database layer, independent of application code."),      para('The complete SQL suite includes 13 CREATE TABLE statements, over 80 rows of seed data, 15 SELECT queries (simple, multi-join, nested subquery), 3 production-grade views, 3 triggers, and 3 ACID-compliant transactions.'),
+      para('Brio is an AI-augmented, project-driven programming learning platform that treats the learning path and product lifecycle as a single co-dependent workflow. The platform addresses the core failure of traditional online courses — passive, certificate-driven learning — by requiring learners to produce a concrete, portfolio-ready deliverable as the output of every learning track.'),
+      para('This project implements the relational database backend for Brio using MySQL, translating the formal Chen ER Model design into a fully functional schema of thirteen tables. The schema normalizes seven strong entities (USERS, PROJECT, COURSE, LESSON, TEAM, BLUEPRINT) and two weak entities (KANBAN_TASK, SUBMISSION) to Third Normal Form (3NF) / BCNF, with junction tables for M:N relationships (ENROLLMENT, TEAM_MEMBER) and separate tables for multivalued attributes (LESSON_TAG, BLUEPRINT_TECH, TEAM_ROLE).'),
+      para("The implementation\'s signature feature is the skill-gate mechanism: KANBAN_TASK rows carry a lesson_id foreign key, and a BEFORE INSERT trigger on SUBMISSION automatically promotes locked tasks to in_progress when a qualifying AI score (>= 70) is submitted. This enforces Brio\'s core pedagogical rule — lesson mastery as a prerequisite to task progression — at the database layer, independent of application code."),      para('The complete SQL suite includes 13 CREATE TABLE statements, over 80 rows of seed data, 15 SELECT queries (simple, multi-join, nested subquery), 3 production-grade views, 3 triggers, and 3 ACID-compliant transactions.'),
 
       // TABLE OF CONTENTS
       pageBreak(), h1('Table of Contents'),
@@ -148,11 +148,11 @@ const doc = new Document({
       // CHAPTER 1
       pageBreak(), h1('Chapter 1: Introduction'),
       h2('1.1 Background'),
-      para('The online learning market is saturated with passive, video-lecture-based courses that award certificates without verifiable output. Learners complete modules but cannot demonstrate applied skill. DevPath addresses this structural problem by mandating that every course culminates in a shipped, portfolio-ready product — a real software artefact that proves competence rather than a certificate that merely claims it.'),
+      para('The online learning market is saturated with passive, video-lecture-based courses that award certificates without verifiable output. Learners complete modules but cannot demonstrate applied skill. Brio addresses this structural problem by mandating that every course culminates in a shipped, portfolio-ready product — a real software artefact that proves competence rather than a certificate that merely claims it.'),
       para('The platform operates across three subscription tiers (Starter, Pro, Team at free/Rs.529/Rs.1249 per month) and serves two user profiles: beginner programmers and intermediate developers. Its distinguishing features are: a skill-gated Kanban board, AI-powered learning path generation, role-based team workspaces, and automated code evaluation with structured AI feedback.'),
 
       h2('1.2 Problem Statement'),
-      para('Designing the database backend for DevPath requires solving a non-trivial relational modelling problem. The platform has seven distinct entity types with nine relationship sets — including two weak entity sets (KANBAN_TASK, SUBMISSION), two M:N relationships requiring junction tables, and three multivalued attributes requiring separate tables. The skill-gate dependency — where a Kanban task is locked at the data layer until a prerequisite lesson is passed — must be enforced via trigger logic rather than application code to guarantee integrity regardless of data entry path.'),
+      para('Designing the database backend for Brio requires solving a non-trivial relational modelling problem. The platform has seven distinct entity types with nine relationship sets — including two weak entity sets (KANBAN_TASK, SUBMISSION), two M:N relationships requiring junction tables, and three multivalued attributes requiring separate tables. The skill-gate dependency — where a Kanban task is locked at the data layer until a prerequisite lesson is passed — must be enforced via trigger logic rather than application code to guarantee integrity regardless of data entry path.'),
 
       h2('1.3 Scope'),
       bullet('User management: registration, role assignment, and subscription tier tracking.'),
@@ -163,7 +163,7 @@ const doc = new Document({
       bullet('Team workspace management: composition, roles, and project associations.'),
 
       h2('1.4 Motivation'),
-      para("The motivation is dual-purpose: to demonstrate mastery of DBMS design and SQL from the RV University CS1211 curriculum, and to produce a real, deployable database backend for the DevPath platform — a product that the project team is actively developing."),
+      para("The motivation is dual-purpose: to demonstrate mastery of DBMS design and SQL from the RV University CS1211 curriculum, and to produce a real, deployable database backend for the Brio platform — a product that the project team is actively developing."),
 
       // CHAPTER 2
       pageBreak(), h1('Chapter 2: Objectives'),
@@ -178,7 +178,7 @@ const doc = new Document({
 
       // CHAPTER 3
       pageBreak(), h1('Chapter 3: Literature Survey'),
-      para('Existing learning management systems and developer education platforms were reviewed to identify the design requirements that distinguish DevPath.'),
+      para('Existing learning management systems and developer education platforms were reviewed to identify the design requirements that distinguish Brio.'),
       BR(),
       new Table({
         width: { size: 9000, type: WidthType.DXA }, columnWidths: [2400, 3000, 3600],
@@ -188,16 +188,16 @@ const doc = new Document({
           dataRow(['GitHub Classroom', 'Assignment submission via Git, instructor feedback', 'No learning path, no AI evaluation, no Kanban integration'], [2400, 3000, 3600], true),
           dataRow(['Codecademy', 'In-browser code execution, guided exercises', 'Fragmented lessons, no product output, no team collaboration'], [2400, 3000, 3600], false),
           dataRow(['Linear + Notion (DIY)', 'Kanban + docs for project tracking', 'No learning path integration, requires manual setup per project'], [2400, 3000, 3600], true),
-          dataRow(['DevPath (This Project)', 'Skill-gated Kanban, AI eval, team workspace, Ship-It milestones', 'Early stage; database layer only in this project scope'], [2400, 3000, 3600], false),
+          dataRow(['Brio (This Project)', 'Skill-gated Kanban, AI eval, team workspace, Ship-It milestones', 'Early stage; database layer only in this project scope'], [2400, 3000, 3600], false),
         ],
       }),
       BR(),
-      para('The survey identifies the central gap: no existing platform unifies structured skill acquisition with product delivery accountability enforced at the data layer. DevPath fills this gap specifically through the skill-gate mechanism designed and implemented in this project.'),
+      para('The survey identifies the central gap: no existing platform unifies structured skill acquisition with product delivery accountability enforced at the data layer. Brio fills this gap specifically through the skill-gate mechanism designed and implemented in this project.'),
 
       // CHAPTER 4
       pageBreak(), h1('Chapter 4: Database Design'),
       h2('4.1 ER Diagram'),
-      para('The ER Diagram (Figure 1, DevPath DBMS Design Document v1.0) uses Chen notation with 7 entity sets, 9 relationship sets, 2 weak entities (KANBAN_TASK, SUBMISSION), 4 identifying relationships (CONTAINS, SUBMITS), 2 multivalued attributes (LESSON.tags, TEAM.roles), and 2 derived attributes (PROJECT.completion%, BLUEPRINT.ai_gen). The diagram is reproduced in the attached design document (Appendix C).'),
+      para('The ER Diagram (Figure 1, Brio DBMS Design Document v1.0) uses Chen notation with 7 entity sets, 9 relationship sets, 2 weak entities (KANBAN_TASK, SUBMISSION), 4 identifying relationships (CONTAINS, SUBMITS), 2 multivalued attributes (LESSON.tags, TEAM.roles), and 2 derived attributes (PROJECT.completion%, BLUEPRINT.ai_gen). The diagram is reproduced in the attached design document (Appendix C).'),
 
       h2('4.2 Entity Descriptions'),
       BR(),
@@ -308,9 +308,9 @@ const doc = new Document({
 
       // CHAPTER 7
       pageBreak(), h1('Chapter 7: Conclusion'),
-      para('The DevPath database project successfully implements the complete relational backend for an AI-augmented, project-driven programming learning platform. Beginning from a formal Chen ER Model (v1.0, March 2026), the project executed the full 7-step ER-to-table reduction to produce a BCNF-normalized MySQL schema of thirteen tables.'),
+      para('The Brio database project successfully implements the complete relational backend for an AI-augmented, project-driven programming learning platform. Beginning from a formal Chen ER Model (v1.0, March 2026), the project executed the full 7-step ER-to-table reduction to produce a BCNF-normalized MySQL schema of thirteen tables.'),
       para('The implementation demonstrates mastery of all CS1211 DBMS course objectives: entity and relationship modeling, schema normalization, constraint design (PK, FK, UNIQUE, CHECK, ENUM), DDL and DML operations, multi-table JOIN queries, aggregate subqueries, view creation, trigger logic, and transactional atomicity. The skill-gate trigger — which automatically unlocks Kanban tasks in response to qualifying code submissions — represents the project\'s original contribution: database-enforced pedagogical logic that cannot be circumvented by any application-layer bug or bypass.'),
-      para('The database is production-ready and serves as the direct input to the DevPath application\'s backend development phase, where it will be connected to a REST API (Node.js/Express) and a React/Next.js frontend.'),
+      para('The database is production-ready and serves as the direct input to the Brio application\'s backend development phase, where it will be connected to a REST API (Node.js/Express) and a React/Next.js frontend.'),
 
       // CHAPTER 8
       pageBreak(), h1('Chapter 8: Future Enhancements'),
@@ -353,14 +353,14 @@ const doc = new Document({
         ],
       }),
       BR(),
-      h2('Appendix C: DevPath Database Design Document'),
-      para('The original ER Design Document (DevPath DBMS Design Document v1.0, March 2026, prepared by Darshan Jain, Francis Reuben R, and Harshith B A) is enclosed as a separate PDF attachment.'),
+      h2('Appendix C: Brio Database Design Document'),
+      para('The original ER Design Document (Brio DBMS Design Document v1.0, March 2026, prepared by Darshan Jain, Francis Reuben R, and Harshith B A) is enclosed as a separate PDF attachment.'),
     ],
   }],
 });
 
 Packer.toBuffer(doc).then(buf => {
-  fs.writeFileSync(path.join(__dirname, 'DevPath_DBMS_Report.docx'), buf);
+  fs.writeFileSync(path.join(__dirname, 'Brio_DBMS_Report.docx'), buf);
   console.log('Report done.');
 }).catch(e => { console.error(e); process.exit(1); });
 

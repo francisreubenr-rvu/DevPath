@@ -1,4 +1,4 @@
-# DevPath — Project-Driven Programming Learning Platform
+# Brio — Project-Driven Programming Learning Platform
 
 This repository contains the Database Management System (DBMS) project for the course CS1211 at RV University.
 
@@ -10,9 +10,11 @@ This repository contains the Database Management System (DBMS) project for the c
 - `04_VIEWS_TRIGGERS_TRANSACTIONS.sql`: Advanced database logic.
 - `build_ppt.js`: Presentation generator.
 - `build_report.js`: Report generator.
-- `index.html`: Project landing page.
+- `index.html`: Brio Project landing page.
 
-## Getting Started
+## Interactive Dashboard (Rebuilt)
+
+The core functionality has been moved to the `Brio_Project` directory, featuring a light-themed neobrutalist dashboard and a live Node.js backend.
 
 1. **Database Setup:**
    ```bash
@@ -20,12 +22,13 @@ This repository contains the Database Management System (DBMS) project for the c
    mysql -u root < 02_DML.sql
    ```
 
-2. **Generate Artifacts:**
+2. **Run Interactive Website:**
    ```bash
+   cd Brio_Project/website
    npm install
-   node build_ppt.js
-   node build_report.js
+   node server.js
    ```
+   Open `index.html` in your browser.
 
 ## Team
 - Darshan Jain

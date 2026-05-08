@@ -1,10 +1,10 @@
 -- ==============================================================
 -- CS1211 DATABASE MANAGEMENT SYSTEM
--- DevPath — Project-Driven Programming Learning Platform
+-- Brio — Project-Driven Programming Learning Platform
 -- File: 02_DML.sql  |  Data Manipulation Language (INSERT)
 -- ==============================================================
 
-USE devpath_db;
+USE brio_db;
 
 -- -------------------------
 -- Insert Users (10)

@@ -1,10 +1,10 @@
 -- ==============================================================
 -- CS1211 DATABASE MANAGEMENT SYSTEM
--- DevPath — Project-Driven Programming Learning Platform
+-- Brio — Project-Driven Programming Learning Platform
 -- File: 03_QUERIES.sql  |  SELECT Queries
 -- ==============================================================
 
-USE devpath_db;
+USE brio_db;
 
 -- ============================================================
 -- SECTION A: SIMPLE SELECT QUERIES

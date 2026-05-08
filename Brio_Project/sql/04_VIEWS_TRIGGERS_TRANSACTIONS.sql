@@ -1,10 +1,10 @@
 -- ==============================================================
 -- CS1211 DATABASE MANAGEMENT SYSTEM
--- DevPath — Project-Driven Programming Learning Platform
+-- Brio — Project-Driven Programming Learning Platform
 -- File: 04_VIEWS_TRIGGERS_TRANSACTIONS.sql
 -- ==============================================================
 
-USE devpath_db;
+USE brio_db;
 
 -- ============================================================
 -- SECTION A: VIEWS

@@ -1,10 +1,10 @@
-# DevPath DBMS Project — Context & Progress
+# Brio DBMS Project — Context & Progress
 
 ## Project Identity
 - **Course:** CS1211 Database Management System
 - **Institution:** RV University, Bengaluru (School of CSE), 2025–26
 - **Team:** Darshan Jain, Francis Reuben R, Harshith B A
-- **Platform:** DevPath — Project-Driven Programming Learning Platform
+- **Platform:** Brio — Project-Driven Programming Learning Platform
 
 ---
 
@@ -33,7 +33,7 @@
 | `04_VIEWS_TRIGGERS_TRANSACTIONS.sql` | 3 views, 3 triggers, 3 transactions | 229 |
 | `build_ppt.js` | Generate PPT using pptxgenjs | 316 |
 | `build_report.js` | Generate DOCX report using docx | 365 |
-| `index.html` | Landing page for DevPath | 392 |
+| `index.html` | Landing page for Brio | 392 |
 | `context.md` | This file | — |
 
 ---
@@ -172,8 +172,8 @@
 |------|------|-------|---------------|
 | `01_DDL.sql` | 20 | Table named `user` (SQL reserved keyword) | Rename to `users` or backtick-quote |
 | `01_DDL.sql` | 129 | `submission` PK (user_id, sub_date) — collision risk on same-second inserts | Add synthetic `submission_id` PK |
-| `build_ppt.js` | 314 | Hardcoded path `/home/claude/DevPath_Project/...` — fails on macOS | Use `__dirname` + `path.join()` |
-| `build_report.js` | 363 | Hardcoded path `/home/claude/DevPath_Project/...` — fails on macOS | Use `__dirname` + `path.join()` |
+| `build_ppt.js` | 314 | Hardcoded path `/home/claude/Brio_Project/...` — fails on macOS | Use `__dirname` + `path.join()` |
+| `build_report.js` | 363 | Hardcoded path `/home/claude/Brio_Project/...` — fails on macOS | Use `__dirname` + `path.join()` |
 
 ### Low (Info)
 | File | Issue |

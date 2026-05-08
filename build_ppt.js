@@ -3,7 +3,7 @@ const path = require('path');
 
 const pres = new pptxgen();
 pres.layout = 'LAYOUT_16x9';
-pres.title = 'DevPath — DBMS Mini Project';
+pres.title = 'Brio — DBMS Mini Project';
 
 // Dark technical palette
 const BG  = '0D1117';   // GitHub dark bg
@@ -27,7 +27,7 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
   s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.06, fill: { color: B1 } });
 
   // Big title
-  s.addText('DevPath', { x: 0.5, y: 0.5, w: 9, h: 1.5, fontSize: 72, color: WH, bold: true, fontFace: 'Courier New', align: 'center' });
+  s.addText('Brio', { x: 0.5, y: 0.5, w: 9, h: 1.5, fontSize: 72, color: WH, bold: true, fontFace: 'Courier New', align: 'center' });
   s.addText('Project-Driven Programming Learning Platform', { x: 0.5, y: 1.9, w: 9, h: 0.55, fontSize: 18, color: GR, fontFace: 'Courier New', align: 'center' });
 
   // Tag line badges
@@ -56,7 +56,7 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
   s.background = { color: BG };
   s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.06, fill: { color: B1 } });
 
-  s.addText('What is DevPath?', { x: 0.5, y: 0.2, w: 9, h: 0.7, fontSize: 28, color: WH, bold: true, fontFace: 'Courier New' });
+  s.addText('What is Brio?', { x: 0.5, y: 0.2, w: 9, h: 0.7, fontSize: 28, color: WH, bold: true, fontFace: 'Courier New' });
 
   s.addShape(pres.shapes.RECTANGLE, { x: 0.5, y: 1.05, w: 4.3, h: 0.35, fill: { color: B1 } });
   s.addText('The Problem', { x: 0.5, y: 1.05, w: 4.3, h: 0.35, fontSize: 12, color: WH, bold: true, align: 'center', valign: 'middle', margin: 0 });
@@ -69,7 +69,7 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
   ], { x: 0.65, y: 1.55, w: 3.95, h: 3.0, fontSize: 12, fontFace: 'Calibri', paraSpaceAfter: 10 });
 
   s.addShape(pres.shapes.RECTANGLE, { x: 5.2, y: 1.05, w: 4.3, h: 0.35, fill: { color: B2 } });
-  s.addText('DevPath Solution', { x: 5.2, y: 1.05, w: 4.3, h: 0.35, fontSize: 12, color: WH, bold: true, align: 'center', valign: 'middle', margin: 0 });
+  s.addText('Brio Solution', { x: 5.2, y: 1.05, w: 4.3, h: 0.35, fontSize: 12, color: WH, bold: true, align: 'center', valign: 'middle', margin: 0 });
   s.addShape(pres.shapes.RECTANGLE, { x: 5.2, y: 1.4, w: 4.3, h: 3.4, fill: { color: SURF } });
   s.addText([
     { text: 'AI-generated, project-scoped learning paths', options: { bullet: true, breakLine: true, color: WH } },
@@ -299,8 +299,8 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
   });
 
   s.addText([
-    { text: 'DevPath DB — Production Ready', options: { bold: true, fontSize: 20, color: WH, breakLine: true } },
-    { text: 'BCNF-normalized, trigger-enforced, transaction-safe relational backend\nfor the DevPath learning platform.\n\nThe skill-gate trigger is the original DB-layer contribution:\nLesson mastery enforced as task prerequisite — impossible to bypass.\n\nDirect input to Phase 2: Node.js/Express API + React frontend.', options: { fontSize: 12, color: GR } },
+    { text: 'Brio DB — Production Ready', options: { bold: true, fontSize: 20, color: WH, breakLine: true } },
+    { text: 'BCNF-normalized, trigger-enforced, transaction-safe relational backend\nfor the Brio learning platform.\n\nThe skill-gate trigger is the original DB-layer contribution:\nLesson mastery enforced as task prerequisite — impossible to bypass.\n\nDirect input to Phase 2: Node.js/Express API + React frontend.', options: { fontSize: 12, color: GR } },
   ], { x: 3.7, y: 0.8, w: 5.9, h: 3.2, fontFace: 'Calibri', valign: 'top' });
 
   s.addShape(pres.shapes.RECTANGLE, { x: 3.7, y: 4.15, w: 5.9, h: 0.95, fill: { color: B2 } });
@@ -312,6 +312,6 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
   s.addText('CS1211 DATABASE MANAGEMENT SYSTEM', { x: 0, y: 5.3, w: 10, h: 0.3, fontSize: 9, color: GR, align: 'center', fontFace: 'Courier New' });
 }
 
-pres.writeFile({ fileName: path.join(__dirname, 'DevPath_Presentation.pptx') })
+pres.writeFile({ fileName: path.join(__dirname, 'Brio_Presentation.pptx') })
   .then(() => console.log('PPT done.'))
   .catch(e => { console.error(e); process.exit(1); });

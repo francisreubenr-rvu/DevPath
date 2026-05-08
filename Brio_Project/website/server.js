@@ -11,7 +11,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'devpath_db',
+  database: 'brio_db',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
@@ -89,4 +89,4 @@ app.get('/api/stats', async (req, res) => {
 });
 
 const PORT = 3000;
-app.listen(PORT, () => console.log(`DevPath Dashboard running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Brio SQL Engine running on http://localhost:${PORT}`));

@@ -1,13 +1,13 @@
 -- ==============================================================
 -- CS1211 DATABASE MANAGEMENT SYSTEM
--- DevPath — Project-Driven Programming Learning Platform
+-- Brio — Project-Driven Programming Learning Platform
 -- File: 01_DDL.sql  |  Data Definition Language
 -- Authors: Darshan Jain, Francis Reuben R, Harshith B A
 -- Date: 2025–26
 -- ==============================================================
 
-CREATE DATABASE IF NOT EXISTS devpath_db;
-USE devpath_db;
+CREATE DATABASE IF NOT EXISTS brio_db;
+USE brio_db;
 
 -- ==============================================================
 -- STRONG ENTITIES
