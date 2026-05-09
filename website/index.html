@@ -83,11 +83,13 @@
     border-bottom: 4px solid var(--border);
     display: flex; justify-content: space-between; align-items: center;
     padding: 1.5rem 3rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
   }
   .logo { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 900; text-transform: lowercase; }
   .logo span { color: var(--accent-amber); }
   
-  .tabs { display: flex; gap: 2rem; list-style: none; }
+  .tabs { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
   .tabs button {
     background: none; border: none; box-shadow: none;
     font-family: var(--font-mono); font-size: 1.1rem; font-weight: 800;
@@ -227,6 +229,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
   .catalog-header h2 {
     font-family: var(--font-serif);
@@ -236,11 +240,22 @@
     display: flex;
     gap: 1rem;
     font-weight: 800;
+    flex-wrap: wrap;
   }
   .subject-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.8rem;
+  }
+  .empty-state {
+    border-style: dashed;
+    background: var(--bg);
+    text-align: center;
+  }
+  .empty-state h3 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    margin-bottom: 0.6rem;
   }
   .subject-card {
     background: var(--surface);
@@ -366,6 +381,36 @@
       grid-template-columns: 1fr;
     }
     .subject-hero {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 800px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    main {
+      padding: 2rem 1.5rem;
+    }
+    .tabs {
+      gap: 1rem;
+    }
+    .user-badge {
+      width: 100%;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .catalog-header {
+      align-items: flex-start;
+    }
+    .subject-grid {
+      grid-template-columns: 1fr;
+    }
+    .subject-sections {
+      grid-template-columns: 1fr;
+    }
+    .grid-2 {
       grid-template-columns: 1fr;
     }
   }
@@ -753,6 +798,13 @@
       if (!res.ok) throw new Error('Unable to load subjects catalog');
       subjectsData = await res.json();
       subjectsFlat = flattenSubjects(subjectsData);
+      if (!subjectsFlat.length) {
+        renderSubjectsEmptyState();
+        renderContinueCard();
+        renderLearningStats();
+        hideSubjectPage();
+        return;
+      }
       renderSemesterOptions(subjectsData);
       bindFilters();
       renderSubjectCatalog();
@@ -761,8 +813,21 @@
       hideSubjectPage();
     } catch (e) {
       console.error(e);
+      renderSubjectsEmptyState();
       showToast('Unable to load subjects catalog');
     }
+  }
+
+  function renderSubjectsEmptyState() {
+    const grid = document.getElementById('subject-grid');
+    if (!grid) return;
+    grid.innerHTML = `
+      <div class="card empty-state">
+        <h3>No subjects available</h3>
+        <p>We could not load the subjects catalog. Check that the JSON file is available and try again.</p>
+      </div>
+    `;
+    updateCatalogStats([]);
   }
 
   function flattenSubjects(data) {
@@ -821,6 +886,10 @@
   function renderSubjectCatalog() {
     const grid = document.getElementById('subject-grid');
     if (!grid) return;
+    if (!subjectsFlat.length) {
+      renderSubjectsEmptyState();
+      return;
+    }
     const filters = currentFilters();
     const filtered = applySubjectFilters(subjectsFlat, filters);
     grid.innerHTML = '';
