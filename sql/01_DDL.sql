@@ -22,6 +22,10 @@ CREATE TABLE users (
     f_name      VARCHAR(50) NOT NULL,
     l_name      VARCHAR(50) NOT NULL,
     email       VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    bio         TEXT DEFAULT NULL,
+    avatar_url  VARCHAR(255) DEFAULT NULL,
+    github_url  VARCHAR(255) DEFAULT NULL,
     role        ENUM('learner', 'mentor', 'admin') NOT NULL DEFAULT 'learner',
     joined_at   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     sub_tier    ENUM('starter', 'pro', 'team') NOT NULL DEFAULT 'starter'

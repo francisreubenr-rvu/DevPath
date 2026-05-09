@@ -185,8 +185,8 @@ SELECT project_id, proj_name, status FROM project WHERE project_id = 4;
 START TRANSACTION;
 
     -- Step 1: Insert new user
-    INSERT INTO users (f_name, l_name, email, role, sub_tier)
-    VALUES ('Arjun', 'Kapoor', 'arjun.kapoor@devpath.io', 'learner', 'pro');
+    INSERT INTO users (f_name, l_name, email, password_hash, role, sub_tier)
+    VALUES ('Arjun', 'Kapoor', 'arjun.kapoor@devpath.io', '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'learner', 'pro');
 
     -- Step 2: Enroll the new user in Full-Stack Web Development (course_id=1)
     INSERT INTO enrollment (user_id, course_id, progress)

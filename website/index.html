@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>brio. — The Unified Learning Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5EDD8; /* Cream */
+    --surface: #FFFFFF;
+    --text: #110F0C; /* Dark */
+    --border: #110F0C;
+    --accent-amber: #E9A21B;
+    --accent-sage: #6B8F71;
+    --accent-rust: #C2552A;
+    --shadow: 6px 6px 0px #110F0C;
+    --shadow-hover: 10px 10px 0px #110F0C;
+    --shadow-active: 2px 2px 0px #110F0C;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-serif: 'Fraunces', serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  
+  /* --- AUTH MODAL --- */
+  #auth-modal {
+    position: fixed; inset: 0;
+    background: rgba(17, 15, 12, 0.95);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+  }
+  .auth-box {
+    background: var(--surface);
+    border: 4px solid var(--border);
+    padding: 3rem;
+    box-shadow: 12px 12px 0px var(--accent-amber);
+    width: 100%; max-width: 450px;
+    text-align: center;
+  }
+  .auth-box h2 {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    text-transform: lowercase;
+  }
+  .auth-box input {
+    width: 100%; padding: 1rem;
+    border: 3px solid var(--border);
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .btn {
+    width: 100%; padding: 1rem;
+    background: var(--accent-amber);
+    border: 3px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px var(--border);
+    transition: all 0.1s;
+  }
+  .btn:active { box-shadow: 0px 0px 0px var(--border); transform: translate(4px, 4px); }
+  .btn.sage { background: var(--accent-sage); color: var(--surface); }
+  .btn.rust { background: var(--accent-rust); color: var(--surface); }
+
+  /* --- APP LAYOUT --- */
+  #app { display: none; }
+  header {
+    background: var(--surface);
+    border-bottom: 4px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem;
+  }
+  .logo { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 900; text-transform: lowercase; }
+  .logo span { color: var(--accent-amber); }
+  
+  .tabs { display: flex; gap: 2rem; list-style: none; }
+  .tabs button {
+    background: none; border: none; box-shadow: none;
+    font-family: var(--font-mono); font-size: 1.1rem; font-weight: 800;
+    color: var(--text); opacity: 0.6; cursor: pointer;
+    padding-bottom: 0.5rem; border-bottom: 4px solid transparent;
+  }
+  .tabs button.active { opacity: 1; border-bottom: 4px solid var(--accent-amber); }
+
+  .user-badge { display: flex; align-items: center; gap: 1rem; font-weight: 800; }
+  .user-badge img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border); }
+  
+  main { padding: 3rem; max-width: 1400px; margin: 0 auto; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* --- COMMON COMPONENTS --- */
+  .card {
+    background: var(--surface);
+    border: 4px solid var(--border);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+  }
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    background: var(--accent-amber);
+    display: inline-block;
+    padding: 0.2rem 1rem;
+    border: 3px solid var(--border);
+    transform: rotate(-1deg);
+  }
+
+  /* --- TAB 1: PLATFORM --- */
+  .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; }
+  
+  /* Kanban */
+  .kanban { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; }
+  .k-col { flex: 1; min-width: 250px; background: rgba(0,0,0,0.05); border: 3px solid var(--border); padding: 1.5rem; }
+  .k-col-title { font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .task-card { background: var(--surface); border: 2px solid var(--border); padding: 1rem; margin-bottom: 1rem; box-shadow: 4px 4px 0px var(--border); }
+  .task-name { font-weight: 700; margin-bottom: 0.5rem; }
+  .pill { padding: 0.2rem 0.5rem; font-size: 0.7rem; font-weight: 800; border: 2px solid var(--border); text-transform: uppercase; display: inline-block;}
+  .pill.locked { background: #CCC; }
+  .pill.in_progress { background: var(--accent-amber); }
+  .pill.done { background: var(--accent-sage); color: var(--surface); }
+  .pill.high { background: var(--accent-rust); color: var(--surface); }
+
+  /* Lessons */
+  .lesson-item { padding: 1.5rem; border-bottom: 2px solid var(--border); }
+  .lesson-item:last-child { border-bottom: none; }
+  .markdown-content { background: var(--bg); padding: 1rem; border: 2px dashed var(--border); margin: 1rem 0; font-size: 0.85rem; }
+  .markdown-content h2 { font-size: 1.2rem; background: none; border: none; padding: 0; transform: none; margin-bottom: 0.5rem; }
+
+  /* Profile Form */
+  .profile-form label { display: block; font-weight: 800; margin-bottom: 0.5rem; }
+  .profile-form input, .profile-form textarea { width: 100%; padding: 1rem; border: 3px solid var(--border); margin-bottom: 1.5rem; font-family: var(--font-mono); font-weight: 700; }
+
+  /* --- TAB 2: SHOWCASE --- */
+  .code-block { background: var(--text); color: var(--accent-sage); padding: 1.5rem; border: 4px solid var(--border); font-size: 1rem; overflow-x: auto; margin-bottom: 1.5rem; box-shadow: inset 4px 4px 0px #000; }
+  .table-wrapper { overflow-x: auto; border: 4px solid var(--border); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 1rem; border: 2px solid var(--border); text-align: left; }
+  th { background: var(--accent-amber); font-weight: 800; text-transform: uppercase; border-bottom: 4px solid var(--border); }
+
+  /* --- TAB 3: VIZ --- */
+  .architecture { display: flex; justify-content: space-between; align-items: center; position: relative; height: 300px; margin: 4rem 0; }
+  .layer { width: 250px; background: var(--surface); border: 4px solid var(--border); padding: 2rem; box-shadow: var(--shadow); text-align: center; position: relative; z-index: 10; }
+  .layer.frontend { background: var(--accent-amber); }
+  .layer.backend { background: var(--accent-sage); color: var(--surface); }
+  .layer.database { background: var(--accent-rust); color: var(--surface); }
+  .connector { flex: 1; height: 8px; background: var(--text); position: relative; margin: 0 -10px; }
+  .packet { position: absolute; width: 24px; height: 24px; background: var(--text); border-radius: 50%; top: 50%; left: 0; transform: translateY(-50%); z-index: 5; opacity: 0; }
+  @keyframes flow-fw { 0% { left: 0%; opacity: 1; } 100% { left: 100%; opacity: 1; } }
+  @keyframes flow-bw { 0% { left: 100%; opacity: 1; } 100% { left: 0%; opacity: 1; } }
+  .label-flow { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); font-weight: 800; background: var(--text); color: var(--surface); padding: 0.2rem 0.5rem; font-size: 0.8rem; white-space: nowrap; }
+
+  #toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--text); color: var(--accent-amber); padding: 1.5rem; border: 4px solid var(--border); box-shadow: var(--shadow); display: none; z-index: 1000; font-weight: 800; font-size: 1.2rem; }
+</style>
+</head>
+<body>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal">
+  <div class="auth-box">
+    <h2>brio.</h2>
+    <p style="margin-bottom: 2rem; font-weight: 700;">Sign in to access your projects.</p>
+    <input type="email" id="email" placeholder="Email (e.g., aarav.mehta@devpath.io)" value="aarav.mehta@devpath.io">
+    <input type="password" id="password" placeholder="Password (password123)" value="password123">
+    <button class="btn" onclick="login()">ENTER PLATFORM</button>
+    <div id="auth-error" style="color: var(--accent-rust); margin-top: 1rem; font-weight: 800; display: none;"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <header>
+    <div class="logo">bri<span>o</span>.</div>
+    <ul class="tabs">
+      <li><button class="active" onclick="switchTab('tab-platform')">Learning Platform</button></li>
+      <li><button onclick="switchTab('tab-showcase')">DBMS Showcase</button></li>
+      <li><button onclick="switchTab('tab-viz')">System Viz</button></li>
+    </ul>
+    <div class="user-badge">
+      <img id="nav-avatar" src="" alt="Avatar">
+      <div style="text-align: right;">
+        <div id="nav-name">User Name</div>
+        <div style="font-size: 0.7rem; color: var(--accent-rust);" id="nav-tier">PRO</div>
+      </div>
+      <button class="btn sage" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-left: 1rem;" onclick="logout()">LOGOUT</button>
+    </div>
+  </header>
+
+  <main>
+    
+    <!-- TAB 1: PLATFORM -->
+    <div id="tab-platform" class="tab-content active">
+      <div class="grid-2">
+        
+        <div class="left-col">
+          <div class="card">
+            <h2 class="card-title">Kanban: <span id="k-proj-name">Loading...</span></h2>
+            <div class="kanban">
+              <div class="k-col" id="col-locked">
+                <div class="k-col-title">Locked</div>
+                <div class="tasks"></div>
+              </div>
+              <div class="k-col" id="col-in_progress">
+                <div class="k-col-title">In Progress</div>
+                <div class="tasks"></div>
+              </div>
+              <div class="k-col" id="col-done">
+                <div class="k-col-title">Done</div>
+                <div class="tasks"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">Curated Learning Path</h2>
+            <div id="lessons-list">Loading...</div>
+          </div>
+        </div>
+
+        <div class="right-col">
+          <div class="card" style="background: var(--accent-sage); color: var(--surface);">
+            <h2 class="card-title" style="background: var(--surface); color: var(--text);">My Stats</h2>
+            <div style="display: flex; justify-content: space-between; text-align: center; margin-top: 1.5rem;">
+              <div><div style="font-size: 3rem; font-weight: 900; line-height: 1;" id="stat-subs">0</div><div style="font-size: 0.8rem; font-weight: 800;">SUBMISSIONS</div></div>
+              <div><div style="font-size: 3rem; font-weight: 900; line-height: 1;" id="stat-score">0</div><div style="font-size: 0.8rem; font-weight: 800;">AVG SCORE</div></div>
+              <div><div style="font-size: 3rem; font-weight: 900; line-height: 1;" id="stat-prog">0%</div><div style="font-size: 0.8rem; font-weight: 800;">PROGRESS</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">Edit Profile</h2>
+            <div class="profile-form">
+              <label>Bio</label>
+              <textarea id="prof-bio" rows="3"></textarea>
+              <label>GitHub URL</label>
+              <input type="text" id="prof-github">
+              <button class="btn rust" onclick="updateProfile()">SAVE CHANGES</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: SHOWCASE -->
+    <div id="tab-showcase" class="tab-content">
+      <div class="card">
+        <h2 class="card-title">SQL Command Center</h2>
+        <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+          <select id="query-select" style="flex: 1; padding: 1rem; border: 4px solid var(--border); font-family: var(--font-mono); font-weight: 800; font-size: 1.1rem;"></select>
+          <button class="btn" style="width: auto; padding: 1rem 3rem;" onclick="runQuery()">EXECUTE</button>
+        </div>
+        <div class="code-block" id="sql-display">-- Select a query to execute against brio_db</div>
+        <div class="table-wrapper">
+          <table>
+            <thead id="results-head"><tr><th>Dataset</th></tr></thead>
+            <tbody id="results-body"><tr><td>Run a query to view results.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: VIZ -->
+    <div id="tab-viz" class="tab-content">
+      <div class="card">
+        <h2 class="card-title">System Architecture Flow</h2>
+        <p style="font-weight: 700; margin-bottom: 2rem;">Animating the request/response lifecycle for a lesson submission triggering a database skill gate.</p>
+        
+        <div class="architecture">
+          <div class="layer frontend"><h2>Frontend</h2><p>Browser (Vanilla JS)</p></div>
+          <div class="connector">
+            <div id="p-req-1" class="packet"></div><div id="p-res-1" class="packet"></div>
+            <div class="label-flow" id="lbl-1">HTTP POST /api/submit</div>
+          </div>
+          <div class="layer backend"><h2>Backend</h2><p>Node.js (Express)</p></div>
+          <div class="connector">
+            <div id="p-req-2" class="packet"></div><div id="p-res-2" class="packet"></div>
+            <div class="label-flow" id="lbl-2">MySQL query()</div>
+          </div>
+          <div class="layer database"><h2>Database</h2><p>MySQL 8.0 (brio_db)</p></div>
+        </div>
+
+        <button class="btn sage" style="margin: 0 auto; display: block; max-width: 400px;" onclick="simulate()">RUN SIMULATION</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const API_URL = 'http://localhost:3000/api';
+  let token = localStorage.getItem('brio_token');
+
+  // Initialization
+  if (token) {
+    document.getElementById('auth-modal').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadApp();
+  }
+
+  // API Helper
+  async function apiFetch(endpoint, options = {}) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+    const data = await res.json();
+    if (!res.ok) {
+      if (res.status === 401) logout();
+      throw new Error(data.error || 'API Error');
+    }
+    return data;
+  }
+
+  // Auth
+  async function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    try {
+      const data = await apiFetch('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+      token = data.token;
+      localStorage.setItem('brio_token', token);
+      document.getElementById('auth-modal').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadApp();
+    } catch(err) {
+      const errEl = document.getElementById('auth-error');
+      errEl.innerText = err.message;
+      errEl.style.display = 'block';
+    }
+  }
+
+  function logout() {
+    token = null;
+    localStorage.removeItem('brio_token');
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('auth-modal').style.display = 'flex';
+  }
+
+  // Tabs
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  // Load App Data
+  async function loadApp() {
+    try {
+      const { profile, stats } = await apiFetch('/profile/me');
+      document.getElementById('nav-avatar').src = profile.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.f_name}`;
+      document.getElementById('nav-name').innerText = `${profile.f_name} ${profile.l_name}`;
+      document.getElementById('nav-tier').innerText = profile.sub_tier.toUpperCase();
+      
+      document.getElementById('prof-bio').value = profile.bio || '';
+      document.getElementById('prof-github').value = profile.github_url || '';
+      
+      document.getElementById('stat-subs').innerText = stats.total_submissions || 0;
+      document.getElementById('stat-score').innerText = stats.avg_ai_score || 0;
+      document.getElementById('stat-prog').innerText = (stats.avg_course_progress || 0) + '%';
+
+      await loadProjects();
+      await loadLessons();
+      await loadQueries();
+    } catch(e) { console.error(e); }
+  }
+
+  async function updateProfile() {
+    const bio = document.getElementById('prof-bio').value;
+    const github_url = document.getElementById('prof-github').value;
+    try {
+      await apiFetch('/profile/update', { method: 'POST', body: JSON.stringify({ bio, github_url }) });
+      showToast('Profile updated successfully!');
+    } catch(e) { showToast('Error updating profile'); }
+  }
+
+  async function loadProjects() {
+    const projects = await apiFetch('/projects');
+    if(projects.length > 0) {
+      document.getElementById('k-proj-name').innerText = projects[0].proj_name;
+      const tasks = await apiFetch(`/kanban/${projects[0].project_id}`);
+      
+      const cols = { locked: '', in_progress: '', done: '' };
+      tasks.forEach(t => {
+        const type = t.status === 'locked' ? 'locked' : (t.status === 'done' ? 'done' : 'in_progress');
+        cols[type] += `
+          <div class="task-card">
+            <div class="task-name">${t.task_name}</div>
+            <div>
+              <span class="pill ${t.priority}">${t.priority}</span>
+              ${t.skill_req ? `<span class="pill" style="margin-left:5px">REQ: ${t.skill_req}</span>` : ''}
+            </div>
+          </div>
+        `;
+      });
+      document.querySelector('#col-locked .tasks').innerHTML = cols.locked;
+      document.querySelector('#col-in_progress .tasks').innerHTML = cols.in_progress;
+      document.querySelector('#col-done .tasks').innerHTML = cols.done;
+    }
+  }
+
+  async function loadLessons() {
+    const lessons = await apiFetch('/lessons');
+    const list = document.getElementById('lessons-list');
+    list.innerHTML = '';
+    
+    lessons.forEach(l => {
+      const isPassed = l.ai_score >= 70;
+      let html = `
+        <div class="lesson-item">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <div>
+              <div style="font-weight:900; font-size:1.2rem;">${l.title}</div>
+              <div style="font-weight:700; color:var(--accent-rust); font-size:0.8rem;">Lesson ${l.lesson_no} • ${l.course_title}</div>
+            </div>
+            ${isPassed ? 
+              `<span class="btn sage" style="width:auto; padding:0.5rem 1rem; cursor:default; box-shadow:none; transform:none;">PASSED (${l.ai_score})</span>` : 
+              `<button class="btn amber" style="width:auto; padding:0.5rem 1rem;" onclick="submitLesson(${l.lesson_id})">SUBMIT ASSIGNMENT</button>`}
+          </div>
+          ${l.content ? `<div class="markdown-content">${l.content.replace(/\n/g, '<br>')}</div>` : ''}
+        </div>
+      `;
+      list.innerHTML += html;
+    });
+  }
+
+  async function submitLesson(id) {
+    const score = 70 + Math.floor(Math.random() * 30);
+    try {
+      const data = await apiFetch('/submit', { method: 'POST', body: JSON.stringify({ lessonId: id, score }) });
+      showToast(data.message);
+      loadApp(); // Refresh to show unlocked tasks
+    } catch(e) { showToast(e.message); }
+  }
+
+  async function loadQueries() {
+    const queries = await apiFetch('/showcase/queries');
+    const sel = document.getElementById('query-select');
+    sel.innerHTML = '';
+    queries.forEach(q => sel.innerHTML += `<option value="${q.id}">${q.name}</option>`);
+  }
+
+  async function runQuery() {
+    const qid = document.getElementById('query-select').value;
+    if (!qid) return;
+    document.getElementById('sql-display').innerText = 'Executing...';
+    try {
+      const data = await apiFetch('/showcase/query', { method: 'POST', body: JSON.stringify({ queryId: qid }) });
+      document.getElementById('sql-display').innerText = data.sql;
+      
+      if (data.rows && data.rows.length > 0) {
+        const cols = Object.keys(data.rows[0]);
+        document.getElementById('results-head').innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
+        document.getElementById('results-body').innerHTML = data.rows.map(r => 
+          `<tr>${cols.map(c => {
+            let val = r[c];
+            if (c === 'status' || c === 'project_status') {
+               const pClass = val === 'done' || val === 'shipped' ? 'done' : (val === 'locked' ? 'locked' : 'in_progress');
+               return `<td><span class="pill ${pClass}">${val}</span></td>`;
+            }
+            return `<td>${val !== null ? val : '<em>NULL</em>'}</td>`;
+          }).join('')}</tr>`
+        ).join('');
+      } else {
+         document.getElementById('results-head').innerHTML = '<tr><th>Results</th></tr>';
+         document.getElementById('results-body').innerHTML = '<tr><td>0 rows returned.</td></tr>';
+      }
+    } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
+  }
+
+  function simulate() {
+    const stages = [
+      { p: 'p-req-1', lbl: 'lbl-1', text: 'HTTP POST /api/submit', dur: 1000, dir: 'fw' },
+      { p: 'p-req-2', lbl: 'lbl-2', text: 'INSERT INTO submission...', dur: 1000, dir: 'fw' },
+      { p: null,      lbl: 'lbl-2', text: 'TRIGGER: UNLOCKING TASK', dur: 1500, dir: 'none' },
+      { p: 'p-res-2', lbl: 'lbl-2', text: 'Rows Affected: 1', dur: 1000, dir: 'bw' },
+      { p: 'p-res-1', lbl: 'lbl-1', text: '200 OK {success: true}', dur: 1000, dir: 'bw' }
+    ];
+
+    document.querySelectorAll('.packet').forEach(p => { p.style.animation = 'none'; p.offsetHeight; });
+    let time = 0;
+    stages.forEach((s) => {
+      setTimeout(() => {
+        if(s.lbl) document.getElementById(s.lbl).innerText = s.text;
+        if(s.p) {
+          const el = document.getElementById(s.p);
+          el.style.animation = `flow-${s.dir} ${s.dur}ms ease both`;
+        }
+      }, time);
+      time += s.dur;
+    });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+  }
+</script>
+
+</body>
+</html>

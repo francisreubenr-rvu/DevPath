@@ -9,17 +9,17 @@ USE brio_db;
 -- -------------------------
 -- Insert Users (10)
 -- -------------------------
-INSERT INTO users (f_name, l_name, email, role, sub_tier) VALUES
-('Aarav',    'Mehta',    'aarav.mehta@devpath.io',    'learner',  'pro'),
-('Priya',    'Iyer',     'priya.iyer@devpath.io',     'learner',  'team'),
-('Kiran',    'Reddy',    'kiran.reddy@devpath.io',    'learner',  'starter'),
-('Sneha',    'Nair',     'sneha.nair@devpath.io',     'learner',  'team'),
-('Rohan',    'Singh',    'rohan.singh@devpath.io',    'learner',  'pro'),
-('Ananya',   'Sharma',   'ananya.sharma@devpath.io',  'learner',  'team'),
-('Darshan',  'Jain',     'darshan.jain@devpath.io',   'learner',  'team'),
-('Francis',  'Reuben',   'francis.reuben@devpath.io', 'learner',  'team'),
-('Harshith', 'BA',       'harshith.ba@devpath.io',    'learner',  'team'),
-('Kavita',   'Rao',      'kavita.rao@devpath.io',     'mentor',   'pro');
+INSERT INTO users (f_name, l_name, email, password_hash, bio, avatar_url, github_url, role, sub_tier) VALUES
+('Aarav',    'Mehta',    'aarav.mehta@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Enthusiastic full-stack learner.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aarav', 'https://github.com/aarav-mehta', 'learner',  'pro'),
+('Priya',    'Iyer',     'priya.iyer@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Data science aficionado.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya', 'https://github.com/priyaiyer', 'learner',  'team'),
+('Kiran',    'Reddy',    'kiran.reddy@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Starting my coding journey.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kiran', 'https://github.com/kiranr', 'learner',  'starter'),
+('Sneha',    'Nair',     'sneha.nair@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Mobile app developer in training.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha', 'https://github.com/snehanair', 'learner',  'team'),
+('Rohan',    'Singh',    'rohan.singh@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Frontend master.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan', 'https://github.com/rohansingh', 'learner',  'pro'),
+('Ananya',   'Sharma',   'ananya.sharma@devpath.io',  '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Backend architecture focused.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya', 'https://github.com/ananyas', 'learner',  'team'),
+('Darshan',  'Jain',     'darshan.jain@devpath.io',   '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Team lead and full-stack dev.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Darshan', 'https://github.com/darshanjain', 'learner',  'team'),
+('Francis',  'Reuben',   'francis.reuben@devpath.io', '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Building scalable backends.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Francis', 'https://github.com/francisreubenr-rvu', 'learner',  'team'),
+('Harshith', 'BA',       'harshith.ba@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'UI/UX and Frontend specialist.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Harshith', 'https://github.com/harshithba', 'learner',  'team'),
+('Kavita',   'Rao',      'kavita.rao@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Senior Mentor. 10 YOE.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kavita', 'https://github.com/kavitarao', 'mentor',   'pro');
 
 -- -------------------------
 -- Insert Courses (5)
@@ -36,10 +36,10 @@ INSERT INTO course (title, tech_stack, difficulty) VALUES
 -- -------------------------
 -- Course 1: Full-Stack
 INSERT INTO lesson (course_id, title, content, lesson_no) VALUES
-(1, 'REST API Design Fundamentals',     'Learn HTTP verbs, status codes, resource naming, and REST constraints with hands-on Express routes.', 1),
-(1, 'PostgreSQL Schema Design',         'Design normalized schemas, write DDL, and connect Node.js to a live PostgreSQL instance.', 2),
-(1, 'React State Management with Hooks','Deep dive into useState, useEffect, useContext, and custom hooks for scalable component trees.', 3),
-(1, 'Authentication with JWTs',         'Implement secure login/signup using bcrypt, jsonwebtoken, and HTTP-only cookie sessions.', 4),
+(1, 'REST API Design Fundamentals',     '## Sourced from GitHub/Rest-API-Guidelines\n\nLearn HTTP verbs, status codes, resource naming, and REST constraints. **Top Reddit Tip:** Always version your APIs from day one!', 1),
+(1, 'PostgreSQL Schema Design',         '## Sourced from Reddit r/PostgreSQL\n\nDesign normalized schemas, write DDL, and connect Node.js to a live PostgreSQL instance. "Avoid UUIDs as Primary Keys unless absolutely necessary for distributed systems." - u/dbadeveloper', 2),
+(1, 'React State Management with Hooks','## React Docs (Curated)\n\nDeep dive into `useState`, `useEffect`, `useContext`, and custom hooks for scalable component trees.', 3),
+(1, 'Authentication with JWTs',         '## Sourced from OWASP Guidelines\n\nImplement secure login/signup using bcrypt, jsonwebtoken, and HTTP-only cookie sessions. Never store JWTs in local storage!', 4),
 -- Course 2: Python DS
 (2, 'NumPy Array Operations',           'Master ndarray creation, indexing, broadcasting, and vectorized math operations.', 1),
 (2, 'Pandas DataFrames in Depth',       'Load, clean, group, merge, and visualize real-world CSV datasets using Pandas.', 2),
