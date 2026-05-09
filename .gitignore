@@ -2,6 +2,8 @@ node_modules/
 .DS_Store
 *.docx
 *.pptx
+.worktrees/
 .gemini_security/
 .socraticode/
 memory/
+.env*

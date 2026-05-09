@@ -167,22 +167,22 @@
 | `04_VIEWS_TRIGGERS_TRANSACTIONS.sql` | 52 | `JOIN user u ON p.user_id = p.user_id` (self-join, cartesian product) | `ON p.user_id = u.user_id` |
 | `02_DML.sql` | 138 | `INSERT ... VALUES (10, 1, NULL, NULL)` — progress NOT NULL violated | Changed to `(10, 1, NULL, 0)` |
 
-### Medium (TODO)
-| File | Line | Issue | Recommendation |
-|------|------|-------|---------------|
-| `01_DDL.sql` | 20 | Table named `user` (SQL reserved keyword) | Rename to `users` or backtick-quote |
-| `01_DDL.sql` | 129 | `submission` PK (user_id, sub_date) — collision risk on same-second inserts | Add synthetic `submission_id` PK |
-| `build_ppt.js` | 314 | Hardcoded path `/home/claude/Brio_Project/...` — fails on macOS | Use `__dirname` + `path.join()` |
-| `build_report.js` | 363 | Hardcoded path `/home/claude/Brio_Project/...` — fails on macOS | Use `__dirname` + `path.join()` |
+### Medium (Fixed)
+| File | Line | Issue | Fix |
+|------|------|-------|-----|
+| `01_DDL.sql` | 20 | Table named `user` (SQL reserved keyword) | Already `users` — fixed in `c030f00` |
+| `01_DDL.sql` | 129 | `submission` PK collision risk | Already has `submission_id` — fixed in `c030f00` |
+| `build_ppt.js` | 314 | Hardcoded path — fails on macOS | Already uses `__dirname` + `path.join()` |
+| `build_report.js` | 363 | Hardcoded path — fails on macOS | Already uses `__dirname` + `path.join()` |
 
 ### Low (Info)
-| File | Issue |
-|------|-------|
-| `04_VIEWS_TRIGGERS_TRANSACTIONS.sql:92` | Multi-table UPDATE syntax (`UPDATE kt JOIN p`) is MySQL-specific, not portable |
-| `04_VIEWS_TRIGGERS_TRANSACTIONS.sql:128` | Team size trigger has race condition under high concurrency (SELECT COUNT before INSERT) |
-| `build_report.js` | Placeholder `Dr./Prof. [Name]` and `(USN)` need real values |
-| `index.html` | Pricing buttons need `type="button"`; nav links need `aria-label` |
-| Root | Missing `package.json`, `.gitignore`, `README.md` |
+| File | Issue | Status |
+|------|-------|--------|
+| `04_VIEWS_TRIGGERS_TRANSACTIONS.sql:92` | Multi-table UPDATE syntax is MySQL-specific | Noted (portability) |
+| `04_VIEWS_TRIGGERS_TRANSACTIONS.sql:128` | Team size trigger race condition | Noted (low concurrency) |
+| `build_report.js` | Placeholder `Dr./Prof. [Name]` and `(USN)` need real values | Needs real values |
+| `website/index.html` | Pricing buttons need `type="button"`; nav links need `aria-label` | ✓ Fixed |
+| Root | `index.html` deleted locally; `package.json`, `.gitignore` exist | Needs cleanup |
 
 ---
 

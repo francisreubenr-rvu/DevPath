@@ -44,7 +44,7 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
     { text: 'Authors: ', options: { bold: true, color: ACC } },
     { text: 'Michael Smith  |  Francis Reuben R  |  David Miller', options: { color: WH } },
     { text: '\nGuide: ', options: { bold: true, color: ACC, breakLine: false } },
-    { text: 'Dr./Prof. [Name]   |   School of CSE, RV University  |  2025–26', options: { color: GR } },
+    { text: 'Dr./Prof. [Guide Name]   |   School of CSE, RV University  |  2025–26', options: { color: GR } },
   ], { x: 2.5, y: 3.35, w: 5, h: 1.35, fontSize: 12, fontFace: 'Courier New', align: 'center', valign: 'middle', margin: 12 });
 
   s.addText('CS1211 DATABASE MANAGEMENT SYSTEM', { x: 0, y: 5.3, w: 10, h: 0.3, fontSize: 9, color: GR, align: 'center', fontFace: 'Courier New' });

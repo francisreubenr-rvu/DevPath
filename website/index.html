@@ -474,7 +474,7 @@
     <p style="margin-bottom: 2rem; font-weight: 700;">Sign in to access your projects.</p>
     <input type="email" id="email" placeholder="Email (e.g., james.wilson@devpath.io)" value="james.wilson@devpath.io">
     <input type="password" id="password" placeholder="Password (password123)" value="password123">
-    <button class="btn" onclick="login()">ENTER PLATFORM</button>
+    <button type="button" class="btn" onclick="login()">ENTER PLATFORM</button>
     <div id="auth-error" style="color: var(--accent-rust); margin-top: 1rem; font-weight: 800; display: none;"></div>
   </div>
 </div>
@@ -484,9 +484,9 @@
   <header>
     <div class="logo">bri<span>o</span>.</div>
     <ul class="tabs">
-      <li><button class="active" onclick="switchTab('tab-platform')">Learning Platform</button></li>
-      <li><button onclick="switchTab('tab-showcase')">DBMS Showcase</button></li>
-      <li><button onclick="switchTab('tab-viz')">System Viz</button></li>
+      <li><button type="button" class="active" aria-label="Learning Platform tab" onclick="switchTab('tab-platform')">Learning Platform</button></li>
+      <li><button type="button" aria-label="DBMS Showcase tab" onclick="switchTab('tab-showcase')">DBMS Showcase</button></li>
+      <li><button type="button" aria-label="System Viz tab" onclick="switchTab('tab-viz')">System Viz</button></li>
     </ul>
     <div class="user-badge">
       <img id="nav-avatar" src="" alt="Avatar">
@@ -494,7 +494,7 @@
         <div id="nav-name">User Name</div>
         <div style="font-size: 0.7rem; color: var(--accent-rust);" id="nav-tier">PRO</div>
       </div>
-      <button class="btn sage" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-left: 1rem;" onclick="logout()">LOGOUT</button>
+      <button type="button" class="btn sage" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-left: 1rem;" onclick="logout()">LOGOUT</button>
     </div>
   </header>
 
@@ -512,7 +512,7 @@
           <div class="continue-title">Continue Learning</div>
           <div class="continue-lesson" id="continue-lesson">No lesson selected yet</div>
           <div class="progress-bar"><span id="continue-progress"></span></div>
-          <button class="btn primary" id="continue-btn">Start Learning</button>
+          <button type="button" class="btn primary" id="continue-btn">Start Learning</button>
         </div>
       </section>
 
@@ -604,7 +604,7 @@
         <h2 class="card-title">SQL Command Center</h2>
         <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
           <select id="query-select" style="flex: 1; padding: 1rem; border: 4px solid var(--border); font-family: var(--font-mono); font-weight: 800; font-size: 1.1rem;"></select>
-          <button class="btn" style="width: auto; padding: 1rem 3rem;" onclick="runQuery()">EXECUTE</button>
+          <button type="button" class="btn" style="width: auto; padding: 1rem 3rem;" onclick="runQuery()">EXECUTE</button>
         </div>
         <div class="code-block" id="sql-display">-- Select a query to execute against brio_db</div>
         <div class="table-wrapper">
@@ -636,7 +636,7 @@
               <div style="padding: 1.5rem;">
                 <div style="border: 2px dashed var(--border); padding: 1rem; text-align: center; background: var(--bg);">
                   <p style="font-weight: bold; margin-bottom: 1rem;">Lesson: Authentication with JWTs</p>
-                  <button class="btn sage" onclick="runVizSimulation()">SUBMIT LESSON</button>
+                  <button type="button" class="btn sage" onclick="runVizSimulation()">SUBMIT LESSON</button>
                 </div>
               </div>
             </div>
@@ -920,7 +920,7 @@
         </div>
         <div style="margin-top:1.5rem; display:flex; justify-content:space-between; align-items:center;">
           <div style="font-weight:800; font-size:0.9rem;">${(subject.lessons || []).length} lessons • ${(subject.quizzes || []).length} quizzes</div>
-          <button class="btn" style="width:auto; padding:0.5rem 1.5rem;" onclick="openSubject('${subject.id}')">View Subject</button>
+          <button type="button" class="btn" style="width:auto; padding:0.5rem 1.5rem;" onclick="openSubject('${subject.id}')">View Subject</button>
         </div>
       `;
       grid.appendChild(card);
@@ -1026,7 +1026,7 @@
               <div style="font-weight:900;">${lesson.title}</div>
               <div style="font-weight:700;">${lesson.summary}</div>
             </div>
-            <button class="${btnClass}" style="width:auto; padding:0.5rem 1.25rem;" ${disabledAttr} onclick="markLessonComplete('${subject.id}', '${lesson.id}')">${label}</button>
+            <button type="button" class="${btnClass}" style="width:auto; padding:0.5rem 1.25rem;" ${disabledAttr} onclick="markLessonComplete('${subject.id}', '${lesson.id}')">${label}</button>
           </div>
         </div>
       `;

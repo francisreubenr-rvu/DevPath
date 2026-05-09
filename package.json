@@ -4,7 +4,8 @@
   "description": "This repository contains the Database Management System (DBMS) project for the course CS1211 at RV University.",
   "main": "build_ppt.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ingest:pdfs": "node tools/ingest-pdfs.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,7 @@
   "type": "commonjs",
   "dependencies": {
     "docx": "^9.6.1",
+    "pdf-parse": "^1.1.1",
     "pptxgenjs": "^4.0.1"
   }
 }
