@@ -389,7 +389,11 @@
 
 <script>
   const API_URL = 'http://localhost:3000/api';
+  const SUBJECTS_URL = './content/subjects.json';
   let token = localStorage.getItem('brio_token');
+  let subjectsData = null;
+  let subjectsFlat = [];
+  let filtersReady = false;
 
   // Initialization
   if (token) {
@@ -447,91 +451,227 @@
   // Load App Data
   async function loadApp() {
     try {
-      const { profile, stats } = await apiFetch('/profile/me');
+      const { profile } = await apiFetch('/profile/me');
       document.getElementById('nav-avatar').src = profile.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.f_name}`;
       document.getElementById('nav-name').innerText = `${profile.f_name} ${profile.l_name}`;
       document.getElementById('nav-tier').innerText = profile.sub_tier.toUpperCase();
-      
-      document.getElementById('prof-bio').value = profile.bio || '';
-      document.getElementById('prof-github').value = profile.github_url || '';
-      
-      document.getElementById('stat-subs').innerText = stats.total_submissions || 0;
-      document.getElementById('stat-score').innerText = stats.avg_ai_score || 0;
-      document.getElementById('stat-prog').innerText = (stats.avg_course_progress || 0) + '%';
-
-      await loadProjects();
-      await loadLessons();
+      await loadSubjects();
       await loadQueries();
     } catch(e) { console.error(e); }
   }
 
-  async function updateProfile() {
-    const bio = document.getElementById('prof-bio').value;
-    const github_url = document.getElementById('prof-github').value;
+  async function loadSubjects() {
     try {
-      await apiFetch('/profile/update', { method: 'POST', body: JSON.stringify({ bio, github_url }) });
-      showToast('Profile updated successfully!');
-    } catch(e) { showToast('Error updating profile'); }
-  }
-
-  async function loadProjects() {
-    const projects = await apiFetch('/projects');
-    if(projects.length > 0) {
-      document.getElementById('k-proj-name').innerText = projects[0].proj_name;
-      const tasks = await apiFetch(`/kanban/${projects[0].project_id}`);
-      
-      const cols = { locked: '', in_progress: '', done: '' };
-      tasks.forEach(t => {
-        const type = t.status === 'locked' ? 'locked' : (t.status === 'done' ? 'done' : 'in_progress');
-        cols[type] += `
-          <div class="task-card">
-            <div class="task-name">${t.task_name}</div>
-            <div>
-              <span class="pill ${t.priority}">${t.priority}</span>
-              ${t.skill_req ? `<span class="pill" style="margin-left:5px">REQ: ${t.skill_req}</span>` : ''}
-            </div>
-          </div>
-        `;
-      });
-      document.querySelector('#col-locked .tasks').innerHTML = cols.locked;
-      document.querySelector('#col-in_progress .tasks').innerHTML = cols.in_progress;
-      document.querySelector('#col-done .tasks').innerHTML = cols.done;
+      const res = await fetch(SUBJECTS_URL);
+      if (!res.ok) throw new Error('Unable to load subjects catalog');
+      subjectsData = await res.json();
+      subjectsFlat = flattenSubjects(subjectsData);
+      renderSemesterOptions(subjectsData);
+      bindFilters();
+      renderSubjectCatalog();
+      renderContinueCard();
+      renderLearningStats();
+      hideSubjectPage();
+    } catch (e) {
+      console.error(e);
+      showToast('Unable to load subjects catalog');
     }
   }
 
-  async function loadLessons() {
-    setSkeleton('lessons-list');
-    const lessons = await apiFetch('/lessons');
-    const list = document.getElementById('lessons-list');
-    list.innerHTML = '';
-    
-    lessons.forEach(l => {
-      const isPassed = l.ai_score >= 70;
-      let html = `
-        <div class="lesson-item">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-            <div>
-              <div style="font-weight:900; font-size:1.2rem;">${l.title}</div>
-              <div style="font-weight:700; color:var(--accent-rust); font-size:0.8rem;">Lesson ${l.lesson_no} • ${l.course_title}</div>
-            </div>
-            ${isPassed ? 
-              `<span class="btn sage" style="width:auto; padding:0.5rem 1rem; cursor:default; box-shadow:none; transform:none;">PASSED (${l.ai_score})</span>` : 
-              `<button class="btn amber" style="width:auto; padding:0.5rem 1rem;" onclick="submitLesson(${l.lesson_id})">SUBMIT ASSIGNMENT</button>`}
-          </div>
-          ${l.content ? `<div class="markdown-content">${l.content.replace(/\n/g, '<br>')}</div>` : ''}
-        </div>
-      `;
-      list.innerHTML += html;
+  function flattenSubjects(data) {
+    if (!data || !data.semesters) return [];
+    return data.semesters.flatMap(semester =>
+      semester.subjects.map(subject => ({ ...subject, semester: semester.name }))
+    );
+  }
+
+  function renderSemesterOptions(data) {
+    const semesterSelect = document.getElementById('filter-semester');
+    if (!semesterSelect) return;
+    semesterSelect.innerHTML = '<option value="all">All</option>';
+    if (!data || !data.semesters) return;
+    data.semesters.forEach(semester => {
+      const opt = document.createElement('option');
+      opt.value = semester.name;
+      opt.textContent = semester.name;
+      semesterSelect.appendChild(opt);
     });
   }
 
-  async function submitLesson(id) {
-    const score = 70 + Math.floor(Math.random() * 30);
-    try {
-      const data = await apiFetch('/submit', { method: 'POST', body: JSON.stringify({ lessonId: id, score }) });
-      showToast(data.message);
-      loadApp(); // Refresh to show unlocked tasks
-    } catch(e) { showToast(e.message); }
+  function bindFilters() {
+    if (filtersReady) return;
+    const semesterSelect = document.getElementById('filter-semester');
+    const difficultySelect = document.getElementById('filter-difficulty');
+    const typeSelect = document.getElementById('filter-type');
+    if (!semesterSelect || !difficultySelect || !typeSelect) return;
+
+    [semesterSelect, difficultySelect, typeSelect].forEach(select => {
+      select.addEventListener('change', () => {
+        renderSubjectCatalog();
+        renderContinueCard();
+      });
+    });
+    filtersReady = true;
+  }
+
+  function currentFilters() {
+    return {
+      semester: document.getElementById('filter-semester')?.value || 'all',
+      difficulty: document.getElementById('filter-difficulty')?.value || 'all',
+      type: document.getElementById('filter-type')?.value || 'all'
+    };
+  }
+
+  function applySubjectFilters(subjects, filters) {
+    return subjects.filter(subject => {
+      if (filters.semester !== 'all' && subject.semester !== filters.semester) return false;
+      if (filters.difficulty !== 'all' && subject.difficulty !== filters.difficulty) return false;
+      if (filters.type !== 'all' && subject.type !== filters.type) return false;
+      return true;
+    });
+  }
+
+  function renderSubjectCatalog() {
+    const grid = document.getElementById('subject-grid');
+    if (!grid) return;
+    const filters = currentFilters();
+    const filtered = applySubjectFilters(subjectsFlat, filters);
+    grid.innerHTML = '';
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="card">No subjects match the current filters.</div>';
+      updateCatalogStats(filtered);
+      return;
+    }
+
+    filtered.forEach(subject => {
+      const card = document.createElement('div');
+      card.className = 'card subject-card';
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+          <div>
+            <div style="font-size:0.85rem; font-weight:800; color:var(--accent-rust);">${subject.semester} • ${subject.type}</div>
+            <div style="font-family:var(--font-serif); font-size:1.6rem; font-weight:900; margin:0.5rem 0;">${subject.title}</div>
+            <div style="font-weight:700;">${subject.overview}</div>
+          </div>
+          <div style="text-align:right; min-width:120px;">
+            <div style="font-weight:800;">${subject.credits} Credits</div>
+            <div style="font-size:0.85rem; font-weight:800; color:var(--accent-sage);">${subject.difficulty}</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+          ${(subject.keyTopics || []).slice(0, 4).map(topic => `<span class="pill">${topic}</span>`).join('')}
+        </div>
+        <div style="margin-top:1.5rem; display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-weight:800; font-size:0.9rem;">${(subject.lessons || []).length} lessons • ${(subject.quizzes || []).length} quizzes</div>
+          <button class="btn" style="width:auto; padding:0.5rem 1.5rem;" onclick="openSubject('${subject.id}')">View Subject</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+    updateCatalogStats(filtered);
+  }
+
+  function updateCatalogStats(subjects) {
+    const subjectCount = subjects.length;
+    const lessonCount = subjects.reduce((total, subject) => total + (subject.lessons || []).length, 0);
+    const subjectsEl = document.getElementById('stat-subjects');
+    const lessonsEl = document.getElementById('stat-lessons');
+    if (subjectsEl) subjectsEl.innerText = subjectCount;
+    if (lessonsEl) lessonsEl.innerText = lessonCount;
+  }
+
+  function renderContinueCard() {
+    const lessonEl = document.getElementById('continue-lesson');
+    const progressEl = document.getElementById('continue-progress');
+    const continueBtn = document.getElementById('continue-btn');
+    if (!lessonEl || !progressEl || !continueBtn) return;
+
+    const filters = currentFilters();
+    const filtered = applySubjectFilters(subjectsFlat, filters);
+    const subject = filtered[0] || subjectsFlat[0];
+    if (!subject) {
+      lessonEl.innerText = 'No lesson selected yet';
+      progressEl.style.width = '0%';
+      continueBtn.disabled = true;
+      return;
+    }
+
+    const lesson = subject.lessons && subject.lessons[0];
+    lessonEl.innerText = lesson ? `${lesson.title} (${subject.title})` : subject.title;
+    progressEl.style.width = '20%';
+    continueBtn.disabled = false;
+    continueBtn.onclick = () => openSubject(subject.id);
+  }
+
+  function renderLearningStats() {
+    const streakEl = document.getElementById('stat-streak');
+    const completionEl = document.getElementById('stat-completion');
+    const quizzesEl = document.getElementById('stat-quizzes');
+    const totalQuizzes = subjectsFlat.reduce((total, subject) => total + (subject.quizzes || []).length, 0);
+    if (streakEl) streakEl.innerText = '0 days';
+    if (completionEl) completionEl.innerText = '0%';
+    if (quizzesEl) quizzesEl.innerText = totalQuizzes;
+  }
+
+  function openSubject(subjectId) {
+    const subject = subjectsFlat.find(item => item.id === subjectId);
+    if (!subject) return;
+    renderSubjectPage(subject);
+  }
+
+  function renderSubjectPage(subject) {
+    const page = document.getElementById('subject-page');
+    if (!page) return;
+    page.style.display = 'block';
+
+    document.getElementById('subject-semester').innerText = subject.semester;
+    document.getElementById('subject-title').innerText = subject.title;
+    document.getElementById('subject-overview').innerText = subject.overview;
+    document.getElementById('subject-credits').innerText = subject.credits;
+    document.getElementById('subject-difficulty').innerText = subject.difficulty;
+
+    const topics = document.getElementById('subject-topics');
+    if (topics) {
+      topics.innerHTML = (subject.keyTopics || []).map(topic => `<span class="pill">${topic}</span>`).join('');
+    }
+
+    const lessonsEl = document.getElementById('subject-lessons');
+    if (lessonsEl) {
+      lessonsEl.innerHTML = (subject.lessons || []).map(lesson => `
+        <div class="card" style="box-shadow:none; margin-bottom:1rem;">
+          <div style="font-weight:900;">${lesson.title}</div>
+          <div style="font-weight:700;">${lesson.summary}</div>
+        </div>
+      `).join('');
+    }
+
+    const quizzesEl = document.getElementById('subject-quizzes');
+    if (quizzesEl) {
+      quizzesEl.innerHTML = (subject.quizzes || []).map(quiz => `
+        <div class="card" style="box-shadow:none; margin-bottom:1rem;">
+          <div style="font-weight:900;">${quiz.q}</div>
+          <div style="font-weight:700; color:var(--accent-sage);">${quiz.a}</div>
+        </div>
+      `).join('');
+    }
+
+    const assignmentsEl = document.getElementById('subject-assignments');
+    if (assignmentsEl) {
+      assignmentsEl.innerHTML = (subject.assignments || []).map(item => `<li>${item}</li>`).join('');
+    }
+
+    const resourcesEl = document.getElementById('subject-resources');
+    if (resourcesEl) {
+      resourcesEl.innerHTML = (subject.resources || []).map(item => `<li>${item}</li>`).join('');
+    }
+
+    page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function hideSubjectPage() {
+    const page = document.getElementById('subject-page');
+    if (page) page.style.display = 'none';
   }
 
   async function loadQueries() {
@@ -569,27 +709,38 @@
     } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
   }
 
-  function simulate() {
-    const stages = [
-      { p: 'p-req-1', lbl: 'lbl-1', text: 'HTTP POST /api/submit', dur: 1000, dir: 'fw' },
-      { p: 'p-req-2', lbl: 'lbl-2', text: 'INSERT INTO submission...', dur: 1000, dir: 'fw' },
-      { p: null,      lbl: 'lbl-2', text: 'TRIGGER: UNLOCKING TASK', dur: 1500, dir: 'none' },
-      { p: 'p-res-2', lbl: 'lbl-2', text: 'Rows Affected: 1', dur: 1000, dir: 'bw' },
-      { p: 'p-res-1', lbl: 'lbl-1', text: '200 OK {success: true}', dur: 1000, dir: 'bw' }
+  function runVizSimulation() {
+    const packet = document.getElementById('v-packet');
+    const log = document.getElementById('v-log');
+    const dbStatus = document.getElementById('v-db-status');
+    const beCode = document.getElementById('v-be-code');
+    if (!packet || !log || !dbStatus || !beCode) return;
+
+    log.innerText = '> Starting request...';
+    dbStatus.innerText = 'Awaiting Query...';
+    beCode.style.color = '#fff';
+    packet.style.opacity = '1';
+    packet.style.top = '50px';
+
+    const steps = [
+      { delay: 400, top: '120px', log: 'Frontend: payload submitted.' },
+      { delay: 1200, top: '210px', log: 'Backend: validate + write submission.' },
+      { delay: 2000, top: '300px', log: 'Database: insert row, trigger unlock.', db: 'Write OK' },
+      { delay: 2800, top: '180px', log: 'Backend: response 200 OK.' },
+      { delay: 3400, top: '50px', log: 'Frontend: UI updated.', db: 'Idle' }
     ];
 
-    document.querySelectorAll('.packet').forEach(p => { p.style.animation = 'none'; p.offsetHeight; });
-    let time = 0;
-    stages.forEach((s) => {
+    steps.forEach(step => {
       setTimeout(() => {
-        if(s.lbl) document.getElementById(s.lbl).innerText = s.text;
-        if(s.p) {
-          const el = document.getElementById(s.p);
-          el.style.animation = `flow-${s.dir} ${s.dur}ms ease both`;
-        }
-      }, time);
-      time += s.dur;
+        packet.style.top = step.top;
+        log.innerText += `\n> ${step.log}`;
+        if (step.db) dbStatus.innerText = step.db;
+      }, step.delay);
     });
+
+    setTimeout(() => {
+      packet.style.opacity = '0';
+    }, 4200);
   }
 
   function showToast(msg) {
