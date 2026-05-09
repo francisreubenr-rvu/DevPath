@@ -10,16 +10,16 @@ USE brio_db;
 -- Insert Users (10)
 -- -------------------------
 INSERT INTO users (f_name, l_name, email, password_hash, bio, avatar_url, github_url, role, sub_tier) VALUES
-('Aarav',    'Mehta',    'aarav.mehta@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Enthusiastic full-stack learner.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aarav', 'https://github.com/aarav-mehta', 'learner',  'pro'),
-('Priya',    'Iyer',     'priya.iyer@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Data science aficionado.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya', 'https://github.com/priyaiyer', 'learner',  'team'),
-('Kiran',    'Reddy',    'kiran.reddy@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Starting my coding journey.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kiran', 'https://github.com/kiranr', 'learner',  'starter'),
-('Sneha',    'Nair',     'sneha.nair@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Mobile app developer in training.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha', 'https://github.com/snehanair', 'learner',  'team'),
-('Rohan',    'Singh',    'rohan.singh@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Frontend master.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan', 'https://github.com/rohansingh', 'learner',  'pro'),
-('Ananya',   'Sharma',   'ananya.sharma@devpath.io',  '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Backend architecture focused.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya', 'https://github.com/ananyas', 'learner',  'team'),
-('Darshan',  'Jain',     'darshan.jain@devpath.io',   '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Team lead and full-stack dev.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Darshan', 'https://github.com/darshanjain', 'learner',  'team'),
+('James',    'Wilson',    'james.wilson@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Enthusiastic full-stack learner.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=James', 'https://github.com/james-wilson', 'learner',  'pro'),
+('Emma',    'Thomas',     'emma.thomas@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Data science aficionado.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma', 'https://github.com/emmathomas', 'learner',  'team'),
+('Daniel',    'Taylor',    'daniel.taylor@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Starting my coding journey.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Daniel', 'https://github.com/danielt', 'learner',  'starter'),
+('Sarah',    'Moore',     'sarah.moore@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Mobile app developer in training.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah', 'https://github.com/sarahmoore', 'learner',  'team'),
+('Matthew',    'Anderson',    'matthew.anderson@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Frontend master.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Matthew', 'https://github.com/matthewanderson', 'learner',  'pro'),
+('Olivia',   'White',   'olivia.white@devpath.io',  '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Backend architecture focused.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Olivia', 'https://github.com/oliviaw', 'learner',  'team'),
+('Michael',  'Smith',     'michael.smith@devpath.io',   '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Team lead and full-stack dev.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Michael', 'https://github.com/michaelsmith', 'learner',  'team'),
 ('Francis',  'Reuben',   'francis.reuben@devpath.io', '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Building scalable backends.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Francis', 'https://github.com/francisreubenr-rvu', 'learner',  'team'),
-('Harshith', 'BA',       'harshith.ba@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'UI/UX and Frontend specialist.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Harshith', 'https://github.com/harshithba', 'learner',  'team'),
-('Kavita',   'Rao',      'kavita.rao@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Senior Mentor. 10 YOE.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kavita', 'https://github.com/kavitarao', 'mentor',   'pro');
+('David', 'Miller',       'david.miller@devpath.io',    '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'UI/UX and Frontend specialist.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=David', 'https://github.com/davidmiller', 'learner',  'team'),
+('Jessica',   'Martin',      'jessica.martin@devpath.io',     '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'Senior Mentor. 10 YOE.', 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica', 'https://github.com/jessicamartin', 'mentor',   'pro');
 
 -- -------------------------
 -- Insert Courses (5)
@@ -85,15 +85,15 @@ INSERT INTO project (user_id, team_id, blueprint_id, proj_name, status) VALUES
 -- -------------------------
 -- Insert Team Members
 -- -------------------------
--- Team Pixel (team_id=1): Darshan, Francis, Harshith
+-- Team Pixel (team_id=1): Michael, Francis, David
 INSERT INTO team_member (user_id, team_id) VALUES
 (7, 1), (8, 1), (9, 1);
 
--- Team Sigma (team_id=2): Sneha, Ananya
+-- Team Sigma (team_id=2): Sarah, Olivia
 INSERT INTO team_member (user_id, team_id) VALUES
 (4, 2), (6, 2);
 
--- Team Voyager (team_id=3): Aarav, Priya, Kiran
+-- Team Voyager (team_id=3): James, Emma, Daniel
 INSERT INTO team_member (user_id, team_id) VALUES
 (1, 3), (2, 3), (3, 3);
 
@@ -136,17 +136,17 @@ INSERT INTO kanban_task (project_id, task_name, lesson_id, status, skill_req, pr
 -- Insert Enrollments
 -- -------------------------
 INSERT INTO enrollment (user_id, course_id, grade, progress) VALUES
-(1, 1, 88.5, 100),   -- Aarav: Full-Stack (complete)
-(1, 2, NULL, 30),    -- Aarav: Python DS (in progress)
-(2, 2, 92.0, 100),   -- Priya: Python DS (complete)
-(3, 5, NULL, 60),    -- Kiran: Frontend (in progress)
-(4, 3, NULL, 45),    -- Sneha: Mobile (in progress)
-(5, 5, 95.0, 100),   -- Rohan: Frontend (complete)
-(6, 1, NULL, 70),    -- Ananya: Full-Stack (in progress)
-(7, 1, 78.0, 100),   -- Darshan: Full-Stack (complete)
+(1, 1, 88.5, 100),   -- James: Full-Stack (complete)
+(1, 2, NULL, 30),    -- James: Python DS (in progress)
+(2, 2, 92.0, 100),   -- Emma: Python DS (complete)
+(3, 5, NULL, 60),    -- Daniel: Frontend (in progress)
+(4, 3, NULL, 45),    -- Sarah: Mobile (in progress)
+(5, 5, 95.0, 100),   -- Matthew: Frontend (complete)
+(6, 1, NULL, 70),    -- Olivia: Full-Stack (in progress)
+(7, 1, 78.0, 100),   -- Michael: Full-Stack (complete)
 (8, 1, 84.0, 100),   -- Francis: Full-Stack (complete)
-(9, 5, NULL, 80),    -- Harshith: Frontend (in progress)
-(10, 1, NULL, 0);    -- Kavita (mentor): Full-Stack (auditing)
+(9, 5, NULL, 80),    -- David: Frontend (in progress)
+(10, 1, NULL, 0);    -- Jessica (mentor): Full-Stack (auditing)
 
 -- -------------------------
 -- Insert Submissions (8)

@@ -31,7 +31,7 @@ This repository contains the Database Management System (DBMS) project for the c
    node server.js
    ```
    Open `http://localhost:3000` in your browser.
-   *Demo Login Credentials: `aarav.mehta@devpath.io` / `password123`*
+   *Demo Login Credentials: `james.wilson@devpath.io` / `password123`*
 
 ## Features
 - **Real JWT Authentication:** Secure login using bcrypt and jsonwebtoken.
@@ -40,6 +40,6 @@ This repository contains the Database Management System (DBMS) project for the c
 - **3-in-1 Dashboard:** Manage your Kanban board, execute live SQL queries, and watch an animated system architecture flow all in one place.
 
 ## Team
-- Darshan Jain
+- Michael Smith
 - Francis Reuben R
-- Harshith B A
+- David Miller

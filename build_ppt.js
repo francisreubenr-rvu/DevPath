@@ -42,7 +42,7 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
   s.addShape(pres.shapes.RECTANGLE, { x: 2.5, y: 3.35, w: 5, h: 1.35, fill: { color: SURF }, line: { color: SURF, width: 0 } });
   s.addText([
     { text: 'Authors: ', options: { bold: true, color: ACC } },
-    { text: 'Darshan Jain  |  Francis Reuben R  |  Harshith B A', options: { color: WH } },
+    { text: 'Michael Smith  |  Francis Reuben R  |  David Miller', options: { color: WH } },
     { text: '\nGuide: ', options: { bold: true, color: ACC, breakLine: false } },
     { text: 'Dr./Prof. [Name]   |   School of CSE, RV University  |  2025–26', options: { color: GR } },
   ], { x: 2.5, y: 3.35, w: 5, h: 1.35, fontSize: 12, fontFace: 'Courier New', align: 'center', valign: 'middle', margin: 12 });
@@ -253,7 +253,7 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
   const stats = [
     { v: '80%', l: 'Learners on paid tiers', c: B1 },
     { v: '3', l: 'Tasks auto-unlocked\nby trigger (test run)', c: B2 },
-    { v: '95.0', l: 'Highest avg AI score\n(Rohan Singh)', c: YL },
+    { v: '95.0', l: 'Highest avg AI score\n(Matthew Anderson)', c: YL },
     { v: '0', l: 'Constraint violations\npassed through', c: RD },
   ];
 
@@ -306,7 +306,7 @@ const ms = () => ({ type: 'outer', blur: 10, offset: 4, angle: 135, color: '0000
   s.addShape(pres.shapes.RECTANGLE, { x: 3.7, y: 4.15, w: 5.9, h: 0.95, fill: { color: B2 } });
   s.addText([
     { text: 'Thank you — Open for Viva\n', options: { bold: true, color: WH, fontSize: 16, breakLine: true } },
-    { text: 'Darshan Jain  |  Francis Reuben R  |  Harshith B A  |  RV University 2025–26', options: { color: GR, fontSize: 10 } },
+    { text: 'Michael Smith  |  Francis Reuben R  |  David Miller  |  RV University 2025–26', options: { color: GR, fontSize: 10 } },
   ], { x: 3.7, y: 4.15, w: 5.9, h: 0.95, align: 'center', valign: 'middle', fontFace: 'Courier New' });
 
   s.addText('CS1211 DATABASE MANAGEMENT SYSTEM', { x: 0, y: 5.3, w: 10, h: 0.3, fontSize: 9, color: GR, align: 'center', fontFace: 'Courier New' });

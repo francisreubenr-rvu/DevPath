@@ -3,7 +3,7 @@
 ## Project Identity
 - **Course:** CS1211 Database Management System
 - **Institution:** RV University, Bengaluru (School of CSE), 2025–26
-- **Team:** Darshan Jain, Francis Reuben R, Harshith B A
+- **Team:** Michael Smith, Francis Reuben R, David Miller
 - **Platform:** Brio — Project-Driven Programming Learning Platform
 
 ---
@@ -153,7 +153,7 @@
 
 | # | Type | Description | Result |
 |---|------|-------------|--------|
-| 1 | COMMIT | Insert user + enroll in course atomically | Arjun Kapoor added + enrolled in Full-Stack |
+| 1 | COMMIT | Insert user + enroll in course atomically | Christopher Clark added + enrolled in Full-Stack |
 | 2 | COMMIT | Create team + add members + assign to project | Team Apex created, linked to QuizBlitz |
 | 3 | ROLLBACK | Attempt insert with ai_score = 110 | CHECK constraint violated — rejected |
 
@@ -199,7 +199,7 @@
   [✓] 04_VIEWS_TRIGGERS_TRANSACTIONS.sql executed — 3 views, 3 triggers, 3 transactions verified
   [✓] Trigger 1 verified: JWT Auth task auto-unlocked (locked → in_progress)
   [✓] Trigger 3 verified: DevFolio marked shipped (all 4 tasks done)
-  [✓] Transaction 1 verified: Arjun Kapoor committed + enrolled
+  [✓] Transaction 1 verified: Christopher Clark committed + enrolled
   [✓] Transaction 2 verified: Team Apex + 2 members + QuizBlitz assignment
   [✓] Transaction 3 verified: Score 110 rejected by CHECK constraint
 ```
@@ -214,7 +214,7 @@ projects       5     teams            4     kanban_tasks     13
 submissions    9     enrollments      12    team_members     10
 ```
 
-New since seed data: +1 user (Arjun Kapoor), +1 team (Team Apex), +1 submission (Trigger 1 test)
+New since seed data: +1 user (Christopher Clark), +1 team (Team Apex), +1 submission (Trigger 1 test)
 
 ---
 

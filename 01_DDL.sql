@@ -2,7 +2,7 @@
 -- CS1211 DATABASE MANAGEMENT SYSTEM
 -- Brio — Project-Driven Programming Learning Platform
 -- File: 01_DDL.sql  |  Data Definition Language
--- Authors: Darshan Jain, Francis Reuben R, Harshith B A
+-- Authors: Michael Smith, Francis Reuben R, David Miller
 -- Date: 2025–26
 -- ==============================================================
 

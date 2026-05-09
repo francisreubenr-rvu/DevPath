@@ -10,16 +10,16 @@ USE brio_db;
 -- Insert Users (10)
 -- -------------------------
 INSERT INTO users (f_name, l_name, email, role, sub_tier) VALUES
-('Aarav',    'Mehta',    'aarav.mehta@devpath.io',    'learner',  'pro'),
-('Priya',    'Iyer',     'priya.iyer@devpath.io',     'learner',  'team'),
-('Kiran',    'Reddy',    'kiran.reddy@devpath.io',    'learner',  'starter'),
-('Sneha',    'Nair',     'sneha.nair@devpath.io',     'learner',  'team'),
-('Rohan',    'Singh',    'rohan.singh@devpath.io',    'learner',  'pro'),
-('Ananya',   'Sharma',   'ananya.sharma@devpath.io',  'learner',  'team'),
-('Darshan',  'Jain',     'darshan.jain@devpath.io',   'learner',  'team'),
+('James',    'Wilson',    'james.wilson@devpath.io',    'learner',  'pro'),
+('Emma',    'Thomas',     'emma.thomas@devpath.io',     'learner',  'team'),
+('Daniel',    'Taylor',    'daniel.taylor@devpath.io',    'learner',  'starter'),
+('Sarah',    'Moore',     'sarah.moore@devpath.io',     'learner',  'team'),
+('Matthew',    'Anderson',    'matthew.anderson@devpath.io',    'learner',  'pro'),
+('Olivia',   'White',   'olivia.white@devpath.io',  'learner',  'team'),
+('Michael',  'Smith',     'michael.smith@devpath.io',   'learner',  'team'),
 ('Francis',  'Reuben',   'francis.reuben@devpath.io', 'learner',  'team'),
-('Harshith', 'BA',       'harshith.ba@devpath.io',    'learner',  'team'),
-('Kavita',   'Rao',      'kavita.rao@devpath.io',     'mentor',   'pro');
+('David', 'Miller',       'david.miller@devpath.io',    'learner',  'team'),
+('Jessica',   'Martin',      'jessica.martin@devpath.io',     'mentor',   'pro');
 
 -- -------------------------
 -- Insert Courses (5)
@@ -85,15 +85,15 @@ INSERT INTO project (user_id, team_id, blueprint_id, proj_name, status) VALUES
 -- -------------------------
 -- Insert Team Members
 -- -------------------------
--- Team Pixel (team_id=1): Darshan, Francis, Harshith
+-- Team Pixel (team_id=1): Michael, Francis, David
 INSERT INTO team_member (user_id, team_id) VALUES
 (7, 1), (8, 1), (9, 1);
 
--- Team Sigma (team_id=2): Sneha, Ananya
+-- Team Sigma (team_id=2): Sarah, Olivia
 INSERT INTO team_member (user_id, team_id) VALUES
 (4, 2), (6, 2);
 
--- Team Voyager (team_id=3): Aarav, Priya, Kiran
+-- Team Voyager (team_id=3): James, Emma, Daniel
 INSERT INTO team_member (user_id, team_id) VALUES
 (1, 3), (2, 3), (3, 3);
 
@@ -136,17 +136,17 @@ INSERT INTO kanban_task (project_id, task_name, lesson_id, status, skill_req, pr
 -- Insert Enrollments
 -- -------------------------
 INSERT INTO enrollment (user_id, course_id, grade, progress) VALUES
-(1, 1, 88.5, 100),   -- Aarav: Full-Stack (complete)
-(1, 2, NULL, 30),    -- Aarav: Python DS (in progress)
-(2, 2, 92.0, 100),   -- Priya: Python DS (complete)
-(3, 5, NULL, 60),    -- Kiran: Frontend (in progress)
-(4, 3, NULL, 45),    -- Sneha: Mobile (in progress)
-(5, 5, 95.0, 100),   -- Rohan: Frontend (complete)
-(6, 1, NULL, 70),    -- Ananya: Full-Stack (in progress)
-(7, 1, 78.0, 100),   -- Darshan: Full-Stack (complete)
+(1, 1, 88.5, 100),   -- James: Full-Stack (complete)
+(1, 2, NULL, 30),    -- James: Python DS (in progress)
+(2, 2, 92.0, 100),   -- Emma: Python DS (complete)
+(3, 5, NULL, 60),    -- Daniel: Frontend (in progress)
+(4, 3, NULL, 45),    -- Sarah: Mobile (in progress)
+(5, 5, 95.0, 100),   -- Matthew: Frontend (complete)
+(6, 1, NULL, 70),    -- Olivia: Full-Stack (in progress)
+(7, 1, 78.0, 100),   -- Michael: Full-Stack (complete)
 (8, 1, 84.0, 100),   -- Francis: Full-Stack (complete)
-(9, 5, NULL, 80),    -- Harshith: Frontend (in progress)
-(10, 1, NULL, 0);    -- Kavita (mentor): Full-Stack (auditing)
+(9, 5, NULL, 80),    -- David: Frontend (in progress)
+(10, 1, NULL, 0);    -- Jessica (mentor): Full-Stack (auditing)
 
 -- -------------------------
 -- Insert Submissions (8)

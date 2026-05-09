@@ -109,7 +109,7 @@ END$$
 
 DELIMITER ;
 
--- Test Trigger 1 (Aarav submits lesson 4 — should unlock 'Add JWT authentication')
+-- Test Trigger 1 (James submits lesson 4 — should unlock 'Add JWT authentication')
 INSERT INTO submission (user_id, sub_date, lesson_id, ai_score, feedback)
 VALUES (1, '2025-03-20 10:00:00', 4, 88, 'Solid JWT implementation. Token expiry handled correctly.');
 
@@ -186,14 +186,14 @@ START TRANSACTION;
 
     -- Step 1: Insert new user
     INSERT INTO users (f_name, l_name, email, password_hash, role, sub_tier)
-    VALUES ('Arjun', 'Kapoor', 'arjun.kapoor@devpath.io', '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'learner', 'pro');
+    VALUES ('Christopher', 'Clark', 'christopher.clark@devpath.io', '$2b$10$X.FQ6auI38JrO572/ekgGe3dXo5DX9F.GzpuSdMqib113/f1CVPZG', 'learner', 'pro');
 
     -- Step 2: Enroll the new user in Full-Stack Web Development (course_id=1)
     INSERT INTO enrollment (user_id, course_id, progress)
     VALUES (LAST_INSERT_ID(), 1, 0);
 
     -- Verify
-    SELECT CONCAT(f_name, ' ', l_name) AS new_user, sub_tier FROM users WHERE email = 'arjun.kapoor@devpath.io';
+    SELECT CONCAT(f_name, ' ', l_name) AS new_user, sub_tier FROM users WHERE email = 'christopher.clark@devpath.io';
 
 COMMIT;
 
@@ -206,7 +206,7 @@ START TRANSACTION;
     VALUES ('Team Apex', 4);
 
     -- Step 2: Add two members to the team
-    -- (Using existing users — Rohan Singh user_id=5, Kiran Reddy user_id=3)
+    -- (Using existing users — Matthew Anderson user_id=5, Daniel Taylor user_id=3)
     INSERT INTO team_member (user_id, team_id) VALUES (5, LAST_INSERT_ID());
     INSERT INTO team_member (user_id, team_id) VALUES (3, LAST_INSERT_ID());
 
