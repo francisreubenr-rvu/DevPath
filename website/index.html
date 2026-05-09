@@ -209,56 +209,100 @@
     
     <!-- TAB 1: PLATFORM -->
     <div id="tab-platform" class="tab-content active">
-      <div class="grid-2">
-        
-        <div class="left-col">
-          <div class="card">
-            <h2 class="card-title">Kanban: <span id="k-proj-name">Loading...</span></h2>
-            <div class="kanban">
-              <div class="k-col" id="col-locked">
-                <div class="k-col-title">Locked</div>
-                <div class="tasks"></div>
-              </div>
-              <div class="k-col" id="col-in_progress">
-                <div class="k-col-title">In Progress</div>
-                <div class="tasks"></div>
-              </div>
-              <div class="k-col" id="col-done">
-                <div class="k-col-title">Done</div>
-                <div class="tasks"></div>
-              </div>
+      <section class="learn-hero">
+        <div>
+          <div class="hero-kicker">Brio Learning Hub</div>
+          <h1>Continue your semester journey</h1>
+          <p>Pick up where you left off with curated lessons built from your course materials.</p>
+        </div>
+        <div class="continue-card">
+          <div class="continue-title">Continue Learning</div>
+          <div class="continue-lesson" id="continue-lesson">No lesson selected yet</div>
+          <div class="progress-bar"><span id="continue-progress"></span></div>
+          <button class="btn primary" id="continue-btn">Start Learning</button>
+        </div>
+      </section>
+
+      <section class="learn-layout">
+        <aside class="filters">
+          <div class="filter-title">Filters</div>
+          <label>Semester</label>
+          <select id="filter-semester"></select>
+          <label>Difficulty</label>
+          <select id="filter-difficulty">
+            <option value="all">All</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+          <label>Type</label>
+          <select id="filter-type">
+            <option value="all">All</option>
+            <option value="Theory">Theory</option>
+            <option value="Lab">Lab</option>
+          </select>
+        </aside>
+
+        <div class="catalog">
+          <div class="catalog-header">
+            <h2>Subject Catalog</h2>
+            <div class="stats">
+              <div><span id="stat-subjects">0</span> Subjects</div>
+              <div><span id="stat-lessons">0</span> Lessons</div>
             </div>
           </div>
+          <div class="subject-grid" id="subject-grid"></div>
+        </div>
 
-          <div class="card">
-            <h2 class="card-title">Curated Learning Path</h2>
-            <div id="lessons-list">Loading...</div>
+        <aside class="learn-stats">
+          <div class="stat-card">
+            <div class="stat-label">Streak</div>
+            <div class="stat-value" id="stat-streak">0 days</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Completion</div>
+            <div class="stat-value" id="stat-completion">0%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Upcoming Quizzes</div>
+            <div class="stat-value" id="stat-quizzes">0</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="subject-page" class="subject-page hidden">
+        <div class="subject-hero">
+          <div>
+            <div class="subject-kicker" id="subject-semester"></div>
+            <h2 id="subject-title"></h2>
+            <p id="subject-overview"></p>
+            <div class="subject-topics" id="subject-topics"></div>
+          </div>
+          <div class="subject-meta">
+            <div><strong>Credits</strong><span id="subject-credits"></span></div>
+            <div><strong>Difficulty</strong><span id="subject-difficulty"></span></div>
           </div>
         </div>
 
-        <div class="right-col">
-          <div class="card" style="background: var(--accent-sage); color: var(--surface);">
-            <h2 class="card-title" style="background: var(--surface); color: var(--text);">My Stats</h2>
-            <div style="display: flex; justify-content: space-between; text-align: center; margin-top: 1.5rem;">
-              <div><div style="font-size: 3rem; font-weight: 900; line-height: 1;" id="stat-subs">0</div><div style="font-size: 0.8rem; font-weight: 800;">SUBMISSIONS</div></div>
-              <div><div style="font-size: 3rem; font-weight: 900; line-height: 1;" id="stat-score">0</div><div style="font-size: 0.8rem; font-weight: 800;">AVG SCORE</div></div>
-              <div><div style="font-size: 3rem; font-weight: 900; line-height: 1;" id="stat-prog">0%</div><div style="font-size: 0.8rem; font-weight: 800;">PROGRESS</div></div>
-            </div>
+        <div class="subject-sections">
+          <div class="subject-section">
+            <h3>Lessons</h3>
+            <div id="subject-lessons"></div>
           </div>
-
-          <div class="card">
-            <h2 class="card-title">Edit Profile</h2>
-            <div class="profile-form">
-              <label>Bio</label>
-              <textarea id="prof-bio" rows="3"></textarea>
-              <label>GitHub URL</label>
-              <input type="text" id="prof-github">
-              <button class="btn rust" onclick="updateProfile()">SAVE CHANGES</button>
-            </div>
+          <div class="subject-section">
+            <h3>Quizzes</h3>
+            <div id="subject-quizzes"></div>
+          </div>
+          <div class="subject-section">
+            <h3>Assignments</h3>
+            <ul id="subject-assignments"></ul>
+          </div>
+          <div class="subject-section">
+            <h3>Resources</h3>
+            <ul id="subject-resources"></ul>
           </div>
         </div>
-
-      </div>
+      </section>
     </div>
 
     <!-- TAB 2: SHOWCASE -->
