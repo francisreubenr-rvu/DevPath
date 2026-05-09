@@ -129,7 +129,10 @@
   .kanban { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; }
   .k-col { flex: 1; min-width: 250px; background: rgba(0,0,0,0.05); border: 3px solid var(--border); padding: 1.5rem; }
   .k-col-title { font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
-  .task-card { background: var(--surface); border: 2px solid var(--border); padding: 1rem; margin-bottom: 1rem; box-shadow: 4px 4px 0px var(--border); }
+  .task-card { background: var(--surface); border: 2px solid var(--border); padding: 1rem; margin-bottom: 1rem; box-shadow: 4px 4px 0px var(--border); cursor: grab; transition: transform 0.1s, box-shadow 0.1s; }
+  .task-card:active { cursor: grabbing; }
+  .task-card.dragging { opacity: 0.5; box-shadow: 0px 0px 0px var(--border); transform: translate(4px, 4px); }
+  .k-col.drag-over { background: rgba(233, 162, 27, 0.2); border-style: dashed; }
   .task-name { font-weight: 700; margin-bottom: 0.5rem; }
   .pill { padding: 0.2rem 0.5rem; font-size: 0.7rem; font-weight: 800; border: 2px solid var(--border); text-transform: uppercase; display: inline-block;}
   .pill.locked { background: #CCC; }
@@ -418,6 +421,7 @@
   }
 
   async function loadLessons() {
+    setSkeleton('lessons-list');
     const lessons = await apiFetch('/lessons');
     const list = document.getElementById('lessons-list');
     list.innerHTML = '';
@@ -477,6 +481,141 @@
                return `<td><span class="pill ${pClass}">${val}</span></td>`;
             }
             return `<td>${val !== null ? val : '<em>NULL</em>'}</td>`;
+          }).join('')}</tr>`
+        ).join('');
+      } else {
+         document.getElementById('results-head').innerHTML = '<tr><th>Results</th></tr>';
+         document.getElementById('results-body').innerHTML = '<tr><td>0 rows returned.</td></tr>';
+      }
+    } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
+  }
+
+  function simulate() {
+    const stages = [
+      { p: 'p-req-1', lbl: 'lbl-1', text: 'HTTP POST /api/submit', dur: 1000, dir: 'fw' },
+      { p: 'p-req-2', lbl: 'lbl-2', text: 'INSERT INTO submission...', dur: 1000, dir: 'fw' },
+      { p: null,      lbl: 'lbl-2', text: 'TRIGGER: UNLOCKING TASK', dur: 1500, dir: 'none' },
+      { p: 'p-res-2', lbl: 'lbl-2', text: 'Rows Affected: 1', dur: 1000, dir: 'bw' },
+      { p: 'p-res-1', lbl: 'lbl-1', text: '200 OK {success: true}', dur: 1000, dir: 'bw' }
+    ];
+
+    document.querySelectorAll('.packet').forEach(p => { p.style.animation = 'none'; p.offsetHeight; });
+    let time = 0;
+    stages.forEach((s) => {
+      setTimeout(() => {
+        if(s.lbl) document.getElementById(s.lbl).innerText = s.text;
+        if(s.p) {
+          const el = document.getElementById(s.p);
+          el.style.animation = `flow-${s.dir} ${s.dur}ms ease both`;
+        }
+      }, time);
+      time += s.dur;
+    });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+  }
+</script>
+
+</body>
+</html> : '<em>NULL</em>'}</td>`;
+          }).join('')}</tr>`
+        ).join('');
+      } else {
+         document.getElementById('results-head').innerHTML = '<tr><th>Results</th></tr>';
+         document.getElementById('results-body').innerHTML = '<tr><td>0 rows returned.</td></tr>';
+      }
+    } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
+  }
+
+  function simulate() {
+    const stages = [
+      { p: 'p-req-1', lbl: 'lbl-1', text: 'HTTP POST /api/submit', dur: 1000, dir: 'fw' },
+      { p: 'p-req-2', lbl: 'lbl-2', text: 'INSERT INTO submission...', dur: 1000, dir: 'fw' },
+      { p: null,      lbl: 'lbl-2', text: 'TRIGGER: UNLOCKING TASK', dur: 1500, dir: 'none' },
+      { p: 'p-res-2', lbl: 'lbl-2', text: 'Rows Affected: 1', dur: 1000, dir: 'bw' },
+      { p: 'p-res-1', lbl: 'lbl-1', text: '200 OK {success: true}', dur: 1000, dir: 'bw' }
+    ];
+
+    document.querySelectorAll('.packet').forEach(p => { p.style.animation = 'none'; p.offsetHeight; });
+    let time = 0;
+    stages.forEach((s) => {
+      setTimeout(() => {
+        if(s.lbl) document.getElementById(s.lbl).innerText = s.text;
+        if(s.p) {
+          const el = document.getElementById(s.p);
+          el.style.animation = `flow-${s.dir} ${s.dur}ms ease both`;
+        }
+      }, time);
+      time += s.dur;
+    });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+  }
+</script>
+
+</body>
+</html>onst cols = Object.keys(data.rows[0]);
+        document.getElementById('results-head').innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
+        document.getElementById('results-body').innerHTML = data.rows.map(r => 
+          `<tr>${cols.map(c => {
+            let val = r[c];
+            if (c === 'status' || c === 'project_status') {
+               const pClass = val === 'done' || val === 'shipped' ? 'done' : (val === 'locked' ? 'locked' : 'in_progress');
+               return `<td><span class="pill ${pClass}">${val}</span></td>`;
+            }
+            return `<td>${val !== null ? val : '<em>NULL</em>'}</td>`;
+          }).join('')}</tr>`
+        ).join('');
+      } else {
+         document.getElementById('results-head').innerHTML = '<tr><th>Results</th></tr>';
+         document.getElementById('results-body').innerHTML = '<tr><td>0 rows returned.</td></tr>';
+      }
+    } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
+  }
+
+  function simulate() {
+    const stages = [
+      { p: 'p-req-1', lbl: 'lbl-1', text: 'HTTP POST /api/submit', dur: 1000, dir: 'fw' },
+      { p: 'p-req-2', lbl: 'lbl-2', text: 'INSERT INTO submission...', dur: 1000, dir: 'fw' },
+      { p: null,      lbl: 'lbl-2', text: 'TRIGGER: UNLOCKING TASK', dur: 1500, dir: 'none' },
+      { p: 'p-res-2', lbl: 'lbl-2', text: 'Rows Affected: 1', dur: 1000, dir: 'bw' },
+      { p: 'p-res-1', lbl: 'lbl-1', text: '200 OK {success: true}', dur: 1000, dir: 'bw' }
+    ];
+
+    document.querySelectorAll('.packet').forEach(p => { p.style.animation = 'none'; p.offsetHeight; });
+    let time = 0;
+    stages.forEach((s) => {
+      setTimeout(() => {
+        if(s.lbl) document.getElementById(s.lbl).innerText = s.text;
+        if(s.p) {
+          const el = document.getElementById(s.p);
+          el.style.animation = `flow-${s.dir} ${s.dur}ms ease both`;
+        }
+      }, time);
+      time += s.dur;
+    });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+  }
+</script>
+
+</body>
+</html> : '<em>NULL</em>'}</td>`;
           }).join('')}</tr>`
         ).join('');
       } else {
