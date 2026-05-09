@@ -390,10 +390,49 @@
 <script>
   const API_URL = 'http://localhost:3000/api';
   const SUBJECTS_URL = './content/subjects.json';
+  const PROGRESS_KEY = 'brio_progress_v1';
+  const STREAK_KEY = 'brio_streak_v1';
   let token = localStorage.getItem('brio_token');
   let subjectsData = null;
   let subjectsFlat = [];
   let filtersReady = false;
+  let progressStore = null;
+
+  function loadProgressStore() {
+    if (progressStore) return progressStore;
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    let parsed = null;
+    try {
+      parsed = raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      parsed = null;
+    }
+    progressStore = {
+      lastSubjectId: parsed && parsed.lastSubjectId ? parsed.lastSubjectId : null,
+      subjects: parsed && parsed.subjects ? parsed.subjects : {}
+    };
+    return progressStore;
+  }
+
+  function saveProgressStore(store) {
+    progressStore = store;
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(store));
+  }
+
+  function getSubjectProgress(subjectId) {
+    const store = loadProgressStore();
+    if (!store.subjects[subjectId]) {
+      store.subjects[subjectId] = { completedLessons: [], lastLessonId: null };
+    }
+    return store.subjects[subjectId];
+  }
+
+  function incrementStreak() {
+    const current = parseInt(localStorage.getItem(STREAK_KEY) || '0', 10);
+    const next = Number.isNaN(current) ? 1 : current + 1;
+    localStorage.setItem(STREAK_KEY, String(next));
+    return next;
+  }
 
   // Initialization
   if (token) {
@@ -589,7 +628,9 @@
 
     const filters = currentFilters();
     const filtered = applySubjectFilters(subjectsFlat, filters);
-    const subject = filtered[0] || subjectsFlat[0];
+    const store = loadProgressStore();
+    const lastSubject = subjectsFlat.find(item => item.id === store.lastSubjectId);
+    const subject = lastSubject || filtered[0] || subjectsFlat[0];
     if (!subject) {
       lessonEl.innerText = 'No lesson selected yet';
       progressEl.style.width = '0%';
@@ -597,10 +638,15 @@
       return;
     }
 
-    const lesson = subject.lessons && subject.lessons[0];
+    const subjectProgress = getSubjectProgress(subject.id);
+    const lessons = subject.lessons || [];
+    const lesson = lessons.find(item => item.id === subjectProgress.lastLessonId) || lessons[0];
+    const completedCount = (subjectProgress.completedLessons || []).length;
+    const pct = lessons.length ? Math.round((completedCount / lessons.length) * 100) : 0;
     lessonEl.innerText = lesson ? `${lesson.title} (${subject.title})` : subject.title;
-    progressEl.style.width = '20%';
+    progressEl.style.width = `${pct}%`;
     continueBtn.disabled = false;
+    continueBtn.innerText = subjectProgress.lastLessonId ? 'Resume Learning' : 'Start Learning';
     continueBtn.onclick = () => openSubject(subject.id);
   }
 
@@ -608,9 +654,20 @@
     const streakEl = document.getElementById('stat-streak');
     const completionEl = document.getElementById('stat-completion');
     const quizzesEl = document.getElementById('stat-quizzes');
+    const store = loadProgressStore();
     const totalQuizzes = subjectsFlat.reduce((total, subject) => total + (subject.quizzes || []).length, 0);
-    if (streakEl) streakEl.innerText = '0 days';
-    if (completionEl) completionEl.innerText = '0%';
+    const totals = subjectsFlat.reduce((acc, subject) => {
+      const lessons = subject.lessons || [];
+      const progress = store.subjects[subject.id];
+      const completed = progress && progress.completedLessons ? new Set(progress.completedLessons).size : 0;
+      acc.totalLessons += lessons.length;
+      acc.completedLessons += Math.min(completed, lessons.length);
+      return acc;
+    }, { totalLessons: 0, completedLessons: 0 });
+    const pct = totals.totalLessons ? Math.round((totals.completedLessons / totals.totalLessons) * 100) : 0;
+    const streak = parseInt(localStorage.getItem(STREAK_KEY) || '0', 10) || 0;
+    if (streakEl) streakEl.innerText = `${streak} days`;
+    if (completionEl) completionEl.innerText = `${pct}%`;
     if (quizzesEl) quizzesEl.innerText = totalQuizzes;
   }
 
@@ -638,12 +695,25 @@
 
     const lessonsEl = document.getElementById('subject-lessons');
     if (lessonsEl) {
-      lessonsEl.innerHTML = (subject.lessons || []).map(lesson => `
+      const subjectProgress = getSubjectProgress(subject.id);
+      const completedLessons = new Set(subjectProgress.completedLessons || []);
+      lessonsEl.innerHTML = (subject.lessons || []).map(lesson => {
+        const isCompleted = completedLessons.has(lesson.id);
+        const label = isCompleted ? 'Completed' : (lesson.id === subjectProgress.lastLessonId ? 'Resume' : 'Start');
+        const disabledAttr = isCompleted ? 'disabled' : '';
+        const btnClass = isCompleted ? 'btn sage' : 'btn';
+        return `
         <div class="card" style="box-shadow:none; margin-bottom:1rem;">
-          <div style="font-weight:900;">${lesson.title}</div>
-          <div style="font-weight:700;">${lesson.summary}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+            <div>
+              <div style="font-weight:900;">${lesson.title}</div>
+              <div style="font-weight:700;">${lesson.summary}</div>
+            </div>
+            <button class="${btnClass}" style="width:auto; padding:0.5rem 1.25rem;" ${disabledAttr} onclick="markLessonComplete('${subject.id}', '${lesson.id}')">${label}</button>
+          </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     const quizzesEl = document.getElementById('subject-quizzes');
@@ -667,6 +737,26 @@
     }
 
     page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function markLessonComplete(subjectId, lessonId) {
+    const subject = subjectsFlat.find(item => item.id === subjectId);
+    if (!subject) return;
+    const store = loadProgressStore();
+    const progress = getSubjectProgress(subjectId);
+    const completed = new Set(progress.completedLessons || []);
+    if (completed.has(lessonId)) return;
+    completed.add(lessonId);
+    progress.completedLessons = Array.from(completed);
+    progress.lastLessonId = lessonId;
+    store.subjects[subjectId] = progress;
+    store.lastSubjectId = subjectId;
+    saveProgressStore(store);
+    incrementStreak();
+    renderLearningStats();
+    renderContinueCard();
+    renderSubjectPage(subject);
+    showToast('Lesson marked complete');
   }
 
   function hideSubjectPage() {
