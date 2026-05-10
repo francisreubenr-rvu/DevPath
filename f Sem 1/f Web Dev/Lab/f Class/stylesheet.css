@@ -1,0 +1,12 @@
+body{background-image:url("image.jpg");
+    background-size:cover;
+    background-attachment:fixed;
+    background-repeat:no-repeat;
+    opacity: 1;}
+p { 
+            text-decoration: underline wavy thick;
+        }
+.card:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+         }

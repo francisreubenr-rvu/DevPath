@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DevManager - Project Foundation</title>
+    <link rel="stylesheet" href="style4.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <aside class="sidebar">
+            <div class="brand">
+                <h2>DevManager</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li class="nav-item active" data-target="dashboard-view">
+                        <span class="icon">⊞</span> Project Board
+                    </li>
+                    <li class="nav-item" data-target="pathways-view">
+                        <span class="icon">⇄</span> Dev Pathways
+                    </li>
+                    <li class="nav-item" data-target="variations-view">
+                        <span class="icon">≡</span> Product Variations
+                    </li>
+                    <li class="nav-item" data-target="github-view">
+                        <span class="icon">☀</span> GitHub Connect
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">JS</div>
+                <span>Dev User</span>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            
+            <section id="dashboard-view" class="view-section active">
+                <header class="view-header">
+                    <h1>Current Sprint</h1>
+                    <button id="add-task-btn" class="btn-primary">+ New Task</button>
+                </header>
+
+                <div class="kanban-board">
+                    <div class="kanban-column" id="col-todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="column-header">
+                            <span class="status-dot todo"></span> Not Started <span class="count">0</span>
+                        </div>
+                        <div class="task-container" id="todo-tasks">
+                            </div>
+                    </div>
+
+                    <div class="kanban-column" id="col-progress" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="column-header">
+                            <span class="status-dot progress"></span> In Progress <span class="count">0</span>
+                        </div>
+                        <div class="task-container" id="progress-tasks"></div>
+                    </div>
+
+                    <div class="kanban-column" id="col-done" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="column-header">
+                            <span class="status-dot done"></span> Done <span class="count">0</span>
+                        </div>
+                        <div class="task-container" id="done-tasks"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pathways-view" class="view-section hidden">
+                <header class="view-header">
+                    <h1>Development Pathways</h1>
+                    <p class="subtitle">Select a strategic approach for your product lifecycle.</p>
+                </header>
+                <div class="pathways-grid" id="pathways-container">
+                    </div>
+            </section>
+
+            <section id="variations-view" class="view-section hidden">
+                <header class="view-header">
+                    <h1>Product Configurations</h1>
+                    <div class="controls">
+                        <input type="text" id="variation-search" placeholder="Filter configurations...">
+                    </div>
+                </header>
+                <div class="table-wrapper">
+                    <table id="variations-table">
+                        <thead>
+                            <tr>
+                                <th>Config ID</th>
+                                <th>Product Name</th>
+                                <th>Source Origin</th>
+                                <th>Status</th>
+                                <th>Tech Stack</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="github-view" class="view-section hidden">
+                <header class="view-header">
+                    <h1>GitHub Integration</h1>
+                    <p class="subtitle">Connect repositories or start from a verified template.</p>
+                </header>
+                <div class="github-container">
+                    <div class="repo-list" id="repo-list">
+                        </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="task-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Create New Task</h3>
+            <form id="new-task-form">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="task-title" required placeholder="e.g., Setup Database Schema">
+                </div>
+                <div class="form-group">
+                    <label>Tag</label>
+                    <select id="task-tag">
+                        <option value="Feature">Feature</option>
+                        <option value="Bug">Bug</option>
+                        <option value="Research">Research</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Add Card</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script4.js"></script>
+</body>
+</html>

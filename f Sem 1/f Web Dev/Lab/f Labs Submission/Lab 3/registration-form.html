@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Educational Event Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0b69ff; /* changed: solid blue background */
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px; /* reduced radius */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12); /* lighter shadow */
+            max-width: 700px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #2b6cb0; /* more natural blue */
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e6e6e6; /* thinner border */
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+            font-family: inherit;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #38a169; /* subtle green focus to match button */
+            box-shadow: 0 0 0 4px rgba(56,161,105,0.08); /* very subtle */
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .radio-group,
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        input[type="radio"],
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .checkbox-option label,
+        .radio-option label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit {
+            background: #10b981; /* solid green */
+            color: white;
+            box-shadow: none; /* remove strong shadow */
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            background: #0fa66d; /* slightly darker green */
+            box-shadow: 0 6px 14px rgba(16,153,113,0.12); /* subtle hover shadow */
+        }
+        
+        .btn-reset {
+            background: #f5f5f5;
+            color: #666;
+            box-shadow: none;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Educational Event Registration</h1>
+        <p class="subtitle">Annual Tech Conference | 15th Jan 2026 (Bengaluru, India)</p>
+        
+        <form id="registrationForm">
+            <!-- Personal Information -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name <span class="required">*</span></label>
+                    <input type="text" id="firstName" name="firstName" required placeholder="Francis" value="Francis">
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName">Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastName" name="lastName" required placeholder="Reuben" value="Reuben">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="francis.reuben@lightmatter.tech" value="francis.reuben@lightmatter.tech">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" required placeholder="+91-9000012345" value="+91-9000012345">
+            </div>
+            
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob">
+            </div>
+            
+            <!-- Professional Information -->
+            <div class="form-group">
+                <label for="organization">Organization/Institution <span class="required">*</span></label>
+                <input type="text" id="organization" name="organization" required placeholder="Lightmatter / Organization Name">
+            </div>
+            
+            <div class="form-group">
+                <label for="role">Current Role</label>
+                <select id="role" name="role">
+                    <option value="">Select your role</option>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher/Educator</option>
+                    <option value="researcher">Researcher</option>
+                    <option value="professional">Professional</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <!-- Event Preferences -->
+            <div class="form-group">
+                <label>Registration Type <span class="required">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="fullPass" name="registrationType" value="full" required>
+                        <label for="fullPass">Full Conference Pass (₹24,999)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="singleDay" name="registrationType" value="single">
+                        <label for="singleDay">Single Day Pass (₹12,499)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="virtual" name="registrationType" value="virtual">
+                        <label for="virtual">Virtual Attendance (₹7,499)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Workshop Interests (Select all that apply)</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="ai" name="workshops" value="ai">
+                        <label for="ai">Artificial Intelligence & Machine Learning</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="web" name="workshops" value="web">
+                        <label for="web">Web Development & Design</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="data" name="workshops" value="data">
+                        <label for="data">Data Science & Analytics</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="cyber" name="workshops" value="cyber">
+                        <label for="cyber">Cybersecurity</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="attendees">Number of Attendees</label>
+                <input type="number" id="attendees" name="attendees" min="1" max="10" value="1">
+            </div>
+            
+            <div class="form-group">
+                <label for="dietary">Dietary Requirements/Special Needs</label>
+                <textarea id="dietary" name="dietary" placeholder="Please mention any dietary restrictions, accessibility needs, or other special requirements..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="comments">Additional Comments</label>
+                <textarea id="comments" name="comments" placeholder="Any questions or additional information you'd like to share..."></textarea>
+            </div>
+            
+            <!-- Buttons -->
+            <div class="btn-container">
+                <button type="submit" class="btn-submit">Register Now</button>
+                <button type="reset" class="btn-reset">Clear Form</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for registering, Francis! We will send a confirmation email shortly.');
+        });
+    </script>
+</body>
+</html>

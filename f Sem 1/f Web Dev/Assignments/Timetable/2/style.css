@@ -1,0 +1,185 @@
+/* Using Google Fonts for a modern look */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    /* CSS Variables make it easy to manage colors and themes */
+    --bg-color: #f4f7f6;
+    --card-bg-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #0056b3;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --border-color: #e0e0e0;
+    
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* This is the core of our Zen Mode theme switcher! */
+#zen-mode-toggle:checked ~ .page-wrapper {
+    --bg-color: #121212;
+    --card-bg-color: #1e1e1e;
+    --text-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --border-color: #333333;
+}
+
+.page-wrapper {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+h1 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+/* Main grid layout for the cards */
+.tracker-grid {
+    display: grid;
+    /* This makes the grid responsive. It will try to fit columns of 300px. */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Styling for each course card */
+.course-card {
+    background-color: var(--card-bg-color);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.course-card:hover {
+    transform: translateY(-5px); /* Lifts the card on hover */
+    box-shadow: 0 8px 25px var(--shadow-color);
+}
+
+.course-card h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+}
+
+.course-code {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+/* Progress Bar Styling */
+.attendance-display {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden; /* This keeps the inner bar's corners rounded */
+}
+
+.progress {
+    height: 100%;
+    background-color: #28a745; /* Green for good attendance */
+    border-radius: 5px;
+}
+
+.progress.medium {
+    background-color: #ffc107; /* Orange for medium attendance */
+}
+
+.progress.low {
+    background-color: #dc3545; /* Red for low attendance */
+}
+
+.percentage {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #28a745;
+}
+
+.percentage.medium { color: #ffc107; }
+.percentage.low { color: #dc3545; }
+
+
+/* Styling for the +/- buttons */
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    flex-grow: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn.attended {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.btn.attended:hover {
+    background-color: #c3e6cb;
+}
+
+.btn.bunked {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.btn.bunked:hover {
+    background-color: #f5c6cb;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: #888;
+    border-top: 1px solid var(--border-color);
+}
+
+
+/* --- Special Claude Element: Zen Mode Toggle --- */
+.hidden-toggle {
+    display: none; /* We hide the actual checkbox */
+}
+
+.zen-mode-button {
+    cursor: pointer;
+    background-color: var(--border-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    user-select: none; /* Prevents text selection */
+}
+
+/* We hide the text for the mode that is NOT active */
+.dark-text { display: none; }
+.light-text { display: block; }
+
+#zen-mode-toggle:checked ~ .page-wrapper .dark-text { display: block; }
+#zen-mode-toggle:checked ~ .page-wrapper .light-text { display: none; }

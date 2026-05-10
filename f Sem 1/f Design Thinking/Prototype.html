@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game of Lies - Cards & Tokens</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background: #f5f5f5;
+    padding: 20px;
+  }
+  
+  .controls {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  
+  .controls h2 {
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  button {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  button:hover {
+    background: #0b7dda;
+  }
+  
+  .section {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    page-break-after: always;
+  }
+  
+  .section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 24px;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 10px;
+  }
+  
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    aspect-ratio: 0.714;
+    border: 2px solid #333;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .card-back {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .card.criminal {
+    background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%);
+    color: white;
+  }
+  
+  .card.detective {
+    background: linear-gradient(135deg, #4dabf7 0%, #1971c2 100%);
+    color: white;
+  }
+  
+  .card.bystander {
+    background: linear-gradient(135deg, #51cf66 0%, #2f9e44 100%);
+    color: white;
+  }
+  
+  .card-title {
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .card-icon {
+    font-size: 80px;
+    margin: 20px 0;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+  }
+  
+  .card-victory {
+    font-size: 14px;
+    text-align: center;
+    background: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .card-ability {
+    font-size: 12px;
+    text-align: center;
+    font-style: italic;
+    opacity: 0.9;
+  }
+  
+  .tokens-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .token {
+    aspect-ratio: 1;
+    border: 3px solid #333;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    padding: 5px;
+  }
+  
+  .token.evidence {
+    background: linear-gradient(135deg, #74c0fc 0%, #4dabf7 100%);
+    color: #1971c2;
+  }
+  
+  .token.suspicion {
+    background: linear-gradient(135deg, #ffa94d 0%, #ff8787 100%);
+    color: #c92a2a;
+  }
+  
+  .token-icon {
+    font-size: 32px;
+    margin-bottom: 3px;
+  }
+  
+  .token-text {
+    font-size: 9px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  
+  .prompts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .prompt-card {
+    aspect-ratio: 0.67;
+    border: 2px solid #333;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .prompt-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f76707;
+    margin-bottom: 5px;
+  }
+  
+  .prompt-category {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #ffa94d;
+    padding-bottom: 3px;
+  }
+  
+  .prompt-text {
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  
+  @media print {
+    body { background: white; padding: 0; }
+    .controls { display: none; }
+    .section { 
+      box-shadow: none; 
+      page-break-after: always;
+      padding: 10px;
+    }
+  }
+  
+  .instructions {
+    background: #e3f2fd;
+    border: 2px solid #2196F3;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .instructions h3 {
+    color: #1565c0;
+    margin-bottom: 10px;
+  }
+  
+  .instructions ul {
+    margin-left: 20px;
+    color: #1565c0;
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <h2>🃏 Printable Game Components</h2>
+  <button onclick="window.print()">Print All Components</button>
+  <button onclick="printSection('cards')">Print Cards Only</button>
+  <button onclick="printSection('tokens')">Print Tokens Only</button>
+  <button onclick="printSection('prompts')">Print Prompts Only</button>
+</div>
+
+<div class="instructions">
+  <h3>📋 Printing Instructions:</h3>
+  <ul>
+    <li><strong>Paper:</strong> Use 300gsm cardstock for cards, 200gsm for tokens and prompts</li>
+    <li><strong>Size:</strong> Print on A4 paper, one section per page</li>
+    <li><strong>Cutting:</strong> Cut carefully along borders. Cards are poker-sized (63×88mm)</li>
+    <li><strong>Optional:</strong> Use card sleeves for role cards to hide card backs</li>
+    <li><strong>Lamination:</strong> Recommended for tokens and prompts (frequent handling)</li>
+  </ul>
+</div>
+
+<!-- ROLE CARDS SECTION -->
+<div class="section" id="cards">
+  <h2>🎭 Role Cards (Cut on borders)</h2>
+  <div class="cards-grid">
+    
+    <!-- Criminal Card -->
+    <div class="card criminal">
+      <div class="card-title">Criminal</div>
+      <div class="card-icon">🎭</div>
+      <div class="card-victory">
+        <strong>WIN CONDITION:</strong><br>
+        Avoid arrest OR cause a wrong arrest through convincing lies
+      </div>
+      <div class="card-ability">
+        Build plausible alibis. Blend in. Deceive.
+      </div>
+    </div>
+    
+    <!-- Detective Card -->
+    <div class="card detective">
+      <div class="card-title">Detective</div>
+      <div class="card-icon">🔍</div>
+      <div class="card-victory">
+        <strong>WIN CONDITION:</strong><br>
+        Correctly arrest the Criminal based on story contradictions
+      </div>
+      <div class="card-ability">
+        Special: Ask 2 questions per turn (others ask 1)
+      </div>
+    </div>
+    
+    <!-- Bystander Cards (4 copies) -->
+    <div class="card bystander">
+      <div class="card-title">Bystander</div>
+      <div class="card-icon">👁️</div>
+      <div class="card-victory">
+        <strong>WIN CONDITION:</strong><br>
+        Support truth-seeking and help expose the Criminal
+      </div>
+      <div class="card-ability">
+        Contribute to the story. Question inconsistencies.
+      </div>
+    </div>
+    
+    <div class="card bystander">
+      <div class="card-title">Bystander</div>
+      <div class="card-icon">👁️</div>
+      <div class="card-victory">
+        <strong>WIN CONDITION:</strong><br>
+        Support truth-seeking and help expose the Criminal
+      </div>
+      <div class="card-ability">
+        Contribute to the story. Question inconsistencies.
+      </div>
+    </div>
+    
+    <div class="card bystander">
+      <div class="card-title">Bystander</div>
+      <div class="card-icon">👁️</div>
+      <div class="card-victory">
+        <strong>WIN CONDITION:</strong><br>
+        Support truth-seeking and help expose the Criminal
+      </div>
+      <div class="card-ability">
+        Contribute to the story. Question inconsistencies.
+      </div>
+    </div>
+    
+    <div class="card bystander">
+      <div class="card-title">Bystander</div>
+      <div class="card-icon">👁️</div>
+      <div class="card-victory">
+        <strong>WIN CONDITION:</strong><br>
+        Support truth-seeking and help expose the Criminal
+      </div>
+      <div class="card-ability">
+        Contribute to the story. Question inconsistencies.
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- CARD BACKS SECTION -->
+<div class="section">
+  <h2>🃏 Card Backs (Print on reverse side of role cards)</h2>
+  <div class="cards-grid">
+    <div class="card card-back">GAME<br>OF<br>LIES</div>
+    <div class="card card-back">GAME<br>OF<br>LIES</div>
+    <div class="card card-back">GAME<br>OF<br>LIES</div>
+    <div class="card card-back">GAME<br>OF<br>LIES</div>
+    <div class="card card-back">GAME<br>OF<br>LIES</div>
+    <div class="card card-back">GAME<br>OF<br>LIES</div>
+  </div>
+</div>
+
+<!-- TOKENS SECTION -->
+<div class="section" id="tokens">
+  <h2>🪙 Game Tokens (Cut circles carefully)</h2>
+  
+  <h3 style="text-align: center; margin: 20px 0;">Evidence Tokens (12)</h3>
+  <div class="tokens-grid">
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+    <div class="token evidence">
+      <div class="token-icon">🔍</div>
+      <div class="token-text">Evidence</div>
+    </div>
+  </div>
+  
+  <h3 style="text-align: center; margin: 30px 0 20px 0;">Suspicion Tokens (12)</h3>
+  <div class="tokens-grid">
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+    <div class="token suspicion">
+      <div class="token-icon">⚠️</div>
+      <div class="token-text">Suspicion</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMPT CARDS SECTION -->
+<div class="section" id="prompts">
+  <h2>🎲 Round Prompt Cards (Shuffle and draw one per round)</h2>
+  <div class="prompts-grid" id="promptsContainer">
+    <!-- Generated by JavaScript -->
+  </div>
+</div>
+
+<script>
+  const prompts = [
+    { num: 1, cat: "Timeline", text: "Establish a specific time" },
+    { num: 2, cat: "Timeline", text: "Describe what happened immediately before" },
+    { num: 3, cat: "Timeline", text: "Explain what you were doing during the crime" },
+    { num: 4, cat: "Timeline", text: "Reveal when you arrived at the scene" },
+    { num: 5, cat: "Evidence", text: "Describe a clue you noticed" },
+    { num: 6, cat: "Evidence", text: "Explain a sound or smell you remember" },
+    { num: 7, cat: "Evidence", text: "Mention something out of place" },
+    { num: 8, cat: "Evidence", text: "Describe the weather or environment" },
+    { num: 9, cat: "Evidence", text: "Identify an object you touched" },
+    { num: 10, cat: "People", text: "Name someone else you saw" },
+    { num: 11, cat: "People", text: "Describe a conversation you overheard" },
+    { num: 12, cat: "People", text: "Explain your relationship to the victim" },
+    { num: 13, cat: "People", text: "Mention who you were with" },
+    { num: 14, cat: "Motive", text: "Describe how you felt when you heard the news" },
+    { num: 15, cat: "Motive", text: "Explain why you were in that location" },
+    { num: 16, cat: "Motive", text: "Reveal something the victim said to you recently" },
+    { num: 17, cat: "Actions", text: "Describe how you entered or left" },
+    { num: 18, cat: "Actions", text: "Explain what you did with your hands" },
+    { num: 19, cat: "Actions", text: "Mention where you went immediately after" },
+    { num: 20, cat: "Actions", text: "Describe your usual routine that day" }
+  ];
+  
+  function generatePrompts() {
+    const container = document.getElementById('promptsContainer');
+    prompts.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'prompt-card';
+      card.innerHTML = `
+        <div class="prompt-number">#${p.num}</div>
+        <div class="prompt-category">${p.cat}</div>
+        <div class="prompt-text">${p.text}</div>
+      `;
+      container.appendChild(card);
+    });
+  }
+  
+  function printSection(sectionId) {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(s => s.style.display = 'none');
+    document.getElementById(sectionId).style.display = 'block';
+    window.print();
+    sections.forEach(s => s.style.display = 'block');
+  }
+  
+  generatePrompts();
+</script>
+
+</body>
+</html>

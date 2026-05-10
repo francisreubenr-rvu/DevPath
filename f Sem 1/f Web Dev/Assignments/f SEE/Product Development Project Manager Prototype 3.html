@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProjectFlow - Product Development Manager</title>
+    <style>
+        /* ============================================================================
+           DESIGN SYSTEM & VARIABLES
+           ============================================================================ */
+        
+        :root {
+            /* Color Palette - Minimal, Accessible, Natural */
+            --color-bg-primary: #fafafa;
+            --color-bg-secondary: #ffffff;
+            --color-bg-tertiary: #f5f5f5;
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #666666;
+            --color-text-tertiary: #999999;
+            --color-border: #e5e5e5;
+            --color-border-light: #f0f0f0;
+            --color-accent-primary: #0066cc;
+            --color-accent-hover: #0052a3;
+            --color-accent-light: #f0f7ff;
+            --color-status-done: #28a745;
+            --color-status-progress: #ffc107;
+            --color-status-todo: #6c757d;
+            --color-status-review: #17a2b8;
+            --color-error: #dc3545;
+            --color-success: #28a745;
+            
+            /* Typography - Clear, Readable */
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', 
+                               'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            --font-family-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+            --font-size-xs: 12px;
+            --font-size-sm: 13px;
+            --font-size-base: 14px;
+            --font-size-md: 15px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            
+            /* Spacing - Consistent Grid */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 24px;
+            --space-2xl: 32px;
+            
+            /* Sizing */
+            --sidebar-width: 240px;
+            --header-height: 56px;
+            --border-radius: 6px;
+            --border-radius-sm: 4px;
+            
+            /* Shadows - Subtle */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+            
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* ============================================================================
+           BASE STYLES
+           ============================================================================ */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: var(--font-family-base);
+            font-size: var(--font-size-base);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-primary);
+        }
+        
+        button {
+            font-family: inherit;
+            font-size: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        
+        input, textarea, select {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+        }
+        
+        /* ============================================================================
+           LAYOUT - Main Container Structure
+           ============================================================================ */
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-rows: var(--header-height) 1fr;
+            height: 100vh;
+            width: 100%;
+        }
+        
+        .sidebar {
+            grid-column: 1;
+            grid-row: 1 / -1;
+            background-color: var(--color-bg-secondary);
+            border-right: 1px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            grid-column: 2;
+            grid-row: 1;
+            background-color: var(--color-bg-secondary);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .main-content {
+            grid-column: 2;
+            grid-row: 2;
+            overflow-y: auto;
+            background-color: var(--color-bg-primary);
+        }
+        
+        /* ============================================================================
+           SIDEBAR STYLES
+           ============================================================================ */
+        
+        .sidebar-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .sidebar-logo {
+            width: 32px;
+            height: 32px;
+            background-color: var(--color-accent-primary);
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-lg);
+        }
+        
+        .sidebar-title {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-md);
+            color: var(--color-text-primary);
+        }
+        
+        .sidebar-section {
+            padding: var(--space-lg) 0;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        
+        .sidebar-section-title {
+            padding: 0 var(--space-lg) var(--space-sm) var(--space-lg);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .nav-item {
+            padding: var(--space-md) var(--space-lg);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            border-left: 2px solid transparent;
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .nav-item:hover {
+            background-color: var(--color-bg-tertiary);
+            color: var(--color-text-primary);
+        }
+        
+        .nav-item.active {
+            background-color: var(--color-accent-light);
+            color: var(--color-accent-primary);
+            border-left-color: var(--color-accent-primary);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .nav-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-actions {
+            padding: var(--space-lg);
+            margin-top: auto;
+            border-top: 1px solid var(--color-border-light);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        
+        /* ============================================================================
+           HEADER STYLES
+           ============================================================================ */
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+        
+        .page-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+        
+        .header-search {
+            background-color: var(--color-bg-tertiary);
+            border: 1px solid var(--color-border);
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--border-radius);
+            width: 240px;
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            transition: all var(--transition-fast);
+        }
+        
+        .header-search:focus {
+            outline: none;
+            border-color: var(--color-accent-primary);
+            background-color: var(--color-bg-secondary);
+            box-shadow: 0 0 0 2px var(--color-accent-light);
+        }
+        
+        .header-search::placeholder {
+            color: var(--color-text-tertiary);
+        }
+        
+        .header-user {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--color-bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+        }
+        
+        /* ============================================================================
+           BUTTON STYLES
+           ============================================================================ */
+        
+        .btn {
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: var(--color-accent-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--color-accent-hover);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background-color: var(--color-bg-tertiary);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--color-border-light);
+        }
+        
+        .btn-ghost {
+            color: var(--color-text-secondary);
+            padding: var(--space-sm) var(--space-md);
+        }
+        
+        .btn-ghost:hover {
+            background-color: var(--color-bg-tertiary);
+            color: var(--color-text-primary);
+        }
+        
+        .btn-sm {
+            padding: var(--space-xs) var(--space-md);
+            font-size: var(--font-size-xs);
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        /* ============================================================================
+           CARD & CONTENT STYLES
+           ============================================================================ */
+        
+        .content-wrapper {
+            padding: var(--space-xl);
+            max-width: 1600px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .tab {
+            padding: var(--space-md) var(--space-lg);
+            border-bottom: 2px solid transparent;
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: none;
+            border: none;
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .tab:hover {
+            color: var(--color-text-primary);
+        }
+        
+        .tab.active {
+            color: var(--color-accent-primary);
+            border-bottom-color: var(--color-accent-primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-normal);
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-border);
+        }
+        
+        .card-draggable {
+            cursor: grab;
+        }
+        
+        .card-draggable:active {
+            cursor: grabbing;
+            opacity: 0.95;
+        }
+        
+        /* ============================================================================
+           KANBAN BOARD STYLES - Inspired by GitHub
+           ============================================================================ */
+        
+        .board-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            padding: var(--space-xl);
+            background-color: var(--color-bg-primary);
+        }
+        
+        .board-column {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--space-md);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .column-title {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .column-count {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            background-color: var(--color-bg-tertiary);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            min-height: 100px;
+            padding: var(--space-md);
+            background-color: var(--color-bg-tertiary);
+            border-radius: var(--border-radius);
+            border: 1px dashed var(--color-border);
+        }
+        
+        .project-card {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: var(--space-md);
+            cursor: grab;
+            transition: all var(--transition-fast);
+            user-select: none;
+        }
+        
+        .project-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-accent-primary);
+        }
+        
+        .project-card:active {
+            cursor: grabbing;
+            opacity: 0.9;
+        }
+        
+        .project-card-title {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-sm);
+            color: var(--color-text-primary);
+        }
+        
+        .project-card-desc {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .project-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--space-sm);
+            border-top: 1px solid var(--color-border-light);
+            font-size: var(--font-size-xs);
+        }
+        
+        .project-meta {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+        
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            display: inline-block;
+        }
+        
+        .status-todo {
+            background-color: rgba(108, 117, 125, 0.15);
+            color: var(--color-status-todo);
+        }
+        
+        .status-progress {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: var(--color-status-progress);
+        }
+        
+        .status-review {
+            background-color: rgba(23, 162, 184, 0.15);
+            color: var(--color-status-review);
+        }
+        
+        .status-done {
+            background-color: rgba(40, 167, 69, 0.15);
+            color: var(--color-status-done);
+        }
+        
+        /* ============================================================================
+           PRODUCT VARIATIONS TABLE
+           ============================================================================ */
+        
+        .variations-wrapper {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        .table-controls {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+        
+        .filter-input {
+            padding: var(--space-md) var(--space-lg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-sm);
+            font-size: var(--font-size-sm);
+            width: 180px;
+            background-color: var(--color-bg-primary);
+        }
+        
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--color-accent-primary);
+            box-shadow: 0 0 0 2px var(--color-accent-light);
+        }
+        
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            padding: var(--space-lg);
+            background-color: var(--color-bg-primary);
+        }
+        
+        .variation-item {
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: var(--space-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            background-color: var(--color-bg-secondary);
+        }
+        
+        .variation-item:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-accent-primary);
+        }
+        
+        .variation-name {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-sm);
+            color: var(--color-text-primary);
+        }
+        
+        .variation-specs {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+        }
+        
+        .variation-spec {
+            padding: var(--space-xs) 0;
+        }
+        
+        .spec-label {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-tertiary);
+        }
+        
+        /* ============================================================================
+           MODAL STYLES
+           ============================================================================ */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            animation: fadeIn var(--transition-normal);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .modal-content {
+            background-color: var(--color-bg-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp var(--transition-normal);
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--color-text-tertiary);
+            transition: all var(--transition-fast);
+        }
+        
+        .modal-close:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+            border-radius: var(--border-radius);
+        }
+        
+        .modal-body {
+            padding: var(--space-lg);
+        }
+        
+        .modal-footer {
+            padding: var(--space-lg);
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            gap: var(--space-md);
+            justify-content: flex-end;
+        }
+        
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-sm);
+            color: var(--color-text-primary);
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: var(--space-md) var(--space-lg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-sm);
+            font-size: var(--font-size-sm);
+            background-color: var(--color-bg-primary);
+            transition: all var(--transition-fast);
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--color-accent-primary);
+            box-shadow: 0 0 0 2px var(--color-accent-light);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: var(--font-family-base);
+        }
+        
+        /* ============================================================================
+           EXPANDABLE SECTIONS
+           ============================================================================ */
+        
+        .collapsible-section {
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: var(--space-md);
+        }
+        
+        .collapsible-header {
+            padding: var(--space-md) var(--space-lg);
+            background-color: var(--color-bg-secondary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: all var(--transition-fast);
+        }
+        
+        .collapsible-header:hover {
+            background-color: var(--color-bg-tertiary);
+        }
+        
+        .collapsible-title {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+        
+        .collapsible-toggle {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform var(--transition-fast);
+            color: var(--color-text-tertiary);
+        }
+        
+        .collapsible-toggle.open {
+            transform: rotate(180deg);
+        }
+        
+        .collapsible-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-normal);
+            background-color: var(--color-bg-primary);
+        }
+        
+        .collapsible-body.open {
+            max-height: 2000px;
+        }
+        
+        .collapsible-content {
+            padding: var(--space-lg);
+        }
+        
+        /* ============================================================================
+           GITHUB INTEGRATION SECTION
+           ============================================================================ */
+        
+        .integration-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .template-card {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: var(--space-lg);
+            transition: all var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        
+        .template-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-accent-primary);
+        }
+        
+        .template-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--color-accent-light);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+        }
+        
+        .template-name {
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-md);
+            color: var(--color-text-primary);
+        }
+        
+        .template-desc {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .template-meta {
+            display: flex;
+            gap: var(--space-md);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--color-border-light);
+        }
+        
+        .template-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        /* ============================================================================
+           RESPONSIVE DESIGN
+           ============================================================================ */
+        
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: var(--header-height) 1fr;
+            }
+            
+            .sidebar {
+                position: fixed;
+                left: -240px;
+                top: 0;
+                height: 100vh;
+                z-index: 999;
+                width: var(--sidebar-width);
+                transition: left var(--transition-normal);
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .header-search {
+                width: 150px;
+            }
+            
+            .board-container {
+                grid-template-columns: 1fr;
+                overflow-x: auto;
+                padding: var(--space-lg) 0;
+            }
+            
+            .board-column {
+                min-width: 300px;
+            }
+            
+            .table-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .integration-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .content-wrapper {
+                padding: var(--space-lg);
+            }
+            
+            .header {
+                flex-wrap: wrap;
+                gap: var(--space-md);
+            }
+            
+            .header-search {
+                width: 100%;
+                order: 3;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- ============================================================
+             SIDEBAR
+             ============================================================ -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">PF</div>
+                <div class="sidebar-title">ProjectFlow</div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Main</div>
+                <div class="sidebar-nav">
+                    <div class="nav-item active" data-tab="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item" data-tab="projects">
+                        <span class="nav-icon">📋</span>
+                        <span>Projects</span>
+                    </div>
+                    <div class="nav-item" data-tab="variations">
+                        <span class="nav-icon">🎨</span>
+                        <span>Variations</span>
+                    </div>
+                    <div class="nav-item" data-tab="integration">
+                        <span class="nav-icon">🔗</span>
+                        <span>GitHub</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-actions">
+                <button class="btn btn-primary btn-full" id="newProjectBtn">
+                    + New Project
+                </button>
+            </div>
+        </div>
+        
+        <!-- ============================================================
+             HEADER
+             ============================================================ -->
+        <div class="header">
+            <div class="header-left">
+                <button class="btn btn-ghost" id="menuToggle" style="display: none;">
+                    ☰
+                </button>
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <input 
+                    type="text" 
+                    class="header-search" 
+                    id="globalSearch" 
+                    placeholder="Search projects..."
+                >
+                <div class="header-user">FR</div>
+            </div>
+        </div>
+        
+        <!-- ============================================================
+             MAIN CONTENT
+             ============================================================ -->
+        <div class="main-content">
+            <div class="content-wrapper">
+                
+                <!-- DASHBOARD TAB -->
+                <div class="tab-content active" id="dashboard-content">
+                    <h2 style="margin-bottom: var(--space-lg);">Dashboard Overview</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-xl);">
+                        <div class="card">
+                            <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-bottom: var(--space-sm);">Total Projects</div>
+                            <div style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-accent-primary);" id="totalProjectsCount">0</div>
+                        </div>
+                        <div class="card">
+                            <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-bottom: var(--space-sm);">In Progress</div>
+                            <div style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-status-progress);" id="inProgressCount">0</div>
+                        </div>
+                        <div class="card">
+                            <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-bottom: var(--space-sm);">Completed</div>
+                            <div style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-status-done);" id="completedCount">0</div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-bottom: var(--space-lg); font-size: var(--font-size-lg);">Recent Activity</h3>
+                    <div id="recentActivity" style="display: flex; flex-direction: column; gap: var(--space-md);">
+                        <div class="card" style="border-left: 3px solid var(--color-status-progress); padding-left: calc(var(--space-lg) - 3px);">
+                            <div style="font-weight: var(--font-weight-medium); margin-bottom: var(--space-xs);">Project created</div>
+                            <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary);">No recent activity</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PROJECTS TAB (KANBAN BOARD) -->
+                <div class="tab-content" id="projects-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+                        <h2>Project Board</h2>
+                        <button class="btn btn-primary" id="newProjectBtn2">+ New Project</button>
+                    </div>
+                    <div class="board-container" id="boardContainer">
+                        <!-- Columns generated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- VARIATIONS TAB -->
+                <div class="tab-content" id="variations-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg);">
+                        <h2>Product Variations</h2>
+                        <button class="btn btn-secondary btn-sm">Export</button>
+                    </div>
+                    
+                    <div class="variations-wrapper">
+                        <div class="table-controls">
+                            <div class="filter-group">
+                                <input 
+                                    type="text" 
+                                    class="filter-input" 
+                                    id="variationFilter" 
+                                    placeholder="Filter variations..."
+                                >
+                            </div>
+                            <div class="filter-group">
+                                <label style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Status:</label>
+                                <select class="filter-input" id="statusFilter" style="width: auto;">
+                                    <option value="">All</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Beta">Beta</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-grid" id="variationsGrid">
+                            <!-- Variations generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- INTEGRATION TAB -->
+                <div class="tab-content" id="integration-content">
+                    <h2 style="margin-bottom: var(--space-lg);">GitHub Project Templates</h2>
+                    
+                    <div class="collapsible-section">
+                        <div class="collapsible-header">
+                            <div class="collapsible-title">🔑 GitHub Connection</div>
+                            <div class="collapsible-toggle">▼</div>
+                        </div>
+                        <div class="collapsible-body">
+                            <div class="collapsible-content">
+                                <p style="margin-bottom: var(--space-lg); color: var(--color-text-secondary);">
+                                    Connect your GitHub account to sync repositories and project templates. This integration point is ready for API implementation.
+                                </p>
+                                <button class="btn btn-primary" id="connectGithub">
+                                    Connect GitHub Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-bottom: var(--space-lg); margin-top: var(--space-xl); font-size: var(--font-size-lg);">Available Templates</h3>
+                    <div class="integration-container" id="templatesContainer">
+                        <!-- Templates generated by JavaScript -->
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- ============================================================
+         CREATE PROJECT MODAL
+         ============================================================ -->
+    <div class="modal" id="newProjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Project</h2>
+                <div class="modal-close" id="closeModal">✕</div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Project Name *</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="projectName" 
+                        placeholder="Enter project name"
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea 
+                        class="form-textarea" 
+                        id="projectDesc" 
+                        placeholder="Enter project description"
+                    ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" id="projectStatus">
+                        <option value="To Do">To Do</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="In Review">In Review</option>
+                        <option value="Done">Done</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelModal">Cancel</button>
+                <button class="btn btn-primary" id="submitProject">Create Project</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        /* ====================================================================
+           APPLICATION STATE MANAGEMENT
+           ==================================================================== */
+        
+        const AppState = {
+            projects: [],
+            variations: [],
+            currentTab: 'dashboard',
+            
+            // Initialize state from localStorage
+            init() {
+                const stored = localStorage.getItem('projectManagerState');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    this.projects = data.projects || [];
+                    this.variations = data.variations || [];
+                }
+                // Load default variations if none exist
+                if (this.variations.length === 0) {
+                    this.loadDefaultVariations();
+                }
+            },
+            
+            // Save state to localStorage
+            save() {
+                localStorage.setItem('projectManagerState', JSON.stringify({
+                    projects: this.projects,
+                    variations: this.variations
+                }));
+            },
+            
+            // Load default product variations
+            loadDefaultVariations() {
+                this.variations = [
+                    {
+                        id: 'var-1',
+                        name: 'Standard Edition',
+                        specs: { size: 'M', color: 'Blue', material: 'Plastic', source: 'Supplier A' },
+                        status: 'Active'
+                    },
+                    {
+                        id: 'var-2',
+                        name: 'Premium Edition',
+                        specs: { size: 'L', color: 'Black', material: 'Metal', source: 'Supplier B' },
+                        status: 'Active'
+                    },
+                    {
+                        id: 'var-3',
+                        name: 'Compact Edition',
+                        specs: { size: 'S', color: 'White', material: 'Polymer', source: 'Supplier C' },
+                        status: 'Beta'
+                    },
+                    {
+                        id: 'var-4',
+                        name: 'Pro Edition',
+                        specs: { size: 'XL', color: 'Silver', material: 'Aluminum', source: 'Supplier A' },
+                        status: 'Active'
+                    }
+                ];
+            },
+            
+            // Add new project
+            addProject(name, desc, status) {
+                const project = {
+                    id: 'proj-' + Date.now(),
+                    name,
+                    desc,
+                    status,
+                    created: new Date().toLocaleDateString()
+                };
+                this.projects.push(project);
+                this.save();
+                return project;
+            },
+            
+            // Get projects by status
+            getProjectsByStatus(status) {
+                return this.projects.filter(p => p.status === status);
+            }
+        };
+        
+        /* ====================================================================
+           UI RENDERING FUNCTIONS
+           ==================================================================== */
+        
+        function renderBoard() {
+            const container = document.getElementById('boardContainer');
+            const statuses = ['To Do', 'In Progress', 'In Review', 'Done'];
+            
+            container.innerHTML = '';
+            
+            statuses.forEach(status => {
+                const projects = AppState.getProjectsByStatus(status);
+                const column = document.createElement('div');
+                column.className = 'board-column';
+                
+                // Column header
+                const header = document.createElement('div');
+                header.className = 'column-header';
+                header.innerHTML = `
+                    <div class="column-title">
+                        <span>${status}</span>
+                        <span class="column-count">${projects.length}</span>
+                    </div>
+                `;
+                
+                // Cards container
+                const cardsContainer = document.createElement('div');
+                cardsContainer.className = 'cards-container';
+                cardsContainer.dataset.status = status;
+                
+                projects.forEach(project => {
+                    const card = document.createElement('div');
+                    card.className = 'project-card card-draggable';
+                    card.draggable = true;
+                    card.dataset.projectId = project.id;
+                    card.innerHTML = `
+                        <div class="project-card-title">${project.name}</div>
+                        <div class="project-card-desc">${project.desc}</div>
+                        <div class="project-card-footer">
+                            <div class="project-meta">
+                                <span class="status-badge status-${status.toLowerCase().replace(' ', '-')}">${status}</span>
+                            </div>
+                            <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary);">${project.created}</div>
+                        </div>
+                    `;
+                    cardsContainer.appendChild(card);
+                });
+                
+                column.appendChild(header);
+                column.appendChild(cardsContainer);
+                container.appendChild(column);
+            });
+            
+            // Re-attach drag event listeners
+            attachDragListeners();
+        }
+        
+        function renderVariations() {
+            const grid = document.getElementById('variationsGrid');
+            grid.innerHTML = '';
+            
+            AppState.variations.forEach(variation => {
+                const item = document.createElement('div');
+                item.className = 'variation-item';
+                item.dataset.variationId = variation.id;
+                
+                const specsHtml = Object.entries(variation.specs)
+                    .map(([key, value]) => `
+                        <div class="variation-spec">
+                            <span class="spec-label">${key}:</span> ${value}
+                        </div>
+                    `).join('');
+                
+                item.innerHTML = `
+                    <div class="variation-name">${variation.name}</div>
+                    <div class="variation-specs">
+                        ${specsHtml}
+                        <div class="variation-spec" style="margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--color-border-light);">
+                            <span class="status-badge status-${variation.status.toLowerCase()}">${variation.status}</span>
+                        </div>
+                    </div>
+                `;
+                
+                item.addEventListener('click', () => expandVariation(variation));
+                grid.appendChild(item);
+            });
+        }
+        
+        function renderTemplates() {
+            const container = document.getElementById('templatesContainer');
+            container.innerHTML = '';
+            
+            const templates = [
+                {
+                    id: 'tmpl-1',
+                    name: 'Web App Boilerplate',
+                    desc: 'Complete starter template for web application development with pre-configured CI/CD',
+                    icon: '🌐',
+                    stars: 342,
+                    language: 'JavaScript'
+                },
+                {
+                    id: 'tmpl-2',
+                    name: 'Backend Service',
+                    desc: 'RESTful API template with authentication, database models, and testing setup',
+                    icon: '⚙️',
+                    stars: 256,
+                    language: 'Python'
+                },
+                {
+                    id: 'tmpl-3',
+                    name: 'Mobile App',
+                    desc: 'React Native template with navigation, state management, and native modules',
+                    icon: '📱',
+                    stars: 189,
+                    language: 'TypeScript'
+                },
+                {
+                    id: 'tmpl-4',
+                    name: 'Data Pipeline',
+                    desc: 'ETL pipeline template with scheduled jobs, monitoring, and alerting',
+                    icon: '📊',
+                    stars: 124,
+                    language: 'Kotlin'
+                }
+            ];
+            
+            templates.forEach(template => {
+                const card = document.createElement('div');
+                card.className = 'template-card';
+                card.innerHTML = `
+                    <div class="template-icon">${template.icon}</div>
+                    <div class="template-name">${template.name}</div>
+                    <div class="template-desc">${template.desc}</div>
+                    <div class="template-meta">
+                        <div class="template-meta-item">⭐ ${template.stars}</div>
+                        <div class="template-meta-item">${template.language}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        function updateDashboardStats() {
+            const total = AppState.projects.length;
+            const inProgress = AppState.getProjectsByStatus('In Progress').length;
+            const completed = AppState.getProjectsByStatus('Done').length;
+            
+            document.getElementById('totalProjectsCount').textContent = total;
+            document.getElementById('inProgressCount').textContent = inProgress;
+            document.getElementById('completedCount').textContent = completed;
+        }
+        
+        /* ====================================================================
+           INTERACTION HANDLERS
+           ==================================================================== */
+        
+        // Tab switching
+        document.querySelectorAll('[data-tab]').forEach(navItem => {
+            navItem.addEventListener('click', () => {
+                const tabName = navItem.dataset.tab;
+                
+                // Update active nav item
+                document.querySelectorAll('[data-tab]').forEach(item => {
+                    item.classList.remove('active');
+                });
+                navItem.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabName + '-content').classList.add('active');
+                
+                // Update page title
+                const titles = {
+                    dashboard: 'Dashboard',
+                    projects: 'Project Board',
+                    variations: 'Product Variations',
+                    integration: 'GitHub Integration'
+                };
+                document.getElementById('pageTitle').textContent = titles[tabName];
+                
+                // Trigger render for specific tabs
+                if (tabName === 'projects') {
+                    renderBoard();
+                } else if (tabName === 'variations') {
+                    renderVariations();
+                } else if (tabName === 'integration') {
+                    renderTemplates();
+                }
+                
+                AppState.currentTab = tabName;
+            });
+        });
+        
+        // Modal controls
+        const modal = document.getElementById('newProjectModal');
+        const openButtons = [document.getElementById('newProjectBtn'), document.getElementById('newProjectBtn2')];
+        const closeBtn = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelModal');
+        const submitBtn = document.getElementById('submitProject');
+        
+        openButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modal.classList.add('active');
+                document.getElementById('projectName').focus();
+            });
+        });
+        
+        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+        cancelBtn.addEventListener('click', () => modal.classList.remove('active'));
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+        
+        // Form submission
+        submitBtn.addEventListener('click', () => {
+            const name = document.getElementById('projectName').value.trim();
+            const desc = document.getElementById('projectDesc').value.trim();
+            const status = document.getElementById('projectStatus').value;
+            
+            if (!name) {
+                alert('Please enter a project name');
+                return;
+            }
+            
+            AppState.addProject(name, desc, status);
+            updateDashboardStats();
+            renderBoard();
+            
+            // Reset form and close modal
+            document.getElementById('projectName').value = '';
+            document.getElementById('projectDesc').value = '';
+            document.getElementById('projectStatus').value = 'To Do';
+            modal.classList.remove('active');
+        });
+        
+        // Collapsible sections
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const body = header.nextElementSibling;
+                const toggle = header.querySelector('.collapsible-toggle');
+                body.classList.toggle('open');
+                toggle.classList.toggle('open');
+            });
+        });
+        
+        // Variation filtering
+        document.getElementById('variationFilter').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            document.querySelectorAll('.variation-item').forEach(item => {
+                const name = item.querySelector('.variation-name').textContent.toLowerCase();
+                const status = item.dataset.variationId;
+                const variation = AppState.variations.find(v => v.id === status);
+                
+                const matchesSearch = name.includes(searchTerm);
+                const matchesStatus = !statusFilter || (variation && variation.status === statusFilter);
+                
+                item.style.display = (matchesSearch && matchesStatus) ? 'block' : 'none';
+            });
+        });
+        
+        document.getElementById('statusFilter').addEventListener('change', () => {
+            const event = new Event('input');
+            document.getElementById('variationFilter').dispatchEvent(event);
+        });
+        
+        // Expand variation detail
+        function expandVariation(variation) {
+            alert(`Variation: ${variation.name}\n\n` +
+                  `Status: ${variation.status}\n\n` +
+                  `Details:\n${Object.entries(variation.specs)
+                      .map(([k, v]) => `${k}: ${v}`)
+                      .join('\n')}\n\n` +
+                  `Note: Expand this to show detailed panel with additional options.`);
+        }
+        
+        /* ====================================================================
+           DRAG AND DROP FUNCTIONALITY
+           ==================================================================== */
+        
+        let draggedElement = null;
+        
+        function attachDragListeners() {
+            // Drag start
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('dragstart', (e) => {
+                    draggedElement = card;
+                    card.style.opacity = '0.5';
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+                
+                card.addEventListener('dragend', () => {
+                    draggedElement = null;
+                    card.style.opacity = '1';
+                });
+            });
+            
+            // Drag over containers
+            document.querySelectorAll('.cards-container').forEach(container => {
+                container.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    container.style.backgroundColor = 'rgba(0, 102, 204, 0.05)';
+                });
+                
+                container.addEventListener('dragleave', () => {
+                    container.style.backgroundColor = '';
+                });
+                
+                container.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    container.style.backgroundColor = '';
+                    
+                    if (draggedElement) {
+                        const projectId = draggedElement.dataset.projectId;
+                        const newStatus = container.dataset.status;
+                        
+                        // Update project status
+                        const project = AppState.projects.find(p => p.id === projectId);
+                        if (project) {
+                            project.status = newStatus;
+                            AppState.save();
+                            renderBoard();
+                            updateDashboardStats();
+                        }
+                    }
+                });
+            });
+        }
+        
+        /* ====================================================================
+           INITIALIZATION
+           ==================================================================== */
+        
+        AppState.init();
+        renderBoard();
+        renderVariations();
+        renderTemplates();
+        updateDashboardStats();
+        
+        // Mobile menu toggle (for future enhancement)
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

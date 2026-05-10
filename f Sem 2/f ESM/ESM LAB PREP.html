@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untitled Document.md</title>
+  <style>
+  @import url("https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha2/katex.min.css");
+
+  body {
+    font-family: Georgia, Cambria, serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #373D49;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  h1 { font-size: 2em; }
+  h2 { font-size: 1.5em; }
+  h3 { font-size: 1.25em; }
+  a { color: #35D7BB; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: "Ubuntu Mono", Monaco, monospace;
+    background: #F5F7FA;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+  pre {
+    background: #F5F7FA;
+    padding: 1em;
+    border-radius: 3px;
+    overflow-x: auto;
+  }
+  .hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0;
+    color: #333;
+  }
+  pre code { background: none; padding: 0; }
+  blockquote {
+    border-left: 3px solid #A0AABF;
+    padding-left: 1em;
+    margin-left: 0;
+    font-style: italic;
+    color: #666;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #E8E8E8;
+    padding: 0.5em;
+    text-align: left;
+  }
+  th {
+    background: #F5F7FA;
+    font-weight: 600;
+  }
+  #preview .table {
+    width: auto;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+</style>
+</head>
+<body id="preview">
+<h1 class="code-line has-line-data" data-line-start="0" data-line-end="1"><a id="Embedded_Systems_ARM_Microcontroller_Lab_0"></a>Embedded Systems &amp; ARM Microcontroller Lab</h1>
+<h2 class="code-line has-line-data" data-line-start="1" data-line-end="2"><a id="Complete_Guide_to_30_Lab_Programs_1"></a>Complete Guide to 30 Lab Programs</h2>
+<h3 class="code-line has-line-data" data-line-start="2" data-line-end="3"><a id="Prepared_by_Francis_Reuben_R_2"></a>Prepared by Francis Reuben R.</h3>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="6" data-line-end="7"><a id="Table_of_Contents_6"></a>Table of Contents</h2>
+<h3 class="code-line has-line-data" data-line-start="8" data-line-end="9"><a id="Part_1_Foundation_Concepts_8"></a>Part 1: Foundation Concepts</h3>
+<p class="has-line-data" data-line-start="9" data-line-end="12">1.1 Raspberry Pi Pico Hardware Overview<br>
+1.2 GPIO Pin Control Fundamentals<br>
+1.3 Arduino IDE Setup &amp; Serial Monitor</p>
+<h3 class="code-line has-line-data" data-line-start="13" data-line-end="14"><a id="Part_2_LED_Programming_Programs_19_13"></a>Part 2: LED Programming (Programs 1-9)</h3>
+<p class="has-line-data" data-line-start="14" data-line-end="19">2.1 Basic LED Blinking &amp; Control<br>
+2.2 Alternate LED Patterns<br>
+2.3 Binary Number Display<br>
+2.4 Array-Based LED Control<br>
+2.5 Sequential &amp; Chase Effects</p>
+<h3 class="code-line has-line-data" data-line-start="20" data-line-end="21"><a id="Part_3_ARM_Assembly_Programming_Programs_1019_20"></a>Part 3: ARM Assembly Programming (Programs 10-19)</h3>
+<p class="has-line-data" data-line-start="21" data-line-end="27">3.1 ARM Cortex-M0+ Architecture Basics<br>
+3.2 Register Usage &amp; Conventions<br>
+3.3 Simple Return Values<br>
+3.4 Addition Operations<br>
+3.5 Logical Operations (AND, OR, NOT)<br>
+3.6 Shift Operations (LSL, LSR, ASR)</p>
+<h3 class="code-line has-line-data" data-line-start="28" data-line-end="29"><a id="Part_4_Logic_Verification_Programs_Programs_2030_28"></a>Part 4: Logic Verification Programs (Programs 20-30)</h3>
+<p class="has-line-data" data-line-start="29" data-line-end="34">4.1 Boolean Logic Fundamentals<br>
+4.2 De Morgan’s Theorem Verification<br>
+4.3 XOR, OR, AND, NAND, NOR Operations<br>
+4.4 Condition Code Testing (EQ, LO, HI)<br>
+4.5 Flag Bit Reading from PSR</p>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="37" data-line-end="38"><a id="Part_1_Foundation_Concepts_37"></a>Part 1: Foundation Concepts</h2>
+<h3 class="code-line has-line-data" data-line-start="39" data-line-end="40"><a id="11_Raspberry_Pi_Pico_Hardware_Overview_39"></a>1.1 Raspberry Pi Pico Hardware Overview</h3>
+<p class="has-line-data" data-line-start="41" data-line-end="42">The <strong>Raspberry Pi Pico</strong> is a microcontroller board built around the RP2040 chip, featuring a dual-core ARM Cortex-M0+ processor. For these labs, you’re using the non-WiFi variant.</p>
+<p class="has-line-data" data-line-start="43" data-line-end="44"><strong>Key Hardware Specifications:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="44" data-line-end="45"><strong>Processor</strong>: Dual-core ARM Cortex-M0+ @ 133 MHz</li>
+<li class="has-line-data" data-line-start="45" data-line-end="46"><strong>Memory</strong>: 264KB on-chip SRAM</li>
+<li class="has-line-data" data-line-start="46" data-line-end="47"><strong>GPIO Pins</strong>: 26 multi-function GPIO pins (GP0-GP25)</li>
+<li class="has-line-data" data-line-start="47" data-line-end="48"><strong>Built-in LED</strong>: Connected to GP25 (referenced as <code>LED_BUILTIN</code>)</li>
+<li class="has-line-data" data-line-start="48" data-line-end="50"><strong>Programming</strong>: Via USB using Arduino IDE or MicroPython</li>
+</ul>
+<p class="has-line-data" data-line-start="50" data-line-end="51"><strong>Pin Numbering System:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="51" data-line-end="52">GPxx (e.g., GP4, GP16) refers to GPIO pin numbers</li>
+<li class="has-line-data" data-line-start="52" data-line-end="53">Physical pin numbers on the board differ from GPIO numbers</li>
+<li class="has-line-data" data-line-start="53" data-line-end="55">Always use GPIO numbers in your code</li>
+</ul>
+<blockquote>
+<p class="has-line-data" data-line-start="55" data-line-end="56">📌 <strong>Exam Tip:</strong> Know the difference between GPIO pin numbers and physical pin positions. The exam may ask you to identify which GPIO pins are used in a given circuit diagram.</p>
+</blockquote>
+<h3 class="code-line has-line-data" data-line-start="57" data-line-end="58"><a id="12_GPIO_Pin_Control_Fundamentals_57"></a>1.2 GPIO Pin Control Fundamentals</h3>
+<p class="has-line-data" data-line-start="59" data-line-end="60"><strong>GPIO (General Purpose Input/Output)</strong> pins can be configured as either inputs or outputs. For LED control, we configure them as outputs.</p>
+<p class="has-line-data" data-line-start="61" data-line-end="62"><strong>Three Essential Functions:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="64" data-line-end="68"><span class="hljs-built_in">pinMode</span>(pin, mode);        <span class="hljs-comment">// Configure pin as INPUT or OUTPUT</span>
+<span class="hljs-built_in">digitalWrite</span>(pin, state);  <span class="hljs-comment">// Set pin HIGH (3.3V) or LOW (0V)</span>
+<span class="hljs-built_in">delay</span>(milliseconds);       <span class="hljs-comment">// Pause execution</span>
+</code></pre>
+<p class="has-line-data" data-line-start="69" data-line-end="70"><strong>Electrical Characteristics:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="70" data-line-end="71">HIGH state: 3.3V (not 5V like Arduino!)</li>
+<li class="has-line-data" data-line-start="71" data-line-end="72">LOW state: 0V (GND)</li>
+<li class="has-line-data" data-line-start="72" data-line-end="73">Maximum current per pin: 12mA (source), 12mA (sink)</li>
+<li class="has-line-data" data-line-start="73" data-line-end="75">Use current-limiting resistors (typically 220Ω-330Ω) with LEDs</li>
+</ul>
+<p class="has-line-data" data-line-start="75" data-line-end="76"><strong>LED Connection:</strong></p>
+<pre><code class="has-line-data" data-line-start="77" data-line-end="79">Pico GPIO → [220Ω Resistor] → [LED Anode(+)] → [LED Cathode(-)] → GND
+</code></pre>
+<blockquote>
+<p class="has-line-data" data-line-start="80" data-line-end="81">📌 <strong>Exam Tip:</strong> Remember that delay() is a <strong>blocking</strong> function — nothing else happens while the delay is active. This is important for understanding program behavior.</p>
+</blockquote>
+<h3 class="code-line has-line-data" data-line-start="82" data-line-end="83"><a id="13_Arduino_IDE_Setup_Serial_Monitor_82"></a>1.3 Arduino IDE Setup &amp; Serial Monitor</h3>
+<p class="has-line-data" data-line-start="84" data-line-end="85"><strong>Serial Communication</strong> allows the Pico to send data back to your computer for debugging.</p>
+<pre><code class="has-line-data language-cpp" data-line-start="87" data-line-end="96"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  Serial.<span class="hljs-built_in">begin</span>(<span class="hljs-number">9600</span>);  <span class="hljs-comment">// Initialize at 9600 baud rate</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;Hello&quot;</span>);  <span class="hljs-comment">// Send text with newline</span>
+  Serial.<span class="hljs-built_in">print</span>(value);      <span class="hljs-comment">// Send without newline</span>
+}
+</code></pre>
+<p class="has-line-data" data-line-start="97" data-line-end="98"><strong>Common Serial Functions:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="98" data-line-end="99"><code>Serial.begin(baudRate)</code> — Initialize (9600 is standard)</li>
+<li class="has-line-data" data-line-start="99" data-line-end="100"><code>Serial.println(text)</code> — Send text with newline</li>
+<li class="has-line-data" data-line-start="100" data-line-end="101"><code>Serial.print(text)</code> — Send text without newline</li>
+<li class="has-line-data" data-line-start="101" data-line-end="102"><code>Serial.available()</code> — Check if data is waiting to be read</li>
+<li class="has-line-data" data-line-start="102" data-line-end="103"><code>Serial.parseInt()</code> — Read an integer from serial input</li>
+<li class="has-line-data" data-line-start="103" data-line-end="105"><code>Serial.read()</code> — Read one byte</li>
+</ul>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="107" data-line-end="108"><a id="Part_2_LED_Programming_Programs_19_107"></a>Part 2: LED Programming (Programs 1-9)</h2>
+<h3 class="code-line has-line-data" data-line-start="109" data-line-end="110"><a id="Program_1_Blink_2_Alternate_LEDs_3s_5s_delay_109"></a>Program 1: Blink 2 Alternate LEDs (3s &amp; 5s delay)</h3>
+<p class="has-line-data" data-line-start="111" data-line-end="112"><strong>Question:</strong> Write a program to blink 2 alternate LEDs out of 4 LEDs with delay of 3 and 5 seconds respectively.</p>
+<p class="has-line-data" data-line-start="113" data-line-end="114"><strong>Concept:</strong> Group control — turning multiple pins ON/OFF together in patterns.</p>
+<pre><code class="has-line-data language-cpp" data-line-start="116" data-line-end="138"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">22</span>};  <span class="hljs-comment">// 4 GPIO pins for 4 LEDs</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);  <span class="hljs-comment">// Set all as OUTPUT</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// Group A (first two) ON, Group B (last two) OFF</span>
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">0</span>], HIGH); 
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">1</span>], HIGH);
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">2</span>], LOW);  
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">3</span>], LOW);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">3000</span>);  <span class="hljs-comment">// 3 seconds</span>
+  
+  <span class="hljs-comment">// Group B ON, Group A OFF</span>
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">0</span>], LOW);  
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">1</span>], LOW);
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">2</span>], HIGH); 
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">3</span>], HIGH);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">5000</span>);  <span class="hljs-comment">// 5 seconds</span>
+}
+</code></pre>
+<p class="has-line-data" data-line-start="139" data-line-end="140"><strong>Key Learning Points:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="140" data-line-end="141">Arrays store multiple pin numbers for cleaner code</li>
+<li class="has-line-data" data-line-start="141" data-line-end="142">Range-based for loop (<code>for (int p : pins)</code>) iterates through all array elements</li>
+<li class="has-line-data" data-line-start="142" data-line-end="144">Alternating patterns require explicit HIGH/LOW states for each group</li>
+</ul>
+<blockquote>
+<p class="has-line-data" data-line-start="144" data-line-end="145">📌 <strong>Exam Tip:</strong> When the question says “2 alternate LEDs out of 4,” interpret it as two groups of 2 LEDs each, alternating between which group is ON.</p>
+</blockquote>
+<h3 class="code-line has-line-data" data-line-start="146" data-line-end="147"><a id="Program_2_Blink_4_LEDs_Simultaneously_1_5_9_21_146"></a>Program 2: Blink 4 LEDs Simultaneously (1, 5, 9, 21)</h3>
+<p class="has-line-data" data-line-start="148" data-line-end="149"><strong>Question:</strong> Write a program to blink 4 LEDs at a time using 1, 5, 9 and 21 GPIO pins.</p>
+<pre><code class="has-line-data language-cpp" data-line-start="151" data-line-end="167"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">9</span>, <span class="hljs-number">21</span>};
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// All ON</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">digitalWrite</span>(p, HIGH);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+  
+  <span class="hljs-comment">// All OFF</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">digitalWrite</span>(p, LOW);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+}
+</code></pre>
+<p class="has-line-data" data-line-start="168" data-line-end="169"><strong>Concept:</strong> Simultaneous control — all LEDs change state together.</p>
+<h3 class="code-line has-line-data" data-line-start="170" data-line-end="171"><a id="Program_3_Binary_Counter_1151_with_2s_Pause_170"></a>Program 3: Binary Counter 1→15→1 with 2s Pause</h3>
+<p class="has-line-data" data-line-start="172" data-line-end="173"><strong>Question:</strong> Display numbers in increasing and decreasing order from 1 to 15 in binary form using 4 LEDs, with 1 sec delay. When reaching max (15) or min (1), wait 2 seconds.</p>
+<p class="has-line-data" data-line-start="174" data-line-end="175"><strong>Binary Representation with 4 LEDs:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="175" data-line-end="176">LED positions represent bit values: 2³ 2² 2¹ 2⁰ (MSB to LSB)</li>
+<li class="has-line-data" data-line-start="176" data-line-end="177">Number 5 = 0101 → LEDs show: OFF ON OFF ON</li>
+<li class="has-line-data" data-line-start="177" data-line-end="179">Number 12 = 1100 → LEDs show: ON ON OFF OFF</li>
+</ul>
+<pre><code class="has-line-data language-cpp" data-line-start="180" data-line-end="209"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};  <span class="hljs-comment">// LSB (2⁰) to MSB (2³)</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showBinary</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+    <span class="hljs-comment">// Extract bit i from number n</span>
+    <span class="hljs-type">int</span> bit = (n &gt;&gt; i) &amp; <span class="hljs-number">1</span>;  <span class="hljs-comment">// Right shift n by i, mask with 1</span>
+    <span class="hljs-built_in">digitalWrite</span>(pins[i], bit);
+  }
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// Count up 1 → 15</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">15</span>; i++) {
+    <span class="hljs-built_in">showBinary</span>(i);
+    <span class="hljs-keyword">if</span> (i == <span class="hljs-number">15</span>) <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);  <span class="hljs-comment">// Extra pause at max</span>
+  }
+  
+  <span class="hljs-comment">// Count down 14 → 1</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">14</span>; i &gt;= <span class="hljs-number">1</span>; i--) {
+    <span class="hljs-built_in">showBinary</span>(i);
+    <span class="hljs-keyword">if</span> (i == <span class="hljs-number">1</span>) <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);  <span class="hljs-comment">// Extra pause at min</span>
+  }
+}
+</code></pre>
+<p class="has-line-data" data-line-start="210" data-line-end="211"><strong>Understanding Bit Manipulation:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="211" data-line-end="212"><code>&gt;&gt;</code> is right shift: <code>5 &gt;&gt; 1</code> = 2 (binary: 101 → 10)</li>
+<li class="has-line-data" data-line-start="212" data-line-end="213"><code>&amp;</code> is bitwise AND: <code>5 &amp; 1</code> = 1 (binary: 101 &amp; 001 = 001)</li>
+<li class="has-line-data" data-line-start="213" data-line-end="215">Combined: <code>(n &gt;&gt; i) &amp; 1</code> extracts the i-th bit of n</li>
+</ul>
+<p class="has-line-data" data-line-start="215" data-line-end="216"><strong>Example for number 11 (binary 1011):</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="216" data-line-end="217">i=0: (11 &gt;&gt; 0) &amp; 1 = 11 &amp; 1 = 1 (bit 0 = 1) → LED 0 ON</li>
+<li class="has-line-data" data-line-start="217" data-line-end="218">i=1: (11 &gt;&gt; 1) &amp; 1 = 5 &amp; 1 = 1 (bit 1 = 1) → LED 1 ON</li>
+<li class="has-line-data" data-line-start="218" data-line-end="219">i=2: (11 &gt;&gt; 2) &amp; 1 = 2 &amp; 1 = 0 (bit 2 = 0) → LED 2 OFF</li>
+<li class="has-line-data" data-line-start="219" data-line-end="221">i=3: (11 &gt;&gt; 3) &amp; 1 = 1 &amp; 1 = 1 (bit 3 = 1) → LED 3 ON</li>
+</ul>
+<blockquote>
+<p class="has-line-data" data-line-start="221" data-line-end="222">📌 <strong>Exam Tip:</strong> Bit manipulation is crucial. Practice extracting individual bits using shift and mask operations. This pattern appears in many embedded systems questions.</p>
+</blockquote>
+<h3 class="code-line has-line-data" data-line-start="223" data-line-end="224"><a id="Program_4_Blink_4_LEDs_at_Different_Times_16_13_7_4_223"></a>Program 4: Blink 4 LEDs at Different Times (16, 13, 7, 4)</h3>
+<p class="has-line-data" data-line-start="225" data-line-end="226"><strong>Question:</strong> Blink 4 LEDs at different times using GPIO pins 16, 13, 7, and 4 (first two ON when last two OFF).</p>
+<pre><code class="has-line-data language-cpp" data-line-start="228" data-line-end="250"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">16</span>, <span class="hljs-number">13</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>};
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// First two ON, last two OFF</span>
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">0</span>], HIGH);
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">1</span>], HIGH);
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">2</span>], LOW);
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">3</span>], LOW);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+  
+  <span class="hljs-comment">// Last two ON, first two OFF</span>
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">0</span>], LOW);
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">1</span>], LOW);
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">2</span>], HIGH);
+  <span class="hljs-built_in">digitalWrite</span>(pins[<span class="hljs-number">3</span>], HIGH);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+}
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="251" data-line-end="252"><a id="Program_5_Serial_Input_Controls_LED_251"></a>Program 5: Serial Input Controls LED</h3>
+<p class="has-line-data" data-line-start="253" data-line-end="254"><strong>Question:</strong> Listen for serial monitor input and turn ON one of four LEDs when a specific number (1-4) is entered.</p>
+<pre><code class="has-line-data language-cpp" data-line-start="256" data-line-end="284"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">22</span>};
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  Serial.<span class="hljs-built_in">begin</span>(<span class="hljs-number">9600</span>);
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);
+  Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;Enter 1-4 to control LEDs:&quot;</span>);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">if</span> (Serial.<span class="hljs-built_in">available</span>() &gt; <span class="hljs-number">0</span>) {
+    <span class="hljs-type">int</span> num = Serial.<span class="hljs-built_in">parseInt</span>();  <span class="hljs-comment">// Read integer from serial</span>
+    
+    <span class="hljs-keyword">if</span> (num &gt;= <span class="hljs-number">1</span> &amp;&amp; num &lt;= <span class="hljs-number">4</span>) {
+      <span class="hljs-comment">// Turn all OFF first</span>
+      <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">digitalWrite</span>(p, LOW);
+      
+      <span class="hljs-comment">// Turn selected LED ON</span>
+      <span class="hljs-built_in">digitalWrite</span>(pins[num - <span class="hljs-number">1</span>], HIGH);
+      
+      Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;LED &quot;</span>);
+      Serial.<span class="hljs-built_in">print</span>(num);
+      Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot; is ON&quot;</span>);
+    } <span class="hljs-keyword">else</span> {
+      Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;Invalid! Enter 1-4&quot;</span>);
+    }
+  }
+}
+</code></pre>
+<p class="has-line-data" data-line-start="285" data-line-end="286"><strong>Key Concept:</strong> <code>Serial.parseInt()</code> reads characters until it gets a valid integer, then returns it.</p>
+<h3 class="code-line has-line-data" data-line-start="287" data-line-end="288"><a id="Program_6_Blink_4_LEDs_Simultaneously_with_Array_2s_delay_287"></a>Program 6: Blink 4 LEDs Simultaneously with Array (2s delay)</h3>
+<p class="has-line-data" data-line-start="289" data-line-end="290"><strong>Question:</strong> Blink 4 LEDs simultaneously using an array with a delay of 2 sec.</p>
+<pre><code class="has-line-data language-cpp" data-line-start="292" data-line-end="305"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">digitalWrite</span>(p, HIGH);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">digitalWrite</span>(p, LOW);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+}
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="306" data-line-end="307"><a id="Program_7_Chase_Effect_One_Direction_2s_delay_306"></a>Program 7: Chase Effect - One Direction (2s delay)</h3>
+<p class="has-line-data" data-line-start="308" data-line-end="309"><strong>Question:</strong> Display blinking 4 LEDs in one direction with a delay of 2 sec.</p>
+<pre><code class="has-line-data language-cpp" data-line-start="311" data-line-end="327"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+    <span class="hljs-comment">// Turn all OFF</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">digitalWrite</span>(p, LOW);
+    <span class="hljs-comment">// Turn current LED ON</span>
+    <span class="hljs-built_in">digitalWrite</span>(pins[i], HIGH);
+    <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+  }
+}
+</code></pre>
+<p class="has-line-data" data-line-start="328" data-line-end="329"><strong>Pattern:</strong> LED 0 ON → LED 1 ON → LED 2 ON → LED 3 ON → repeat</p>
+<h3 class="code-line has-line-data" data-line-start="330" data-line-end="331"><a id="Program_8_Chase_Effect_Bidirectional_2s_delay_330"></a>Program 8: Chase Effect - Bidirectional (2s delay)</h3>
+<p class="has-line-data" data-line-start="332" data-line-end="333"><strong>Question:</strong> Display blinking 4 LEDs from left to right and vice versa with a delay of 2 sec.</p>
+<pre><code class="has-line-data language-cpp" data-line-start="335" data-line-end="357"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// Left to right (0 → 3)</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">digitalWrite</span>(p, LOW);
+    <span class="hljs-built_in">digitalWrite</span>(pins[i], HIGH);
+    <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+  }
+  
+  <span class="hljs-comment">// Right to left (2 → 0)</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">digitalWrite</span>(p, LOW);
+    <span class="hljs-built_in">digitalWrite</span>(pins[i], HIGH);
+    <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+  }
+}
+</code></pre>
+<p class="has-line-data" data-line-start="358" data-line-end="359"><strong>Note:</strong> The second loop starts at index 2 (not 3) to avoid showing LED 3 twice in a row.</p>
+<h3 class="code-line has-line-data" data-line-start="360" data-line-end="361"><a id="Program_9_Display_OddEven_Numbers_in_Binary_360"></a>Program 9: Display Odd/Even Numbers in Binary</h3>
+<p class="has-line-data" data-line-start="362" data-line-end="363"><strong>Question:</strong> Display odd and even numbers in binary form using 4 LEDs, with 1 sec delay. When reaching max value, wait 2 seconds and start from minimum.</p>
+<p class="has-line-data" data-line-start="364" data-line-end="365"><strong>Odd Numbers Version:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="366" data-line-end="387"><span class="hljs-type">const</span> <span class="hljs-type">int</span> pins[] = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>};
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p : pins) <span class="hljs-built_in">pinMode</span>(p, OUTPUT);
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">showBinary</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+    <span class="hljs-built_in">digitalWrite</span>(pins[i], (n &gt;&gt; i) &amp; <span class="hljs-number">1</span>);
+  }
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// Display odd numbers: 1, 3, 5, 7, 9, 11, 13, 15</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">15</span>; i += <span class="hljs-number">2</span>) {
+    <span class="hljs-built_in">showBinary</span>(i);
+    <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+  }
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);  <span class="hljs-comment">// Pause at max</span>
+}
+</code></pre>
+<p class="has-line-data" data-line-start="388" data-line-end="389"><strong>Even Numbers Version:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="390" data-line-end="399"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-comment">// Display even numbers: 0, 2, 4, 6, 8, 10, 12, 14</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">14</span>; i += <span class="hljs-number">2</span>) {
+    <span class="hljs-built_in">showBinary</span>(i);
+    <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+  }
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);  <span class="hljs-comment">// Pause at max</span>
+}
+</code></pre>
+<blockquote>
+<p class="has-line-data" data-line-start="400" data-line-end="401">📌 <strong>Exam Tip:</strong> For “odd/even” questions, be clear which interpretation is expected. The question paper may specify one or both in a single program using if-else logic.</p>
+</blockquote>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="404" data-line-end="405"><a id="Part_3_ARM_Assembly_Programming_Programs_1019_404"></a>Part 3: ARM Assembly Programming (Programs 10-19)</h2>
+<h3 class="code-line has-line-data" data-line-start="406" data-line-end="407"><a id="31_ARM_CortexM0_Architecture_Basics_406"></a>3.1 ARM Cortex-M0+ Architecture Basics</h3>
+<p class="has-line-data" data-line-start="408" data-line-end="409">The <strong>ARM Cortex-M0+</strong> is a 32-bit RISC processor with a simplified instruction set designed for low-power embedded applications.</p>
+<p class="has-line-data" data-line-start="410" data-line-end="411"><strong>Key Features:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="411" data-line-end="412"><strong>32-bit registers</strong>: r0-r15</li>
+<li class="has-line-data" data-line-start="412" data-line-end="413"><strong>Thumb instruction set</strong>: 16-bit and 32-bit instructions</li>
+<li class="has-line-data" data-line-start="413" data-line-end="414"><strong>Load/Store architecture</strong>: Only LOAD and STORE instructions access memory</li>
+<li class="has-line-data" data-line-start="414" data-line-end="416"><strong>Simple pipeline</strong>: 2-stage pipeline (fetch, decode/execute)</li>
+</ul>
+<p class="has-line-data" data-line-start="416" data-line-end="417"><strong>Register Overview:</strong></p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Register</th>
+<th>Name</th>
+<th>Purpose</th>
+<th>Preserved?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>r0-r3</td>
+<td>Argument/Scratch</td>
+<td>Function arguments &amp; return values</td>
+<td>No</td>
+</tr>
+<tr>
+<td>r4-r11</td>
+<td>Variable</td>
+<td>General purpose</td>
+<td>Yes (callee-saved)</td>
+</tr>
+<tr>
+<td>r12</td>
+<td>IP</td>
+<td>Intra-procedure scratch</td>
+<td>No</td>
+</tr>
+<tr>
+<td>r13</td>
+<td>SP</td>
+<td>Stack Pointer</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>r14</td>
+<td>LR</td>
+<td>Link Register (return address)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>r15</td>
+<td>PC</td>
+<td>Program Counter</td>
+<td>Special</td>
+</tr>
+</tbody>
+</table>
+<p class="has-line-data" data-line-start="427" data-line-end="428"><strong>Calling Convention:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="428" data-line-end="429"><strong>Arguments</strong>: Pass in r0, r1, r2, r3 (overflow goes on stack)</li>
+<li class="has-line-data" data-line-start="429" data-line-end="430"><strong>Return value</strong>: Place in r0</li>
+<li class="has-line-data" data-line-start="430" data-line-end="432"><strong>Return instruction</strong>: <code>bx lr</code> (branch to link register)</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="432" data-line-end="433"><a id="32_Assembly_File_Structure_432"></a>3.2 Assembly File Structure</h3>
+<p class="has-line-data" data-line-start="434" data-line-end="435">All assembly programs for Programs 10-19 follow this structure:</p>
+<pre><code class="has-line-data language-assembly" data-line-start="437" data-line-end="444">.global my_asm_fn    ; Make function visible to C
+.text                ; Code section
+my_asm_fn:
+  ; Your code here
+  bx lr              ; Return to caller
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="445" data-line-end="446"><strong>C Wrapper (same for all):</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="447" data-line-end="464"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> { <span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">my_asm_fn</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span></span>; }
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{ 
+  Serial.<span class="hljs-built_in">begin</span>(<span class="hljs-number">9600</span>); 
+  <span class="hljs-built_in">pinMode</span>(LED_BUILTIN, OUTPUT); 
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>();
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Result: &quot;</span>);
+  Serial.<span class="hljs-built_in">println</span>(result);
+  
+  <span class="hljs-built_in">digitalWrite</span>(LED_BUILTIN, HIGH); <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+  <span class="hljs-built_in">digitalWrite</span>(LED_BUILTIN, LOW);  <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);
+}
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="465" data-line-end="466"><a id="Program_10_Return_Constant_200_Sum_of_Three_Constants_465"></a>Program 10: Return Constant 200 / Sum of Three Constants</h3>
+<p class="has-line-data" data-line-start="467" data-line-end="468"><strong>Question 10a:</strong> Write an assembly function that returns 200 back to the C program.</p>
+<pre><code class="has-line-data language-assembly" data-line-start="470" data-line-end="477">.global my_asm_fn
+.text
+my_asm_fn:
+  mov r0, #200    ; Load 200 into r0 (return register)
+  bx  lr          ; Return to caller
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="478" data-line-end="479"><strong>Explanation:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="479" data-line-end="480"><code>mov r0, #200</code> — Move immediate value 200 into register r0</li>
+<li class="has-line-data" data-line-start="480" data-line-end="481"><code>#</code> prefix indicates immediate value (constant)</li>
+<li class="has-line-data" data-line-start="481" data-line-end="482">r0 is the return register by ARM calling convention</li>
+<li class="has-line-data" data-line-start="482" data-line-end="484"><code>bx lr</code> branches to the address in the link register (returns to caller)</li>
+</ul>
+<p class="has-line-data" data-line-start="484" data-line-end="485"><strong>Question 10b:</strong> Return sum of three constants 20, 25, and 40.</p>
+<pre><code class="has-line-data language-assembly" data-line-start="487" data-line-end="498">.global my_asm_fn
+.text
+my_asm_fn:
+  mov r1, #20     ; Load 20 into r1
+  mov r2, #25     ; Load 25 into r2
+  mov r3, #40     ; Load 40 into r3
+  add r0, r1, r2  ; r0 = r1 + r2 = 20 + 25 = 45
+  add r0, r0, r3  ; r0 = r0 + r3 = 45 + 40 = 85
+  bx  lr          ; Return r0 (85)
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="499" data-line-end="500"><strong>ADD Instruction Format:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="500" data-line-end="501"><code>add rd, rn, operand2</code> — rd = rn + operand2</li>
+<li class="has-line-data" data-line-start="501" data-line-end="503">operand2 can be a register or immediate value</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="503" data-line-end="504"><a id="Program_11_Sum_of_Four_Constants_10_15_25_35_85_503"></a>Program 11: Sum of Four Constants (10 + 15 + 25 + 35 = 85)</h3>
+<pre><code class="has-line-data language-assembly" data-line-start="506" data-line-end="519">.global my_asm_fn
+.text
+my_asm_fn:
+  mov r1, #10
+  mov r2, #15
+  mov r3, #25
+  mov r4, #35
+  add r0, r1, r2   ; r0 = 10 + 15 = 25
+  add r0, r0, r3   ; r0 = 25 + 25 = 50
+  add r0, r0, r4   ; r0 = 50 + 35 = 85
+  bx  lr
+.end
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="520" data-line-end="521"><a id="Program_12_Sum_of_Five_Constants_10_20_30_40_50_150_520"></a>Program 12: Sum of Five Constants (10 + 20 + 30 + 40 + 50 = 150)</h3>
+<pre><code class="has-line-data language-assembly" data-line-start="523" data-line-end="538">.global my_asm_fn
+.text
+my_asm_fn:
+  mov r1, #10
+  mov r2, #20
+  mov r3, #30
+  mov r4, #40
+  mov r5, #50
+  add r0, r1, r2   ; r0 = 10 + 20 = 30
+  add r0, r0, r3   ; r0 = 30 + 30 = 60
+  add r0, r0, r4   ; r0 = 60 + 40 = 100
+  add r0, r0, r5   ; r0 = 100 + 50 = 150
+  bx  lr
+.end
+</code></pre>
+<blockquote>
+<p class="has-line-data" data-line-start="539" data-line-end="540">📌 <strong>Exam Tip:</strong> Notice the pattern: first ADD uses two registers (r1, r2), subsequent ADDs accumulate into r0. This is a common assembly pattern for summing multiple values.</p>
+</blockquote>
+<h3 class="code-line has-line-data" data-line-start="541" data-line-end="542"><a id="Program_13_Add_Three_Input_Parameters_from_C_541"></a>Program 13: Add Three Input Parameters from C</h3>
+<p class="has-line-data" data-line-start="543" data-line-end="544"><strong>Question:</strong> Take three constants as inputs from C program, perform ADD operation, return result.</p>
+<p class="has-line-data" data-line-start="545" data-line-end="546"><strong>C Code:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="547" data-line-end="556"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> { <span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">my_asm_fn</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> c)</span></span>; }
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(<span class="hljs-number">10</span>, <span class="hljs-number">25</span>, <span class="hljs-number">40</span>);  <span class="hljs-comment">// Should return 75</span>
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Result: &quot;</span>);
+  Serial.<span class="hljs-built_in">println</span>(result);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+}
+</code></pre>
+<p class="has-line-data" data-line-start="557" data-line-end="558"><strong>Assembly:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="559" data-line-end="568">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=a, r1=b, r2=c (ARM calling convention)
+  add r0, r0, r1   ; r0 = a + b
+  add r0, r0, r2   ; r0 = (a+b) + c
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="569" data-line-end="570"><strong>Key Point:</strong> Parameters automatically arrive in r0, r1, r2 due to ARM calling convention.</p>
+<h3 class="code-line has-line-data" data-line-start="571" data-line-end="572"><a id="Program_14_AND_OR_Operations_on_Two_Parameters_571"></a>Program 14: AND &amp; OR Operations on Two Parameters</h3>
+<p class="has-line-data" data-line-start="573" data-line-end="574"><strong>Question:</strong> Take two input parameters, perform AND and OR logic operations, return result.</p>
+<p class="has-line-data" data-line-start="575" data-line-end="576"><strong>Interpretation:</strong> Since we can only return one value, let’s assume the question wants AND result.</p>
+<p class="has-line-data" data-line-start="577" data-line-end="578"><strong>C Code:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="579" data-line-end="589"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> { <span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">my_asm_fn</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b)</span></span>; }
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(<span class="hljs-number">0b1100</span>, <span class="hljs-number">0b1010</span>);  
+  <span class="hljs-comment">// AND result: 1100 &amp; 1010 = 1000 (8 in decimal)</span>
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;AND Result: &quot;</span>);
+  Serial.<span class="hljs-built_in">println</span>(result, BIN);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+}
+</code></pre>
+<p class="has-line-data" data-line-start="590" data-line-end="591"><strong>Assembly (AND version):</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="592" data-line-end="600">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=a, r1=b
+  and r0, r0, r1   ; r0 = a &amp; b
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="601" data-line-end="602"><strong>Assembly (OR version):</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="603" data-line-end="611">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=a, r1=b
+  orr r0, r0, r1   ; r0 = a | b (note: orr, not or!)
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="612" data-line-end="613"><strong>Note:</strong> In ARM assembly, the OR instruction is spelled <strong>orr</strong> (not “or”).</p>
+<h3 class="code-line has-line-data" data-line-start="614" data-line-end="615"><a id="Program_15_Bitwise_NOT_Operation_614"></a>Program 15: Bitwise NOT Operation</h3>
+<p class="has-line-data" data-line-start="616" data-line-end="617"><strong>Question:</strong> Take one input parameter, perform bitwise NOT, return result.</p>
+<pre><code class="has-line-data language-assembly" data-line-start="619" data-line-end="627">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Input: r0
+  mvn r0, r0      ; Move NOT - r0 = ~r0
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="628" data-line-end="629"><strong>MVN Instruction:</strong> “Move NOT” — inverts all bits</p>
+<ul>
+<li class="has-line-data" data-line-start="629" data-line-end="631">Example: NOT 0x0000000F = 0xFFFFFFF0</li>
+</ul>
+<p class="has-line-data" data-line-start="631" data-line-end="632"><strong>C Test Code:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="633" data-line-end="641"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(<span class="hljs-number">0b00001111</span>);
+  <span class="hljs-comment">// Result: 0b11110000... (32-bit, so 0xFFFFFFF0)</span>
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;NOT Result: 0x&quot;</span>);
+  Serial.<span class="hljs-built_in">println</span>(result, HEX);
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+}
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="642" data-line-end="643"><a id="Program_16_Logical_Shift_Right_5_Times_642"></a>Program 16: Logical Shift Right 5 Times</h3>
+<p class="has-line-data" data-line-start="644" data-line-end="645"><strong>Question:</strong> Perform 5 times logical shift right operation on one parameter.</p>
+<p class="has-line-data" data-line-start="646" data-line-end="647"><strong>Logical Shift Right (LSR):</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="647" data-line-end="648">Shifts bits to the right</li>
+<li class="has-line-data" data-line-start="648" data-line-end="649">Fills vacated bits on the left with 0</li>
+<li class="has-line-data" data-line-start="649" data-line-end="651">Example: <code>0b11010000 LSR 5 = 0b00000110</code></li>
+</ul>
+<pre><code class="has-line-data language-assembly" data-line-start="652" data-line-end="660">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Input: r0
+  lsr r0, r0, #5   ; Logical shift right by 5 positions
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="661" data-line-end="662"><strong>Alternative (shift 5 times individually):</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="663" data-line-end="671">my_asm_fn:
+  lsr r0, r0, #1
+  lsr r0, r0, #1
+  lsr r0, r0, #1
+  lsr r0, r0, #1
+  lsr r0, r0, #1
+  bx  lr
+</code></pre>
+<p class="has-line-data" data-line-start="672" data-line-end="673"><strong>Example:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="673" data-line-end="674">Input: 160 (0b10100000)</li>
+<li class="has-line-data" data-line-start="674" data-line-end="676">After LSR 5: 5 (0b00000101)</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="676" data-line-end="677"><a id="Program_17_Logical_Shift_Left_4_Times_676"></a>Program 17: Logical Shift Left 4 Times</h3>
+<p class="has-line-data" data-line-start="678" data-line-end="679"><strong>Question:</strong> Perform 4 times logical shift left operation on one parameter.</p>
+<pre><code class="has-line-data language-assembly" data-line-start="681" data-line-end="689">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Input: r0
+  lsl r0, r0, #4   ; Logical shift left by 4 positions
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="690" data-line-end="691"><strong>Logical Shift Left (LSL):</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="691" data-line-end="692">Shifts bits to the left</li>
+<li class="has-line-data" data-line-start="692" data-line-end="693">Fills vacated bits on the right with 0</li>
+<li class="has-line-data" data-line-start="693" data-line-end="695">Example: <code>0b00001010 LSL 4 = 0b10100000</code></li>
+</ul>
+<p class="has-line-data" data-line-start="695" data-line-end="696"><strong>Example:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="696" data-line-end="697">Input: 10 (0b00001010)</li>
+<li class="has-line-data" data-line-start="697" data-line-end="698">After LSL 4: 160 (0b10100000)</li>
+<li class="has-line-data" data-line-start="698" data-line-end="700">Mathematical effect: multiplication by 2⁴ = 16</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="700" data-line-end="701"><a id="Program_18_LSR_2_Times_Then_LSL_4_Times_700"></a>Program 18: LSR 2 Times, Then LSL 4 Times</h3>
+<p class="has-line-data" data-line-start="702" data-line-end="703"><strong>Question:</strong> Perform 2 times logical shift right and 4 times logical shift left on one parameter.</p>
+<pre><code class="has-line-data language-assembly" data-line-start="705" data-line-end="714">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Input: r0
+  lsr r0, r0, #2   ; Shift right by 2
+  lsl r0, r0, #4   ; Shift left by 4
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="715" data-line-end="716"><strong>Net Effect Analysis:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="716" data-line-end="717">LSR 2 divides by 4</li>
+<li class="has-line-data" data-line-start="717" data-line-end="718">LSL 4 multiplies by 16</li>
+<li class="has-line-data" data-line-start="718" data-line-end="720">Net: multiply by 4 (with loss of 2 LSBs from the initial LSR)</li>
+</ul>
+<p class="has-line-data" data-line-start="720" data-line-end="721"><strong>Example:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="721" data-line-end="722">Input: 25 (0b00011001)</li>
+<li class="has-line-data" data-line-start="722" data-line-end="723">After LSR 2: 6 (0b00000110) — lost bits 01</li>
+<li class="has-line-data" data-line-start="723" data-line-end="725">After LSL 4: 96 (0b01100000)</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="725" data-line-end="726"><a id="Program_19_Arithmetic_Shift_Right_8_Times_on_Signed_Number_725"></a>Program 19: Arithmetic Shift Right 8 Times on Signed Number</h3>
+<p class="has-line-data" data-line-start="727" data-line-end="728"><strong>Question:</strong> Perform 8 times arithmetic shift right operation on one signed (negative) parameter.</p>
+<p class="has-line-data" data-line-start="729" data-line-end="730"><strong>Arithmetic Shift Right (ASR):</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="730" data-line-end="731">Like LSR, but preserves sign bit</li>
+<li class="has-line-data" data-line-start="731" data-line-end="732">Fills vacated bits with the sign bit (bit 31)</li>
+<li class="has-line-data" data-line-start="732" data-line-end="734">Used for signed division by powers of 2</li>
+</ul>
+<pre><code class="has-line-data language-assembly" data-line-start="735" data-line-end="743">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Input: r0 (signed)
+  asr r0, r0, #8   ; Arithmetic shift right by 8
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="744" data-line-end="745"><strong>Example with Negative Number:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="745" data-line-end="746">Input: -256 (0xFFFFFF00 in 32-bit two’s complement)</li>
+<li class="has-line-data" data-line-start="746" data-line-end="747">After ASR 8: -1 (0xFFFFFFFF)</li>
+<li class="has-line-data" data-line-start="747" data-line-end="749">Sign bit preserved throughout</li>
+</ul>
+<p class="has-line-data" data-line-start="749" data-line-end="750"><strong>Difference from LSR:</strong></p>
+<pre><code class="has-line-data" data-line-start="751" data-line-end="754">LSR: 0xFFFFFF00 &gt;&gt; 8 = 0x00FFFFFF (positive, wrong!)
+ASR: 0xFFFFFF00 &gt;&gt; 8 = 0xFFFFFFFF (negative, correct!)
+</code></pre>
+<blockquote>
+<p class="has-line-data" data-line-start="755" data-line-end="756">📌 <strong>Exam Tip:</strong> Know the difference between LSR (logical) and ASR (arithmetic). LSR is for unsigned, ASR is for signed numbers. Exam questions will test this distinction.</p>
+</blockquote>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="759" data-line-end="760"><a id="Part_4_Logic_Verification_Programs_Programs_2030_759"></a>Part 4: Logic Verification Programs (Programs 20-30)</h2>
+<h3 class="code-line has-line-data" data-line-start="761" data-line-end="762"><a id="41_Boolean_Logic_Fundamentals_761"></a>4.1 Boolean Logic Fundamentals</h3>
+<p class="has-line-data" data-line-start="763" data-line-end="764">These programs verify fundamental Boolean logic identities and operations using assembly.</p>
+<p class="has-line-data" data-line-start="765" data-line-end="766"><strong>Common C Wrapper Pattern:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="767" data-line-end="786"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> { 
+  <span class="hljs-function"><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title">my_asm_fn</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b)</span></span>; 
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>{ Serial.<span class="hljs-built_in">begin</span>(<span class="hljs-number">9600</span>); }
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a = <span class="hljs-number">0b1100</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b = <span class="hljs-number">0b1010</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(a, b);
+  
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Input A: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(a, BIN);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Input B: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(b, BIN);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Result: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(result, BIN);
+  
+  <span class="hljs-comment">// Verification logic here</span>
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">3000</span>);
+}
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="787" data-line-end="788"><a id="Program_20_De_Morgans_Theorem_Verification_787"></a>Program 20: De Morgan’s Theorem Verification</h3>
+<p class="has-line-data" data-line-start="789" data-line-end="790"><strong>Question:</strong> Verify De Morgan’s theorem with two inputs.</p>
+<p class="has-line-data" data-line-start="791" data-line-end="792"><strong>De Morgan’s Theorems:</strong></p>
+<ol>
+<li class="has-line-data" data-line-start="792" data-line-end="793">NOT (A AND B) = (NOT A) OR (NOT B)</li>
+<li class="has-line-data" data-line-start="793" data-line-end="795">NOT (A OR B) = (NOT A) AND (NOT B)</li>
+</ol>
+<p class="has-line-data" data-line-start="795" data-line-end="796"><strong>Assembly (Theorem 1):</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="797" data-line-end="817">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=A, r1=B
+  ; Calculate LHS: NOT(A AND B)
+  and r2, r0, r1   ; r2 = A AND B
+  mvn r2, r2       ; r2 = NOT(r2) = NOT(A AND B)
+  
+  ; Calculate RHS: (NOT A) OR (NOT B)
+  mvn r3, r0       ; r3 = NOT A
+  mvn r4, r1       ; r4 = NOT B
+  orr r3, r3, r4   ; r3 = (NOT A) OR (NOT B)
+  
+  ; Compare: if r2 == r3, theorem verified
+  cmp r2, r3
+  mov r0, #0       ; Assume false
+  moveq r0, #1     ; Set to 1 if equal
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="818" data-line-end="819"><strong>C Verification:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="820" data-line-end="834"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a = <span class="hljs-number">0b1100</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b = <span class="hljs-number">0b1010</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(a, b);
+  
+  <span class="hljs-keyword">if</span> (result == <span class="hljs-number">1</span>) {
+    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;De Morgan&#x27;s theorem is VERIFIED&quot;</span>);
+  } <span class="hljs-keyword">else</span> {
+    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;De Morgan&#x27;s theorem is NOT verified&quot;</span>);
+  }
+  
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">3000</span>);
+}
+</code></pre>
+<blockquote>
+<p class="has-line-data" data-line-start="835" data-line-end="836">📌 <strong>Exam Tip:</strong> The exam may ask for either theorem 1 or 2, or both. Be prepared to implement both in assembly.</p>
+</blockquote>
+<h3 class="code-line has-line-data" data-line-start="837" data-line-end="838"><a id="Program_21_XOR_Operation_Verification_837"></a>Program 21: XOR Operation Verification</h3>
+<p class="has-line-data" data-line-start="839" data-line-end="840"><strong>Question:</strong> Perform XOR operation with two inputs. If result is TRUE, print verification message.</p>
+<p class="has-line-data" data-line-start="841" data-line-end="842"><strong>XOR Truth Table:</strong></p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>A XOR B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p class="has-line-data" data-line-start="849" data-line-end="850"><strong>Assembly:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="851" data-line-end="859">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=A, r1=B
+  eor r0, r0, r1   ; Exclusive OR (XOR)
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="860" data-line-end="861"><strong>C Code:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="862" data-line-end="880"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a = <span class="hljs-number">0b1100</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b = <span class="hljs-number">0b1010</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(a, b);
+  
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;A: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(a, BIN);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;B: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(b, BIN);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;XOR: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(result, BIN);
+  
+  <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) {
+    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;XOR logic expression is VERIFIED&quot;</span>);
+  } <span class="hljs-keyword">else</span> {
+    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;XOR logic expression is NOT verified&quot;</span>);
+  }
+  
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">3000</span>);
+}
+</code></pre>
+<p class="has-line-data" data-line-start="881" data-line-end="882"><strong>Note:</strong> XOR instruction in ARM is <strong>eor</strong> (exclusive OR), not “xor”.</p>
+<h3 class="code-line has-line-data" data-line-start="883" data-line-end="884"><a id="Program_22_ADD_Two_Unsigned_Parameters_883"></a>Program 22: ADD Two Unsigned Parameters</h3>
+<p class="has-line-data" data-line-start="885" data-line-end="886"><strong>Question:</strong> Write ARM assembly to take two unsigned parameters and perform ADD operation.</p>
+<pre><code class="has-line-data language-assembly" data-line-start="888" data-line-end="896">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=A, r1=B
+  add r0, r0, r1   ; r0 = A + B
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="897" data-line-end="898"><strong>Simple and straightforward!</strong></p>
+<h3 class="code-line has-line-data" data-line-start="899" data-line-end="900"><a id="Program_23_Read_Flag_Bits_from_PSR_899"></a>Program 23: Read Flag Bits from PSR</h3>
+<p class="has-line-data" data-line-start="901" data-line-end="902"><strong>Question:</strong> Read the flag bits from the Program Status Register (PSR). Return both outputs to main function.</p>
+<p class="has-line-data" data-line-start="903" data-line-end="904"><strong>PSR Flag Bits:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="904" data-line-end="905"><strong>N (Negative)</strong>: Bit 31 — Result was negative</li>
+<li class="has-line-data" data-line-start="905" data-line-end="906"><strong>Z (Zero)</strong>: Bit 30 — Result was zero</li>
+<li class="has-line-data" data-line-start="906" data-line-end="907"><strong>C (Carry)</strong>: Bit 29 — Carry out occurred</li>
+<li class="has-line-data" data-line-start="907" data-line-end="909"><strong>V (Overflow)</strong>: Bit 28 — Signed overflow occurred</li>
+</ul>
+<p class="has-line-data" data-line-start="909" data-line-end="910"><strong>Assembly:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="911" data-line-end="918">.global my_asm_fn
+.text
+my_asm_fn:
+  mrs r0, apsr     ; Move special register APSR to r0
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="919" data-line-end="920"><strong>C Code to Extract Flags:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="921" data-line-end="937"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> psr = <span class="hljs-built_in">my_asm_fn</span>();
+  
+  <span class="hljs-type">int</span> N = (psr &gt;&gt; <span class="hljs-number">31</span>) &amp; <span class="hljs-number">1</span>;  <span class="hljs-comment">// Negative flag</span>
+  <span class="hljs-type">int</span> Z = (psr &gt;&gt; <span class="hljs-number">30</span>) &amp; <span class="hljs-number">1</span>;  <span class="hljs-comment">// Zero flag</span>
+  <span class="hljs-type">int</span> C = (psr &gt;&gt; <span class="hljs-number">29</span>) &amp; <span class="hljs-number">1</span>;  <span class="hljs-comment">// Carry flag</span>
+  <span class="hljs-type">int</span> V = (psr &gt;&gt; <span class="hljs-number">28</span>) &amp; <span class="hljs-number">1</span>;  <span class="hljs-comment">// Overflow flag</span>
+  
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;N=&quot;</span>); Serial.<span class="hljs-built_in">print</span>(N);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; Z=&quot;</span>); Serial.<span class="hljs-built_in">print</span>(Z);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; C=&quot;</span>); Serial.<span class="hljs-built_in">print</span>(C);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; V=&quot;</span>); Serial.<span class="hljs-built_in">println</span>(V);
+  
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+}
+</code></pre>
+<p class="has-line-data" data-line-start="938" data-line-end="939"><strong>MRS Instruction:</strong> “Move from special Register to general register”</p>
+<h3 class="code-line has-line-data" data-line-start="940" data-line-end="941"><a id="Program_24_CMP_with_EQ_Condition_940"></a>Program 24: CMP with EQ Condition</h3>
+<p class="has-line-data" data-line-start="942" data-line-end="943"><strong>Question:</strong> Take two parameters and perform CMP with EQ condition code. Return 1 if equal, else 0.</p>
+<p class="has-line-data" data-line-start="944" data-line-end="945"><strong>Assembly:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="946" data-line-end="956">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=A, r1=B
+  cmp r0, r1       ; Compare A and B (sets flags)
+  mov r0, #0       ; Assume not equal
+  moveq r0, #1     ; If equal, set r0 = 1
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="957" data-line-end="958"><strong>CMP Instruction:</strong> Performs subtraction (A - B) and updates flags, discards result.</p>
+<p class="has-line-data" data-line-start="959" data-line-end="960"><strong>Conditional Execution:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="960" data-line-end="962"><code>moveq r0, #1</code> — Execute MOV only if EQ flag is set (i.e., if A == B)</li>
+</ul>
+<p class="has-line-data" data-line-start="962" data-line-end="963"><strong>C Code:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="964" data-line-end="978"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a = <span class="hljs-number">42</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b = <span class="hljs-number">42</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(a, b);
+  
+  <span class="hljs-keyword">if</span> (result == <span class="hljs-number">1</span>) {
+    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;The values are EQUAL&quot;</span>);
+  } <span class="hljs-keyword">else</span> {
+    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;The values are NOT equal&quot;</span>);
+  }
+  
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+}
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="979" data-line-end="980"><a id="Program_25_LO_Unsigned_Lower_Condition_979"></a>Program 25: LO (Unsigned Lower) Condition</h3>
+<p class="has-line-data" data-line-start="981" data-line-end="982"><strong>Question:</strong> Check for LO (unsigned lower) condition. Return 1 if first parameter &lt; second, else 0.</p>
+<p class="has-line-data" data-line-start="983" data-line-end="984"><strong>Assembly:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="985" data-line-end="995">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=A, r1=B
+  cmp r0, r1       ; Compare A and B
+  mov r0, #0       ; Assume not lower
+  movlo r0, #1     ; If A &lt; B (unsigned), set r0 = 1
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="996" data-line-end="997"><strong>LO Condition:</strong> True if Carry flag is clear (C=0) after CMP</p>
+<p class="has-line-data" data-line-start="998" data-line-end="999"><strong>C Code:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="1000" data-line-end="1014"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a = <span class="hljs-number">10</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b = <span class="hljs-number">20</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(a, b);
+  
+  <span class="hljs-keyword">if</span> (result == <span class="hljs-number">1</span>) {
+    Serial.<span class="hljs-built_in">print</span>(a); Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; is LOWER than &quot;</span>); Serial.<span class="hljs-built_in">println</span>(b);
+  } <span class="hljs-keyword">else</span> {
+    Serial.<span class="hljs-built_in">print</span>(a); Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; is HIGHER or SAME as &quot;</span>); Serial.<span class="hljs-built_in">println</span>(b);
+  }
+  
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+}
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="1015" data-line-end="1016"><a id="Program_26_HI_Unsigned_Higher_Condition_1015"></a>Program 26: HI (Unsigned Higher) Condition</h3>
+<p class="has-line-data" data-line-start="1017" data-line-end="1018"><strong>Question:</strong> Check for HI (unsigned higher) condition. Return 1 if first parameter &gt; second, else 0.</p>
+<p class="has-line-data" data-line-start="1019" data-line-end="1020"><strong>Assembly:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="1021" data-line-end="1031">.global my_asm_fn
+.text
+my_asm_fn:
+  ; Inputs: r0=A, r1=B
+  cmp r0, r1       ; Compare A and B
+  mov r0, #0       ; Assume not higher
+  movhi r0, #1     ; If A &gt; B (unsigned), set r0 = 1
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="1032" data-line-end="1033"><strong>HI Condition:</strong> True if Carry=1 AND Zero=0</p>
+<p class="has-line-data" data-line-start="1034" data-line-end="1035"><strong>C Code:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="1036" data-line-end="1050"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a = <span class="hljs-number">30</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b = <span class="hljs-number">20</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(a, b);
+  
+  <span class="hljs-keyword">if</span> (result == <span class="hljs-number">1</span>) {
+    Serial.<span class="hljs-built_in">print</span>(a); Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; is HIGHER than &quot;</span>); Serial.<span class="hljs-built_in">println</span>(b);
+  } <span class="hljs-keyword">else</span> {
+    Serial.<span class="hljs-built_in">print</span>(a); Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; is LOWER or SAME as &quot;</span>); Serial.<span class="hljs-built_in">println</span>(b);
+  }
+  
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">2000</span>);
+}
+</code></pre>
+<h3 class="code-line has-line-data" data-line-start="1051" data-line-end="1052"><a id="Programs_2730_Logic_Operation_Verification_1051"></a>Programs 27-30: Logic Operation Verification</h3>
+<p class="has-line-data" data-line-start="1053" data-line-end="1054">These follow the same pattern as Program 21 (XOR verification).</p>
+<p class="has-line-data" data-line-start="1055" data-line-end="1056"><strong>Program 27 — OR Verification:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="1057" data-line-end="1064">.global my_asm_fn
+.text
+my_asm_fn:
+  orr r0, r0, r1   ; r0 = A OR B
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="1065" data-line-end="1066"><strong>Program 28 — AND Verification:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="1067" data-line-end="1074">.global my_asm_fn
+.text
+my_asm_fn:
+  and r0, r0, r1   ; r0 = A AND B
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="1075" data-line-end="1076"><strong>Program 29 — NAND Verification:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="1077" data-line-end="1085">.global my_asm_fn
+.text
+my_asm_fn:
+  and r0, r0, r1   ; r0 = A AND B
+  mvn r0, r0       ; r0 = NOT (A AND B)
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="1086" data-line-end="1087"><strong>Program 30 — NOR Verification:</strong></p>
+<pre><code class="has-line-data language-assembly" data-line-start="1088" data-line-end="1096">.global my_asm_fn
+.text
+my_asm_fn:
+  orr r0, r0, r1   ; r0 = A OR B
+  mvn r0, r0       ; r0 = NOT (A OR B)
+  bx  lr
+.end
+</code></pre>
+<p class="has-line-data" data-line-start="1097" data-line-end="1098"><strong>C Template for All Logic Verifications:</strong></p>
+<pre><code class="has-line-data language-cpp" data-line-start="1099" data-line-end="1117"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> a = <span class="hljs-number">0b1100</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> b = <span class="hljs-number">0b1010</span>;
+  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> result = <span class="hljs-built_in">my_asm_fn</span>(a, b);
+  
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;A: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(a, BIN);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;B: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(b, BIN);
+  Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Result: &quot;</span>); Serial.<span class="hljs-built_in">println</span>(result, BIN);
+  
+  <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) {
+    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;[OPERATION] logic expression is VERIFIED&quot;</span>);
+  } <span class="hljs-keyword">else</span> {
+    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;[OPERATION] logic expression is NOT verified&quot;</span>);
+  }
+  
+  <span class="hljs-built_in">delay</span>(<span class="hljs-number">3000</span>);
+}
+</code></pre>
+<blockquote>
+<p class="has-line-data" data-line-start="1118" data-line-end="1119">📌 <strong>Exam Tip:</strong> For programs 27-30, know the truth tables by heart. The exam may ask you to trace through with specific input values.</p>
+</blockquote>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="1122" data-line-end="1123"><a id="Quick_Reference_Tables_1122"></a>Quick Reference Tables</h2>
+<h3 class="code-line has-line-data" data-line-start="1124" data-line-end="1125"><a id="ARM_Condition_Codes_for_Programs_2426_1124"></a>ARM Condition Codes (for Programs 24-26)</h3>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+<th>Flag Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EQ</td>
+<td>Equal (zero)</td>
+<td>Z = 1</td>
+</tr>
+<tr>
+<td>NE</td>
+<td>Not equal</td>
+<td>Z = 0</td>
+</tr>
+<tr>
+<td>CS/HS</td>
+<td>Carry set / unsigned higher or same</td>
+<td>C = 1</td>
+</tr>
+<tr>
+<td>CC/LO</td>
+<td>Carry clear / unsigned lower</td>
+<td>C = 0</td>
+</tr>
+<tr>
+<td>MI</td>
+<td>Minus / negative</td>
+<td>N = 1</td>
+</tr>
+<tr>
+<td>PL</td>
+<td>Plus / positive or zero</td>
+<td>N = 0</td>
+</tr>
+<tr>
+<td>VS</td>
+<td>Overflow set</td>
+<td>V = 1</td>
+</tr>
+<tr>
+<td>VC</td>
+<td>Overflow clear</td>
+<td>V = 0</td>
+</tr>
+<tr>
+<td>HI</td>
+<td>Unsigned higher</td>
+<td>C=1 AND Z=0</td>
+</tr>
+<tr>
+<td>LS</td>
+<td>Unsigned lower or same</td>
+<td>C=0 OR Z=1</td>
+</tr>
+<tr>
+<td>GE</td>
+<td>Signed greater or equal</td>
+<td>N = V</td>
+</tr>
+<tr>
+<td>LT</td>
+<td>Signed less than</td>
+<td>N ≠ V</td>
+</tr>
+<tr>
+<td>GT</td>
+<td>Signed greater than</td>
+<td>Z=0 AND N=V</td>
+</tr>
+<tr>
+<td>LE</td>
+<td>Signed less or equal</td>
+<td>Z=1 OR N≠V</td>
+</tr>
+<tr>
+<td>AL</td>
+<td>Always (default)</td>
+<td>Any</td>
+</tr>
+</tbody>
+</table>
+<h3 class="code-line has-line-data" data-line-start="1144" data-line-end="1145"><a id="ARM_Assembly_Instructions_Summary_1144"></a>ARM Assembly Instructions Summary</h3>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Syntax</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MOV</td>
+<td>mov rd, operand2</td>
+<td>Move/load value</td>
+</tr>
+<tr>
+<td>MVN</td>
+<td>mvn rd, operand2</td>
+<td>Move NOT (bitwise invert)</td>
+</tr>
+<tr>
+<td>ADD</td>
+<td>add rd, rn, operand2</td>
+<td>Add</td>
+</tr>
+<tr>
+<td>SUB</td>
+<td>sub rd, rn, operand2</td>
+<td>Subtract</td>
+</tr>
+<tr>
+<td>AND</td>
+<td>and rd, rn, operand2</td>
+<td>Bitwise AND</td>
+</tr>
+<tr>
+<td>ORR</td>
+<td>orr rd, rn, operand2</td>
+<td>Bitwise OR</td>
+</tr>
+<tr>
+<td>EOR</td>
+<td>eor rd, rn, operand2</td>
+<td>Bitwise XOR</td>
+</tr>
+<tr>
+<td>LSL</td>
+<td>lsl rd, rn, shift</td>
+<td>Logical shift left</td>
+</tr>
+<tr>
+<td>LSR</td>
+<td>lsr rd, rn, shift</td>
+<td>Logical shift right</td>
+</tr>
+<tr>
+<td>ASR</td>
+<td>asr rd, rn, shift</td>
+<td>Arithmetic shift right</td>
+</tr>
+<tr>
+<td>CMP</td>
+<td>cmp rn, operand2</td>
+<td>Compare (subtract, set flags)</td>
+</tr>
+<tr>
+<td>MRS</td>
+<td>mrs rd, special_reg</td>
+<td>Move from special register</td>
+</tr>
+<tr>
+<td>MSR</td>
+<td>msr special_reg, rn</td>
+<td>Move to special register</td>
+</tr>
+<tr>
+<td>B</td>
+<td>b label</td>
+<td>Branch (unconditional)</td>
+</tr>
+<tr>
+<td>BX</td>
+<td>bx rm</td>
+<td>Branch and exchange</td>
+</tr>
+</tbody>
+</table>
+<h3 class="code-line has-line-data" data-line-start="1164" data-line-end="1165"><a id="Logic_Operation_Truth_Tables_1164"></a>Logic Operation Truth Tables</h3>
+<p class="has-line-data" data-line-start="1166" data-line-end="1167"><strong>AND:</strong></p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>A AND B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p class="has-line-data" data-line-start="1174" data-line-end="1175"><strong>OR:</strong></p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>A OR B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p class="has-line-data" data-line-start="1182" data-line-end="1183"><strong>XOR:</strong></p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>A XOR B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p class="has-line-data" data-line-start="1190" data-line-end="1191"><strong>NAND:</strong></p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>A NAND B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p class="has-line-data" data-line-start="1198" data-line-end="1199"><strong>NOR:</strong></p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>A</th>
+<th>B</th>
+<th>A NOR B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h3 class="code-line has-line-data" data-line-start="1206" data-line-end="1207"><a id="Binary_to_Decimal_Quick_Reference_4bit_1206"></a>Binary to Decimal Quick Reference (4-bit)</h3>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Decimal</th>
+<th>Binary</th>
+<th>Hex</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0000</td>
+<td>0x0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0001</td>
+<td>0x1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0010</td>
+<td>0x2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0011</td>
+<td>0x3</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0100</td>
+<td>0x4</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0101</td>
+<td>0x5</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0110</td>
+<td>0x6</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0111</td>
+<td>0x7</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1000</td>
+<td>0x8</td>
+</tr>
+<tr>
+<td>9</td>
+<td>1001</td>
+<td>0x9</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1010</td>
+<td>0xA</td>
+</tr>
+<tr>
+<td>11</td>
+<td>1011</td>
+<td>0xB</td>
+</tr>
+<tr>
+<td>12</td>
+<td>1100</td>
+<td>0xC</td>
+</tr>
+<tr>
+<td>13</td>
+<td>1101</td>
+<td>0xD</td>
+</tr>
+<tr>
+<td>14</td>
+<td>1110</td>
+<td>0xE</td>
+</tr>
+<tr>
+<td>15</td>
+<td>1111</td>
+<td>0xF</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="1229" data-line-end="1230"><a id="Exam_Preparation_Checklist_1229"></a>Exam Preparation Checklist</h2>
+<h3 class="code-line has-line-data" data-line-start="1231" data-line-end="1232"><a id="Core_Concepts_You_Must_Know_1231"></a>Core Concepts You Must Know</h3>
+<p class="has-line-data" data-line-start="1233" data-line-end="1234">✓ <strong>GPIO Control:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1234" data-line-end="1235">pinMode(), digitalWrite(), delay() functions</li>
+<li class="has-line-data" data-line-start="1235" data-line-end="1236">Pin numbering (GPIO vs physical pins)</li>
+<li class="has-line-data" data-line-start="1236" data-line-end="1238">LED current limiting and connections</li>
+</ul>
+<p class="has-line-data" data-line-start="1238" data-line-end="1239">✓ <strong>Arrays &amp; Loops:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1239" data-line-end="1240">Array declaration and initialization</li>
+<li class="has-line-data" data-line-start="1240" data-line-end="1241">Range-based for loops</li>
+<li class="has-line-data" data-line-start="1241" data-line-end="1243">Index-based iteration</li>
+</ul>
+<p class="has-line-data" data-line-start="1243" data-line-end="1244">✓ <strong>Bit Manipulation:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1244" data-line-end="1245">Right shift operator (&gt;&gt;)</li>
+<li class="has-line-data" data-line-start="1245" data-line-end="1246">Bitwise AND (&amp;) for masking</li>
+<li class="has-line-data" data-line-start="1246" data-line-end="1248">Extracting individual bits from numbers</li>
+</ul>
+<p class="has-line-data" data-line-start="1248" data-line-end="1249">✓ <strong>Binary Representation:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1249" data-line-end="1250">4-bit binary to decimal conversion</li>
+<li class="has-line-data" data-line-start="1250" data-line-end="1251">LED patterns for binary numbers</li>
+<li class="has-line-data" data-line-start="1251" data-line-end="1253">Understanding LSB and MSB positions</li>
+</ul>
+<p class="has-line-data" data-line-start="1253" data-line-end="1254">✓ <strong>Serial Communication:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1254" data-line-end="1255">Serial.begin(), Serial.print(), Serial.println()</li>
+<li class="has-line-data" data-line-start="1255" data-line-end="1256">Serial.parseInt() for reading numbers</li>
+<li class="has-line-data" data-line-start="1256" data-line-end="1258">Serial.available() for checking input</li>
+</ul>
+<p class="has-line-data" data-line-start="1258" data-line-end="1259">✓ <strong>ARM Assembly Basics:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1259" data-line-end="1260">Register naming (r0-r15)</li>
+<li class="has-line-data" data-line-start="1260" data-line-end="1261">ARM calling convention (parameters in r0-r3, return in r0)</li>
+<li class="has-line-data" data-line-start="1261" data-line-end="1263">bx lr instruction for returning</li>
+</ul>
+<p class="has-line-data" data-line-start="1263" data-line-end="1264">✓ <strong>ARM Instructions:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1264" data-line-end="1265">MOV, MVN, ADD</li>
+<li class="has-line-data" data-line-start="1265" data-line-end="1266">AND, ORR, EOR</li>
+<li class="has-line-data" data-line-start="1266" data-line-end="1267">LSL, LSR, ASR</li>
+<li class="has-line-data" data-line-start="1267" data-line-end="1269">CMP and conditional execution</li>
+</ul>
+<p class="has-line-data" data-line-start="1269" data-line-end="1270">✓ <strong>Condition Codes:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1270" data-line-end="1271">EQ (equal), NE (not equal)</li>
+<li class="has-line-data" data-line-start="1271" data-line-end="1272">LO (unsigned lower), HI (unsigned higher)</li>
+<li class="has-line-data" data-line-start="1272" data-line-end="1274">Flag bits: N, Z, C, V</li>
+</ul>
+<p class="has-line-data" data-line-start="1274" data-line-end="1275">✓ <strong>Boolean Logic:</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1275" data-line-end="1276">AND, OR, XOR, NAND, NOR truth tables</li>
+<li class="has-line-data" data-line-start="1276" data-line-end="1277">De Morgan’s theorems</li>
+<li class="has-line-data" data-line-start="1277" data-line-end="1279">Logic verification methodology</li>
+</ul>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="1281" data-line-end="1282"><a id="Common_Exam_Mistakes_to_Avoid_1281"></a>Common Exam Mistakes to Avoid</h2>
+<ol>
+<li class="has-line-data" data-line-start="1283" data-line-end="1285">
+<p class="has-line-data" data-line-start="1283" data-line-end="1284"><strong>Confusing GPIO numbers with physical pin numbers</strong> — Always use GPIO numbers (GPxx) in code</p>
+</li>
+<li class="has-line-data" data-line-start="1285" data-line-end="1287">
+<p class="has-line-data" data-line-start="1285" data-line-end="1286"><strong>Forgetting pinMode()</strong> — LEDs won’t turn on/off without setting pin mode to OUTPUT</p>
+</li>
+<li class="has-line-data" data-line-start="1287" data-line-end="1289">
+<p class="has-line-data" data-line-start="1287" data-line-end="1288"><strong>Wrong array indexing</strong> — Arrays are zero-indexed; pins[0] is the first element, not pins[1]</p>
+</li>
+<li class="has-line-data" data-line-start="1289" data-line-end="1291">
+<p class="has-line-data" data-line-start="1289" data-line-end="1290"><strong>Bit extraction errors</strong> — <code>(n &gt;&gt; i) &amp; 1</code> extracts bit i; don’t forget the &amp; 1 mask!</p>
+</li>
+<li class="has-line-data" data-line-start="1291" data-line-end="1293">
+<p class="has-line-data" data-line-start="1291" data-line-end="1292"><strong>Assembly return register</strong> — Always place return value in r0, not r1 or other registers</p>
+</li>
+<li class="has-line-data" data-line-start="1293" data-line-end="1295">
+<p class="has-line-data" data-line-start="1293" data-line-end="1294"><strong>Missing bx lr</strong> — Your assembly function won’t return without this instruction</p>
+</li>
+<li class="has-line-data" data-line-start="1295" data-line-end="1297">
+<p class="has-line-data" data-line-start="1295" data-line-end="1296"><strong>OR vs ORR</strong> — In ARM assembly, it’s <code>orr</code> not <code>or</code></p>
+</li>
+<li class="has-line-data" data-line-start="1297" data-line-end="1299">
+<p class="has-line-data" data-line-start="1297" data-line-end="1298"><strong>Signed vs unsigned shifts</strong> — Use ASR for signed, LSR for unsigned</p>
+</li>
+<li class="has-line-data" data-line-start="1299" data-line-end="1301">
+<p class="has-line-data" data-line-start="1299" data-line-end="1300"><strong>Condition code confusion</strong> — LO is for unsigned lower, not signed less than (use LT for that)</p>
+</li>
+<li class="has-line-data" data-line-start="1301" data-line-end="1303">
+<p class="has-line-data" data-line-start="1301" data-line-end="1302"><strong>Serial.parseInt() blocks</strong> — It waits for input; check Serial.available() first in production code</p>
+</li>
+</ol>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="1305" data-line-end="1306"><a id="Study_Tips_for_Lab_Exam_Success_1305"></a>Study Tips for Lab Exam Success</h2>
+<h3 class="code-line has-line-data" data-line-start="1307" data-line-end="1308"><a id="1_HandsOn_Practice_1307"></a>1. <strong>Hands-On Practice</strong></h3>
+<ul>
+<li class="has-line-data" data-line-start="1308" data-line-end="1309">Type out each program yourself, don’t just copy-paste</li>
+<li class="has-line-data" data-line-start="1309" data-line-end="1310">Run every program on your Pico</li>
+<li class="has-line-data" data-line-start="1310" data-line-end="1312">Modify programs slightly to test your understanding</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="1312" data-line-end="1313"><a id="2_Understand_Dont_Memorize_1312"></a>2. <strong>Understand, Don’t Memorize</strong></h3>
+<ul>
+<li class="has-line-data" data-line-start="1313" data-line-end="1314">Know WHY each line of code is needed</li>
+<li class="has-line-data" data-line-start="1314" data-line-end="1315">Be able to explain the logic flow to someone else</li>
+<li class="has-line-data" data-line-start="1315" data-line-end="1317">Trace through programs mentally with example values</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="1317" data-line-end="1318"><a id="3_Pattern_Recognition_1317"></a>3. <strong>Pattern Recognition</strong></h3>
+<ul>
+<li class="has-line-data" data-line-start="1318" data-line-end="1319">Notice common patterns (array iteration, bit extraction, assembly templates)</li>
+<li class="has-line-data" data-line-start="1319" data-line-end="1320">Group similar programs together in your mind</li>
+<li class="has-line-data" data-line-start="1320" data-line-end="1322">Use the existing code as templates for variations</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="1322" data-line-end="1323"><a id="4_Time_Management_1322"></a>4. <strong>Time Management</strong></h3>
+<ul>
+<li class="has-line-data" data-line-start="1323" data-line-end="1324">Practice writing complete programs within 10-15 minutes</li>
+<li class="has-line-data" data-line-start="1324" data-line-end="1325">Know which programs are quick (simple LED blink) vs complex (assembly logic)</li>
+<li class="has-line-data" data-line-start="1325" data-line-end="1327">Have your wiring setup memorized to save time</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="1327" data-line-end="1328"><a id="5_Common_Variations_to_Prepare_1327"></a>5. <strong>Common Variations to Prepare</strong></h3>
+<ul>
+<li class="has-line-data" data-line-start="1328" data-line-end="1329">Different GPIO pin numbers (the exam may change these)</li>
+<li class="has-line-data" data-line-start="1329" data-line-end="1330">Different delay times (3s, 5s, 10s, etc.)</li>
+<li class="has-line-data" data-line-start="1330" data-line-end="1331">Different constants in assembly (20, 50, 100 instead of 10, 20, 30)</li>
+<li class="has-line-data" data-line-start="1331" data-line-end="1333">Different binary patterns (even/odd, multiples of 4, etc.)</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="1333" data-line-end="1334"><a id="6_PreExam_Checklist_1333"></a>6. <strong>Pre-Exam Checklist</strong></h3>
+<ul>
+<li class="has-line-data" data-line-start="1334" data-line-end="1335">Verify your Raspberry Pi Pico is working</li>
+<li class="has-line-data" data-line-start="1335" data-line-end="1336">Test all GPIO pins you might use</li>
+<li class="has-line-data" data-line-start="1336" data-line-end="1337">Have spare LEDs and resistors</li>
+<li class="has-line-data" data-line-start="1337" data-line-end="1338">Know how to recover a frozen Pico (hold BOOTSEL, reconnect USB)</li>
+<li class="has-line-data" data-line-start="1338" data-line-end="1340">Have your breadboard layout planned</li>
+</ul>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="1342" data-line-end="1343"><a id="Summary_TLDR_1342"></a>Summary / TL;DR</h2>
+<p class="has-line-data" data-line-start="1344" data-line-end="1345"><strong>LED Programming (1-9):</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1345" data-line-end="1346">Use arrays to store pin numbers</li>
+<li class="has-line-data" data-line-start="1346" data-line-end="1347">Range-based for loops for cleaner iteration</li>
+<li class="has-line-data" data-line-start="1347" data-line-end="1348">Bit manipulation <code>(n &gt;&gt; i) &amp; 1</code> extracts individual bits for binary display</li>
+<li class="has-line-data" data-line-start="1348" data-line-end="1349">Chase effects use sequential ON/OFF patterns</li>
+<li class="has-line-data" data-line-start="1349" data-line-end="1351">Serial.parseInt() reads numbers from serial monitor</li>
+</ul>
+<p class="has-line-data" data-line-start="1351" data-line-end="1352"><strong>ARM Assembly (10-19):</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1352" data-line-end="1353">Always return value in r0 register</li>
+<li class="has-line-data" data-line-start="1353" data-line-end="1354">Parameters arrive in r0-r3 automatically</li>
+<li class="has-line-data" data-line-start="1354" data-line-end="1355">bx lr returns to C caller</li>
+<li class="has-line-data" data-line-start="1355" data-line-end="1356">MOV loads values, ADD sums them</li>
+<li class="has-line-data" data-line-start="1356" data-line-end="1357">Logical operations: AND, ORR (not OR!), EOR (XOR), MVN (NOT)</li>
+<li class="has-line-data" data-line-start="1357" data-line-end="1358">Shifts: LSL (left), LSR (right unsigned), ASR (right signed)</li>
+<li class="has-line-data" data-line-start="1358" data-line-end="1360">Shift by N is equivalent to multiply/divide by 2^N</li>
+</ul>
+<p class="has-line-data" data-line-start="1360" data-line-end="1361"><strong>Logic Verification (20-30):</strong></p>
+<ul>
+<li class="has-line-data" data-line-start="1361" data-line-end="1362">CMP subtracts and sets flags, discards result</li>
+<li class="has-line-data" data-line-start="1362" data-line-end="1363">Conditional execution: moveq, movlo, movhi, etc.</li>
+<li class="has-line-data" data-line-start="1363" data-line-end="1364">MRS reads special registers like APSR (flag bits)</li>
+<li class="has-line-data" data-line-start="1364" data-line-end="1365">De Morgan: NOT(A AND B) = (NOT A) OR (NOT B)</li>
+<li class="has-line-data" data-line-start="1365" data-line-end="1366">Know all truth tables by heart</li>
+<li class="has-line-data" data-line-start="1366" data-line-end="1368">Assembly returns 1 for verified, 0 for not verified</li>
+</ul>
+<p class="has-line-data" data-line-start="1368" data-line-end="1369"><strong>Key Takeaway:</strong> Every program follows predictable patterns. Master the patterns, and you can handle any variation the exam throws at you.</p>
+<hr>
+<p class="has-line-data" data-line-start="1372" data-line-end="1374"><strong>End of Notes</strong><br>
+<strong>Prepared by Francis Reuben R. | RV University | CS1102 ESM Lab</strong></p>
+
+</body>
+</html>

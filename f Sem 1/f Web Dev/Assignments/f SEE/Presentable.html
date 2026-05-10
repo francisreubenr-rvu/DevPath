@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DevFlow Heritage</title>
+    <link rel="stylesheet" href="Presentstyles.css">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="brand">DevFlow</div>
+            <ul class="nav-links">
+                <li class="active" onclick="switchView('dashboard')">Projects</li>
+                <li onclick="switchView('products')">Inventory</li>
+                <li onclick="switchView('github')">Blueprints</li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <section id="dashboard" class="view active-view">
+                <header class="view-header">
+                    <h1>Project Roadmap</h1>
+                    <button class="btn-primary" onclick="openModal()">+ New Entry</button>
+                </header>
+                <div class="kanban-board">
+                    <div class="column" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="col-header">To Do <span class="count" id="count-todo">0</span></div>
+                        <div class="task-list" id="list-todo"></div>
+                    </div>
+                    <div class="column" id="inprogress" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="col-header">In Progress <span class="count" id="count-inprogress">0</span></div>
+                        <div class="task-list" id="list-inprogress"></div>
+                    </div>
+                    <div class="column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div class="col-header">Complete <span class="count" id="count-done">0</span></div>
+                        <div class="task-list" id="list-done"></div>
+                    </div>
+                </div>
+            </section>
+            <section id="products" class="view hidden-view">
+                <header class="view-header">
+                    <h1>Inventory Log</h1>
+                </header>
+                <table class="product-table">
+                    <thead>
+                        <tr><th>Item</th><th>SKU</th><th>Origin</th></tr>
+                    </thead>
+                    <tbody id="product-table-body"></tbody>
+                </table>
+            </section>
+            <section id="github" class="view hidden-view">
+                <header class="view-header">
+                    <h1>Blueprints</h1>
+                </header>
+                <div class="repo-grid" id="repo-grid"></div>
+            </section>
+        </main>
+    </div>
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>New Task</h3>
+            <form id="taskForm" onsubmit="addTask(event)">
+                <input type="text" id="taskTitle" required placeholder="Task Title..." autocomplete="off">
+                <select id="taskTag">
+                    <option value="Design">Design</option>
+                    <option value="Dev">Development</option>
+                    <option value="Urgent">Urgent</option>
+                </select>
+                <button type="submit" class="btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+    <script src="Presentscript.js"></script>
+</body>
+</html>

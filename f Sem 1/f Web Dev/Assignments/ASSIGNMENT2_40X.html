@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Armoury: A Catalogue of Mythical Arms</title>
+    <!-- Importing Google Fonts for a more academic and modern feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Inter', sans-serif; /* A clean, modern font for readability */
+            margin: 0;
+            padding: 0;
+            color: #ECF0F1;
+            line-height: 1.6;
+            background: url('/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/background.jpg') center center / cover no-repeat fixed;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, #232A34cc 0%, #3a4251cc 100%);
+            /* 'cc' is ~80% opacity for overlay */
+            pointer-events: none;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #232A34; /* A dark, sophisticated blue */
+            color: #ECF0F1; /* A soft white for contrast */
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 5px solid #F1C40F; /* A gold accent for a touch of class */
+        }
+
+        header h1 {
+            font-family: 'Lora', serif; /* A classic serif font for the main title */
+            margin: 0;
+            font-size: 2.8rem;
+            color: #F1C40F; /* Gold */
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.1rem;
+            color: #bdc3c7; /* A lighter grey for the subtitle */
+        }
+        
+        /* Navigation Bar Styling */
+        nav {
+            background-color: #181C23; /* A slightly lighter shade of blue */
+            padding: 1rem;
+            text-align: center;
+            position: sticky; /* Makes the navbar stick to the top when you scroll */
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: #ECF0F1;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        nav a:hover {
+            color: #F1C40F; /* Gold accent on hover */
+        }
+
+        /* General Section Styling */
+        .container {
+            padding: 2rem 1rem;
+            max-width: 1200px; /* Limits the width for better readability on large screens */
+            margin: 0 auto; /* Centers the container */
+            background: transparent;
+        }
+
+        h2 {
+            font-family: 'Lora', serif;
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #f5ecd7; /* Light beige for section headings */
+            text-shadow: 0 2px 8px rgba(44,62,80,0.18);
+        }
+
+        /* Weapon Catalogue Grid Styling */
+        .weapon-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Weapon Card Styling */
+        .weapon-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, #f5ecd7 0%, #e9dbc1 100%); /* Beige gradient */
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(44,62,80,0.08);
+            transition: box-shadow 0.3s, transform 0.3s;
+            width: 340px;
+            min-height: 480px;
+            padding: 2.5rem 2rem 2rem 2rem;
+            border: none;
+            position: relative;
+        }
+
+        .weapon-card:hover {
+            box-shadow: 0 16px 32px rgba(44,62,80,0.16);
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .weapon-card img {
+            width: 220px;
+            height: 220px;
+            object-fit: contain;
+            object-position: center;
+            background: #000; /* Black background for images */
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+            display: block;
+        }
+
+        .weapon-card-content {
+            text-align: center;
+            padding: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .weapon-card-content h3 {
+            font-family: 'Lora', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 1rem 0;
+            color: #3d2c12; /* Much darker brown for title */
+            letter-spacing: 0.01em;
+            text-shadow: 0 1px 4px rgba(44,62,80,0.10);
+        }
+
+        .weapon-card-content p {
+            font-size: 1.08rem;
+            color: #232A34; /* Very dark blue/grey for description */
+            margin: 0;
+            line-height: 1.7;
+            text-shadow: 0 1px 4px rgba(44,62,80,0.08);
+        }
+
+        /* Form Styling */
+        #contact-form {
+            background-color: #009688; /* Teal */
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(44,62,80,0.1);
+            max-width: 700px;
+            margin: 0 auto; /* Center the form */
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #fff; /* White for form labels on teal */
+            text-shadow: 0 1px 4px rgba(44,62,80,0.10);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensures padding doesn't affect the width */
+            color: #232A34; /* Dark text inside input fields */
+            background: #f5ecd7; /* Beige background for fields */
+        }
+
+        .form-group textarea {
+            resize: vertical; /* Allows the user to resize the textarea vertically */
+            min-height: 120px;
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: #2C3E50;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #34495E;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #232A34;
+            color: #bdc3c7;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>The Armoury</h1>
+        <p>A Curated Catalogue of Mythical & Legendary Arms</p>
+    </header>
+
+    <!-- Sticky Navigation Bar -->
+    <nav>
+        <a href="#catalogue">Catalogue</a>
+        <a href="#submit">Submit an Artifact</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <!-- Main Content Sections -->
+    <main>
+        <!-- Weapon Catalogue Section -->
+        <section id="catalogue" class="container">
+            <h2>The Collection</h2>
+            <div class="weapon-grid">
+                <!-- Weapon Card: Excalibur -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/excalibur.jpg" alt="Excalibur">
+                    <div class="weapon-card-content">
+                        <h3>Excalibur</h3>
+                        <p>The legendary sword of King Arthur, said to have been given to him by the Lady of the Lake. It is associated with the rightful sovereignty of Great Britain.</p>
+                    </div>
+                </div>
+
+                <!-- Weapon Card: Mjolnir -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/mjolnir.jpg" alt="Mjolnir">
+                    <div class="weapon-card-content">
+                        <h3>Mjolnir</h3>
+                        <p>The mighty hammer of Thor, the Norse god of thunder. Forged by dwarves, it is capable of leveling mountains and always returns to its owner's hand when thrown.</p>
+                    </div>
+                </div>
+
+                <!-- Weapon Card: Kusanagi -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/Kusanagi-no-Tsurugi.png" alt="Kusanagi">
+                    <div class="weapon-card-content">
+                        <h3>Kusanagi-no-Tsurugi</h3>
+                        <p>The "Grass-Cutting Sword," one of the Three Imperial Regalia of Japan. According to legend, it was found in the body of an eight-headed serpent.</p>
+                    </div>
+                </div>
+
+                <!-- Weapon Card: Gungnir -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/gungnir.jpg" alt="Gungnir">
+                    <div class="weapon-card-content">
+                        <h3>Gungnir</h3>
+                        <p>The magical spear of the Norse god Odin. It is said to have been crafted by dwarves and is inscribed with runes, never missing its target.</p>
+                    </div>
+                </div>
+
+                <!-- Weapon Card: Durandal -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/Durandal.jpg" alt="Durandal">
+                    <div class="weapon-card-content">
+                        <h3>Durandal</h3>
+                        <p>The sword of Roland, a legendary paladin of Charlemagne. It was claimed to be indestructible and contained sacred Christian relics within its golden hilt.</p>
+                    </div>
+                </div>
+
+                <!-- Weapon Card: Longclaw -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/Longclaw.jpg" alt="Longclaw">
+                    <div class="weapon-card-content">
+                        <h3>Longclaw</h3>
+                        <p>A Valyrian steel bastard sword from "Game of Thrones." Originally the ancestral weapon of House Mormont, it was gifted to Jon Snow.</p>
+                    </div>
+                </div>
+                
+                <!-- Weapon Card: Master Sword -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/Master-Sword.jpg" alt="Master Sword">
+                    <div class="weapon-card-content">
+                        <h3>Master Sword</h3>
+                        <p>Also known as the "Blade of Evil's Bane" from "The Legend of Zelda" series. A sacred blade which can only be wielded by a hero with great courage.</p>
+                    </div>
+                </div>
+
+                <!-- Weapon Card: Anduril -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/Andúril.jpg" alt="Anduril">
+                    <div class="weapon-card-content">
+                        <h3>Andúril</h3>
+                        <p>The "Flame of the West," a sword from "The Lord of the Rings." It was reforged from the shards of Narsil and wielded by Aragorn, King of Gondor.</p>
+                    </div>
+                </div>
+
+                <!-- Weapon Card: Masamune -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/Masamune.png" alt="Masamune">
+                    <div class="weapon-card-content">
+                        <h3>Masamune</h3>
+                        <p>Blades created by Japan's greatest swordsmith, Gorō Nyūdō Masamune. His swords are legendary for their superior quality and beauty, often considered national treasures.</p>
+                    </div>
+                </div>
+                
+                 <!-- Weapon Card: Aegis -->
+                <div class="weapon-card">
+                    <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/Aegis.jpg" alt="Aegis">
+                    <div class="weapon-card-content">
+                        <h3>Aegis</h3>
+                        <p>The divine shield from Greek mythology, wielded by both Zeus and Athena. It bore the head of Medusa and was said to make a sound like a roar of a hundred dragons.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Section -->
+        <section id="submit" class="container">
+            <h2>Submit an Artifact</h2>
+            <form id="contact-form" action="#" method="POST">
+                <!-- The action="#" means the form doesn't actually submit anywhere, which is fine for a static page. -->
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="weapon_name">Artifact Name</label>
+                    <input type="text" id="weapon_name" name="weapon_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description & Lore</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit to the Curators</button>
+            </form>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="container">
+            <h2>Gallery</h2>
+            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/gallery1.jpg" alt="Gallery Image 1" style="max-width: 500px; width: 100%; border-radius: 16px; box-shadow: 0 4px 16px rgba(44,62,80,0.18);">
+                <img src="/Users/maverick/Documents/f College Work/f Sem 1/f Web Dev/Assignments/f Images/gallery2.jpg" alt="Gallery Image 2" style="max-width: 500px; width: 100%; border-radius: 16px; box-shadow: 0 4px 16px rgba(44,62,80,0.18);">
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="container">
+            <h2>About The Armoury</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto;">
+                The Armoury is a digital project created for educational purposes, designed to catalogue and present the rich history and lore behind the world's most famous mythical and legendary weapons. From the divine artifacts of gods to the fabled blades of epic heroes, this collection serves as a tribute to the stories that have shaped cultures and inspired imaginations for centuries.
+            </p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 The Armoury | Website founded by Francis Reuben and Avaneesh Shetty.</p>
+    </footer>
+
+    <!-- Simple JavaScript for Smooth Scrolling -->
+    <script>
+        // This script makes the page scroll smoothly when you click on the navigation links.
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevents the default jump-to-anchor behavior.
+
+                const targetId = this.getAttribute('href'); // Gets the href value (e.g., "#catalogue")
+                const targetElement = document.querySelector(targetId); // Finds the element with that ID
+
+                // This command smoothly scrolls the page to the target element.
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

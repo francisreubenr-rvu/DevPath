@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+    <input id="num1Input" type="number">
+    <input id="num2Input" type="number">
+<button id="showBtn" type="button">Show</button>
+    </form>
+<p id="result"></p>
+<script>
+  const num1Input = document.getElementById("num1Input");
+  const num2Input = document.getElementById("num2Input");
+  const showBtn = document.getElementById("showBtn");
+  const resultPara = document.getElementById("result");
+
+  showBtn.addEventListener("click", function() {
+    const num1 = Number(num1Input.value);
+    const num2 = Number(num2Input.value);
+    var res=num1+num2;
+    resultPara.textContent = res;
+  })
+</script>
+
+</body>
+</html>

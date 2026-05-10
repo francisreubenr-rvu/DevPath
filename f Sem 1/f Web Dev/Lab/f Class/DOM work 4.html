@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Example</title>
+</head>
+<body>
+    <h2>Finding HTML Elements by Tag Name</h2>
+    <p>Hello World!</p>
+    <p>This example demonstrates the <b>getElementsByTagName</b> method.</p>
+    <p>basics of DOM</p>
+    <h1 id="demo"></h1>
+    <button onclick="invoke()">Change</button>
+
+    <script>
+        function invoke() {
+            var x = document.getElementsByTagName("p");
+            document.getElementById("demo").innerHTML = x[2].innerHTML;
+        }
+    </script>
+</body>
+</html>

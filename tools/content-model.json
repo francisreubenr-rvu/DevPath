@@ -1,0 +1,28 @@
+{
+  "output": {
+    "subjectsFile": "content/generated/subjects.json"
+  },
+  "extraction": {
+    "minQuizQuestions": 3,
+    "maxCardsPerLesson": 5,
+    "maxSummarySentences": 4
+  },
+  "subjects": [
+    { "semester": "Sem 1", "name": "Programming in C", "folderHint": "f PC" },
+    { "semester": "Sem 1", "name": "Web Development", "folderHint": "f Web Dev" },
+    { "semester": "Sem 1", "name": "Discrete Mathematics", "folderHint": "f Math" },
+    { "semester": "Sem 1", "name": "Design Thinking", "folderHint": "f Design Thinking" },
+    { "semester": "Sem 1", "name": "Exploring Science", "folderHint": "f ES" },
+    { "semester": "Sem 1", "name": "Digital Systems and Computer Architecture", "folderHint": "f DSCA" },
+    { "semester": "Sem 1", "name": "Constitution and Professional Ethics", "folderHint": "f Const" },
+    { "semester": "Sem 1", "name": "English", "folderHint": "f English" },
+    { "semester": "Sem 1", "name": "Certificates", "folderHint": "f Certificates" },
+    { "semester": "Sem 2", "name": "Data Structures", "folderHint": "f DS" },
+    { "semester": "Sem 2", "name": "Operating Systems", "folderHint": "f OS" },
+    { "semester": "Sem 2", "name": "Linear Algebra", "folderHint": "f LA" },
+    { "semester": "Sem 2", "name": "Engineering Graphics", "folderHint": "f EEX" },
+    { "semester": "Sem 2", "name": "Energy and Sustainability", "folderHint": "f ESM" },
+    { "semester": "Sem 2", "name": "Yoga", "folderHint": "f Yoga" },
+    { "semester": "Sem 2", "name": "Elective Multimedia", "folderHint": "f EM" }
+  ]
+}

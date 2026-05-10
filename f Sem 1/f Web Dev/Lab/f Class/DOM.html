@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic DOM Example</title>
+</head>
+<body>
+    <h1>DOM Model - Basic Example</h1>
+    <h2>1. Change Text</h2>
+    <p id="myText">Original text</p>
+    <button onclick="changeText()">Change Text</button>
+    <hr>
+    <h2>2. Change Color</h2>
+    <p id="colorText">This text can change color</p>
+    <button onclick="changeColor()">Make it Red</button>
+    <hr>
+    <h2>3. Add Item to List</h2>
+    <ul id="myList">
+        <li>Apple</li>
+        <li>Banana</li>
+    </ul>
+    <buttn onclick="addItem()">Add Orange</button>
+    <hr>
+    <h2>4. Show/Hide Element</h2>
+    <p id="hideText">You can hide me!</p>
+    <button onclick="hideElement()">Hide</button>
+    <button onclick="showElement()">Show</button>
+    <hr>
+    <h2>5. Get User Input</h2>
+    <input type="text" id="userInput" placeholder="Type something">
+    <button onclick="showInput()">Show What You Typed</button>
+    <p id="output"></p>
+    <script>
+        function changeText() {
+            document.getElementById('myText').textContent = 'Text has been changed!';
+        }
+        function changeColor() {
+            document.getElementById('colorText').style.color = 'red';
+        }
+        function addItem() {
+            const newItem = document.createElement('li');
+            newItem.textContent = 'Orange';
+            document.getElementById('myList').appendChild(newItem);
+        }
+        function hideElement() {
+            document.getElementById('hideText').style.display = 'none';
+        }
+        function showElement() {
+            document.getElementById('hideText').style.display = 'block';
+        }
+        function showInput() {
+            const inputValue = document.getElementById('userInput').value;
+            document.getElementById('output').textContent = 'You typed: ' + inputValue;
+        }
+    </script>
+</body>
+</html>

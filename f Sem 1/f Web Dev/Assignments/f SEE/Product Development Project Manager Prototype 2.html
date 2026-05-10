@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project Manager - Dashboard</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Project Manager</h1>
+                <p>Development Dashboard</p>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <div class="nav-item active" data-view="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item" data-view="projects">
+                        <span class="nav-icon">📁</span>
+                        <span>All Projects</span>
+                    </div>
+                    <div class="nav-item" data-view="variations">
+                        <span class="nav-icon">🔀</span>
+                        <span>Product Variations</span>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Resources</div>
+                    <div class="nav-item" data-view="templates">
+                        <span class="nav-icon">📦</span>
+                        <span>GitHub Templates</span>
+                    </div>
+                    <div class="nav-item">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-header">
+                <h2 class="header-title">Projects Overview</h2>
+                <div class="header-actions">
+                    <button class="btn">
+                        <span>🔍 Search</span>
+                    </button>
+                    <button class="btn btn-primary" id="createProjectBtn">
+                        <span>+ New Project</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="tab-navigation">
+                <div class="tab-item active" data-tab="dashboard">Dashboard</div>
+                <div class="tab-item" data-tab="variations">Product Variations</div>
+                <div class="tab-item" data-tab="templates">Templates</div>
+            </div>
+
+            <div class="tab-content active" id="dashboard-tab">
+                <div class="projects-grid" id="projectsGrid">
+                </div>
+            </div>
+
+            <div class="tab-content" id="variations-tab">
+                <div class="variations-controls">
+                    <input type="text" 
+                           class="filter-input" 
+                           id="variationFilter" 
+                           placeholder="Filter by name, SKU, or category...">
+                    <select class="form-select" id="categoryFilter" style="width: auto;">
+                        <option value="">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="furniture">Furniture</option>
+                        <option value="clothing">Clothing</option>
+                    </select>
+                </div>
+
+                <div class="variations-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;"></th>
+                                <th>Product Name</th>
+                                <th>SKU</th>
+                                <th>Category</th>
+                                <th>Variations</th>
+                                <th>Source</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="variationsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="templates-tab">
+                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                    Pre-designed project templates from GitHub repositories. Click to reference and adapt.
+                </p>
+                <div class="templates-grid" id="templatesGrid">
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Create New Project</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="projectForm">
+                    <div class="form-group">
+                        <label class="form-label" for="projectName">Project Name *</label>
+                        <input type="text" 
+                               class="form-input" 
+                               id="projectName" 
+                               placeholder="Enter project name"
+                               required>
+                        <div class="form-error" id="nameError">Project name is required</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="projectDescription">Description</label>
+                        <textarea class="form-textarea" 
+                                  id="projectDescription" 
+                                  placeholder="Brief project description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="projectStatus">Status *</label>
+                        <select class="form-select" id="projectStatus" required>
+                            <option value="">Select status</option>
+                            <option value="planning">Planning</option>
+                            <option value="active">Active</option>
+                            <option value="review">Review</option>
+                        </select>
+                        <div class="form-error" id="statusError">Please select a status</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="projectTasks">Initial Tasks</label>
+                        <input type="number" 
+                               class="form-input" 
+                               id="projectTasks" 
+                               placeholder="0"
+                               min="0"
+                               value="0">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancelModalBtn">Cancel</button>
+                <button class="btn btn-primary" id="submitProjectBtn">Create Project</button>
+            </div>
+        </div>
+    </div>
+   <script src="script2.js"></script>
+</body>
+</html>

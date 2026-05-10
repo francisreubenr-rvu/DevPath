@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RVU Attendance Tracker - Section B</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    header p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 30px;
+      background: #f8f9fa;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-value {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #667eea;
+      margin: 10px 0;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .subjects-section {
+      padding: 30px;
+    }
+
+    .subjects-section h2 {
+      color: #1e3c72;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+    }
+
+    .subject-card {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+    }
+
+    .subject-card:hover {
+      border-color: #667eea;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    .subject-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .subject-info h3 {
+      color: #1e3c72;
+      font-size: 1.3em;
+      margin-bottom: 5px;
+    }
+
+    .subject-code {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .subject-teacher {
+      color: #667eea;
+      font-size: 0.9em;
+      font-style: italic;
+    }
+
+    .attendance-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    .btn-present {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-present:hover {
+      background: #059669;
+    }
+
+    .btn-absent {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-absent:hover {
+      background: #dc2626;
+    }
+
+    .attendance-display {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 25px;
+      background: #e0e0e0;
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #059669);
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .attendance-text {
+      font-weight: bold;
+      color: #1e3c72;
+      min-width: 100px;
+    }
+
+    .claude-assistant {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      margin: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .claude-icon {
+      font-size: 4em;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .claude-message {
+      flex: 1;
+    }
+
+    .claude-message h3 {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      padding: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      flex: 1;
+      min-width: 150px;
+      padding: 15px;
+      font-size: 1.1em;
+    }
+
+    .btn-reset {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .btn-reset:hover {
+      background: #d97706;
+    }
+
+    footer {
+      background: #1e3c72;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+    }
+
+    .footer-link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.8em;
+      }
+      
+      .subject-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📚 RVU Attendance Tracker</h1>
+      <p>B.Tech CSE - Section B | Semester 1</p>
+      <p>Class Teacher: Dr. Rekha Satish</p>
+    </header>
+
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-label">Overall Attendance</div>
+        <div class="stat-value" id="overallPercentage">0%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Classes</div>
+        <div class="stat-value" id="totalClasses">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Classes Attended</div>
+        <div class="stat-value" id="attendedClasses">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Classes Missed</div>
+        <div class="stat-value" id="missedClasses">0</div>
+      </div>
+    </div>
+
+    <div class="claude-assistant">
+      <div class="claude-icon">🤖</div>
+      <div class="claude-message">
+        <h3>Claude's Academic Insights</h3>
+        <p id="claudeMessage">Start tracking your attendance to get personalized insights!</p>
+      </div>
+    </div>
+
+    <div class="subjects-section">
+      <h2>Your Subjects</h2>
+      <div id="subjectsContainer"></div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn btn-reset btn-action" onclick="resetAll()">🔄 Reset All Data</button>
+    </div>
+
+    <footer>
+      © 2025 RVU Attendance Tracker | Designed & Developed by <span class="footer-link">Francis Reuben</span> and <span class="footer-link">Avaneesh Shetty</span>
+    </footer>
+  </div>
+
+  <script>
+    const subjects = [
+      { code: 'CS1812', name: 'Discrete Mathematics and Set Theory', teacher: 'Dr. Rekha Satish', short: 'DMST' },
+      { code: 'CS1003', name: 'Programming in C', teacher: 'Dr. J Cynthia', short: 'PC' },
+      { code: 'CS1308', name: 'Web Fundamentals and UX Design', teacher: 'WINSOL', short: 'WEB' },
+      { code: 'CS1101', name: 'Digital Systems and Computer Architecture', teacher: 'Prof. Aisiri KS', short: 'DSCA' },
+      { code: 'CS1841', name: 'Exploring Science', teacher: 'Dr. Durgarao Guttula', short: 'ES' },
+      { code: 'CS1927', name: 'English Communication', teacher: 'Dr. Rekha Satish', short: 'English' },
+      { code: 'CS1929', name: 'Structured Innovation with Design Thinking', teacher: 'Prof. Chidhananda R S', short: 'SIDT' },
+      { code: 'CS1925', name: 'Constitution of India and Professional Ethics', teacher: 'Prof Navya Shetty', short: 'CONST' }
+    ];
+
+    let attendanceData = {};
+
+    function initializeData() {
+      subjects.forEach(subject => {
+        if (!attendanceData[subject.code]) {
+          attendanceData[subject.code] = { present: 0, absent: 0 };
+        }
+      });
+    }
+
+    function markAttendance(code, status) {
+      if (status === 'present') {
+        attendanceData[code].present++;
+      } else {
+        attendanceData[code].absent++;
+      }
+      updateDisplay();
+    }
+
+    function calculatePercentage(present, absent) {
+      const total = present + absent;
+      if (total === 0) return 0;
+      return Math.round((present / total) * 100);
+    }
+
+    function updateDisplay() {
+      let totalPresent = 0;
+      let totalAbsent = 0;
+
+      subjects.forEach(subject => {
+        const data = attendanceData[subject.code];
+        const percentage = calculatePercentage(data.present, data.absent);
+        const total = data.present + data.absent;
+
+        document.getElementById(`progress-${subject.code}`).style.width = percentage + '%';
+        document.getElementById(`progress-${subject.code}`).textContent = percentage + '%';
+        document.getElementById(`text-${subject.code}`).textContent = 
+          `${data.present}/${total} classes`;
+
+        totalPresent += data.present;
+        totalAbsent += data.absent;
+      });
+
+      const totalClasses = totalPresent + totalAbsent;
+      const overallPercentage = calculatePercentage(totalPresent, totalAbsent);
+
+      document.getElementById('overallPercentage').textContent = overallPercentage + '%';
+      document.getElementById('totalClasses').textContent = totalClasses;
+      document.getElementById('attendedClasses').textContent = totalPresent;
+      document.getElementById('missedClasses').textContent = totalAbsent;
+
+      updateClaudeMessage(overallPercentage, totalClasses);
+    }
+
+    function updateClaudeMessage(percentage, totalClasses) {
+      const messageEl = document.getElementById('claudeMessage');
+      
+      if (totalClasses === 0) {
+        messageEl.textContent = "Start tracking your attendance to get personalized insights!";
+      } else if (percentage >= 90) {
+        messageEl.textContent = "🌟 Excellent work! You're maintaining outstanding attendance. Keep up this dedication!";
+      } else if (percentage >= 75) {
+        messageEl.textContent = "✅ Great job! Your attendance is above the minimum requirement. Stay consistent!";
+      } else if (percentage >= 60) {
+        messageEl.textContent = "⚠️ Your attendance is below 75%. Try to attend more classes to meet the requirement!";
+      } else {
+        messageEl.textContent = "🚨 Alert! Your attendance needs immediate attention. Don't miss any more classes!";
+      }
+    }
+
+    function resetAll() {
+      if (confirm('Are you sure you want to reset all attendance data?')) {
+        subjects.forEach(subject => {
+          attendanceData[subject.code] = { present: 0, absent: 0 };
+        });
+        updateDisplay();
+      }
+    }
+
+    function renderSubjects() {
+      const container = document.getElementById('subjectsContainer');
+      
+      subjects.forEach(subject => {
+        const card = document.createElement('div');
+        card.className = 'subject-card';
+        card.innerHTML = `
+          <div class="subject-header">
+            <div class="subject-info">
+              <h3>${subject.name}</h3>
+              <div class="subject-code">${subject.code} | ${subject.short}</div>
+              <div class="subject-teacher">Faculty: ${subject.teacher}</div>
+            </div>
+            <div class="attendance-controls">
+              <button class="btn btn-present" onclick="markAttendance('${subject.code}', 'present')">
+                ✓ Present
+              </button>
+              <button class="btn btn-absent" onclick="markAttendance('${subject.code}', 'absent')">
+                ✗ Absent
+              </button>
+            </div>
+          </div>
+          <div class="attendance-display">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-${subject.code}" style="width: 0%">0%</div>
+            </div>
+            <div class="attendance-text" id="text-${subject.code}">0/0 classes</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    initializeData();
+    renderSubjects();
+    updateDisplay();
+  </script>
+</body>
+</html>

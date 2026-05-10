@@ -4,466 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>brio. — The Unified Learning Platform</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900;1,9..144,700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
-<style>
-  /* ============================
-     THEMES
-     ============================ */
-  :root, [data-theme="cream"] {
-    --bg: #F5EDD8; --surface: #FFFFFF; --text: #110F0C; --border: #110F0C;
-    --accent-amber: #E9A21B; --accent-sage: #6B8F71; --accent-rust: #C2552A;
-    --accent-blue: #3B82F6; --shadow: 6px 6px 0px #110F0C;
-    --shadow-hover: 10px 10px 0px #110F0C; --shadow-active: 2px 2px 0px #110F0C;
-    --font-mono: 'JetBrains Mono', monospace; --font-serif: 'Fraunces', serif;
-    --glass-bg: rgba(255,255,255,0.7);
-  }
-  [data-theme="midnight"] {
-    --bg: #0D1117; --surface: #161B22; --text: #E6EDF3; --border: #30363D;
-    --accent-amber: #D29922; --accent-sage: #3FB950; --accent-rust: #F85149;
-    --accent-blue: #58A6FF; --shadow: 6px 6px 0px #000; --shadow-hover: 10px 10px 0px #000;
-    --shadow-active: 2px 2px 0px #000;
-    --font-mono: 'JetBrains Mono', monospace; --font-serif: 'Fraunces', serif;
-    --glass-bg: rgba(22,27,34,0.8);
-  }
-  [data-theme="ocean"] {
-    --bg: #0F172A; --surface: #1E293B; --text: #F1F5F9; --border: #334155;
-    --accent-amber: #F59E0B; --accent-sage: #10B981; --accent-rust: #EF4444;
-    --accent-blue: #3B82F6; --shadow: 6px 6px 0px #000; --shadow-hover: 10px 10px 0px #000;
-    --shadow-active: 2px 2px 0px #000;
-    --font-mono: 'JetBrains Mono', monospace; --font-serif: 'Fraunces', serif;
-    --glass-bg: rgba(30,41,59,0.8);
-  }
-  [data-theme="forest"] {
-    --bg: #ECFDF5; --surface: #FFFFFF; --text: #064E3B; --border: #064E3B;
-    --accent-amber: #D97706; --accent-sage: #059669; --accent-rust: #DC2626;
-    --accent-blue: #2563EB; --shadow: 6px 6px 0px #064E3B; --shadow-hover: 10px 10px 0px #064E3B;
-    --shadow-active: 2px 2px 0px #064E3B;
-    --font-mono: 'JetBrains Mono', monospace; --font-serif: 'Fraunces', serif;
-    --glass-bg: rgba(255,255,255,0.7);
-  }
-  [data-theme="sunset"] {
-    --bg: #FEF2F2; --surface: #FFFFFF; --text: #7F1D1D; --border: #7F1D1D;
-    --accent-amber: #EA580C; --accent-sage: #8B5CF6; --accent-rust: #DC2626;
-    --accent-blue: #6366F1; --shadow: 6px 6px 0px #7F1D1D; --shadow-hover: 10px 10px 0px #7F1D1D;
-    --shadow-active: 2px 2px 0px #7F1D1D;
-    --font-mono: 'JetBrains Mono', monospace; --font-serif: 'Fraunces', serif;
-    --glass-bg: rgba(255,255,255,0.7);
-  }
-  [data-theme="lavender"] {
-    --bg: #F5F3FF; --surface: #FFFFFF; --text: #3B0764; --border: #3B0764;
-    --accent-amber: #9333EA; --accent-sage: #7C3AED; --accent-rust: #E11D48;
-    --accent-blue: #6366F1; --shadow: 6px 6px 0px #3B0764; --shadow-hover: 10px 10px 0px #3B0764;
-    --shadow-active: 2px 2px 0px #3B0764;
-    --font-mono: 'JetBrains Mono', monospace; --font-serif: 'Fraunces', serif;
-    --glass-bg: rgba(255,255,255,0.7);
-  }
-
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{
-    background-color:var(--bg);color:var(--text);
-    font-family:var(--font-mono);line-height:1.6;overflow-x:hidden;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  #auth-modal{
-    position:fixed;inset:0;background:rgba(17,15,12,0.95);
-    display:flex;align-items:center;justify-content:center;z-index:1000;
-    backdrop-filter:blur(10px);
-  }
-  .auth-box{
-    background:var(--surface);border:4px solid var(--border);
-    padding:3rem;box-shadow:12px 12px 0px var(--accent-amber);
-    width:100%;max-width:480px;text-align:center;
-  }
-  .auth-box h2{font-family:var(--font-serif);font-size:3rem;font-weight:900;margin-bottom:0.5rem;text-transform:lowercase}
-  .auth-box input{
-    width:100%;padding:1rem;border:3px solid var(--border);
-    margin-bottom:1.5rem;font-family:var(--font-mono);font-size:1rem;font-weight:700;
-  }
-  .demo-accounts{
-    margin:1.5rem 0;text-align:left;border:3px dashed var(--border);
-    padding:1rem;background:var(--bg);max-height:180px;overflow-y:auto;
-  }
-  .demo-accounts summary{font-weight:800;cursor:pointer;margin-bottom:0.5rem;font-size:0.85rem;}
-  .demo-account-row{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:0.4rem 0.5rem;border-bottom:1px solid var(--border);font-size:0.8rem;
-    cursor:pointer;transition:background 0.1s;
-  }
-  .demo-account-row:hover{background:var(--accent-amber);color:var(--text);}
-  .demo-account-row:last-child{border-bottom:none;}
-  .demo-account-row .name{font-weight:700;}
-  .demo-account-row .email{opacity:0.7;}
-
-  .btn{
-    width:100%;padding:1rem;
-    background:var(--accent-amber);border:3px solid var(--border);
-    font-family:var(--font-mono);font-size:1.1rem;font-weight:800;cursor:pointer;
-    box-shadow:4px 4px 0px var(--border);transition:all 0.1s;
-  }
-  .btn:active{box-shadow:0px 0px 0px var(--border);transform:translate(4px,4px)}
-  .btn.sage{background:var(--accent-sage);color:var(--surface)}
-  .btn.rust{background:var(--accent-rust);color:var(--surface)}
-  .btn.blue{background:var(--accent-blue);color:#fff}
-  .btn.small{padding:0.6rem 1.2rem;width:auto;font-size:0.9rem}
-  .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:4px 4px 0px var(--border)}
-
-  #app{display:none}
-  header{
-    background:var(--glass-bg);backdrop-filter:blur(12px);
-    border-bottom:4px solid var(--border);
-    display:flex;justify-content:space-between;align-items:center;
-    padding:1.2rem 2.5rem;flex-wrap:wrap;gap:1.2rem;
-    position:sticky;top:0;z-index:100;
-  }
-  .logo{font-family:var(--font-serif);font-size:2.2rem;font-weight:900;text-transform:lowercase}
-  .logo span{color:var(--accent-amber)}
-  .tabs{display:flex;gap:1.8rem;list-style:none;flex-wrap:wrap}
-  .tabs button{
-    background:none;border:none;box-shadow:none;
-    font-family:var(--font-mono);font-size:1rem;font-weight:800;
-    color:var(--text);opacity:0.5;cursor:pointer;
-    padding-bottom:0.4rem;border-bottom:3px solid transparent;transition:opacity 0.2s;
-  }
-  .tabs button:hover{opacity:0.8}
-  .tabs button.active{opacity:1;border-bottom-color:var(--accent-amber)}
-  .user-badge{display:flex;align-items:center;gap:0.8rem;font-weight:800}
-  .user-badge img{width:36px;height:36px;border-radius:50%;border:2px solid var(--border)}
-  .settings-btn{
-    background:none;border:none;font-size:1.5rem;cursor:pointer;
-    color:var(--text);opacity:0.5;transition:opacity 0.2s;padding:0.2rem;
-  }
-  .settings-btn:hover{opacity:1}
-
-  main{padding:2.5rem;max-width:1400px;margin:0 auto}
-  .tab-content{display:none}
-  .tab-content.active{display:block}
-
-  /* --- COMMON --- */
-  .card{
-    background:var(--surface);border:4px solid var(--border);
-    padding:2rem;box-shadow:var(--shadow);margin-bottom:2.5rem;
-  }
-  .card-title{
-    font-family:var(--font-serif);font-size:1.8rem;margin-bottom:1.2rem;
-    background:var(--accent-amber);display:inline-block;
-    padding:0.2rem 1rem;border:3px solid var(--border);transform:rotate(-1deg);
-  }
-
-  /* --- DASHBOARD --- */
-  .dashboard-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:1.5rem;margin-bottom:2.5rem;
-  }
-  .dash-card{
-    background:var(--surface);border:4px solid var(--border);
-    padding:1.5rem;box-shadow:4px 4px 0px var(--border);
-    text-align:center;
-  }
-  .dash-card .icon{font-size:2rem;margin-bottom:0.5rem;}
-  .dash-card .value{
-    font-family:var(--font-serif);font-size:2.2rem;font-weight:900;
-    color:var(--accent-rust);
-  }
-  .dash-card .label{font-weight:800;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;margin-top:0.3rem;}
-  .dash-card .sub{font-size:0.8rem;opacity:0.7;margin-top:0.3rem;}
-
-  /* Progress bars in dashboard */
-  .course-progress-item{
-    display:flex;align-items:center;gap:1rem;padding:0.8rem 0;
-    border-bottom:1px solid var(--border);
-  }
-  .course-progress-item:last-child{border-bottom:none}
-  .course-progress-item .cp-name{flex:1;font-weight:700;font-size:0.85rem;}
-  .course-progress-item .cp-bar{
-    flex:2;height:12px;border:2px solid var(--border);background:var(--bg);position:relative;overflow:hidden;
-  }
-  .course-progress-item .cp-fill{
-    position:absolute;inset:0;background:var(--accent-sage);transition:width 0.3s;width:0;
-  }
-  .course-progress-item .cp-pct{font-weight:800;font-size:0.85rem;min-width:3rem;text-align:right;}
-
-  /* --- LEARNING LAYOUT --- */
-  .learn-hero{
-    display:grid;grid-template-columns:1.5fr 1fr;
-    gap:2.5rem;align-items:stretch;margin-bottom:2.5rem;
-  }
-  .learn-hero h1{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:0.8rem}
-  .learn-hero p{font-weight:700;max-width:560px}
-  .hero-kicker{
-    display:inline-block;font-weight:800;text-transform:uppercase;
-    letter-spacing:0.08em;font-size:0.75rem;
-    background:var(--accent-amber);border:3px solid var(--border);
-    padding:0.3rem 0.8rem;margin-bottom:1rem;transform:rotate(-1deg);
-  }
-  .continue-card{
-    background:var(--surface);border:4px solid var(--border);
-    box-shadow:var(--shadow);padding:2rem;display:flex;flex-direction:column;gap:1rem;
-  }
-  .continue-title{font-weight:900;text-transform:uppercase;letter-spacing:0.04em}
-  .continue-lesson{font-family:var(--font-serif);font-size:1.3rem;font-weight:800}
-  .progress-bar{height:14px;border:3px solid var(--border);background:var(--bg);position:relative;overflow:hidden}
-  .progress-bar span{
-    position:absolute;inset:0;width:0;
-    background:var(--accent-sage);border-right:3px solid var(--border);transition:width 0.2s;
-  }
-  .learn-layout{
-    display:grid;
-    grid-template-columns:minmax(180px,220px) minmax(0,1fr) minmax(180px,240px);
-    gap:2rem;align-items:start;
-  }
-  .filters,.learn-stats{
-    background:var(--surface);border:4px solid var(--border);
-    box-shadow:var(--shadow);padding:1.5rem;position:sticky;top:6rem;
-  }
-  .filter-title{font-weight:900;text-transform:uppercase;margin-bottom:1rem}
-  .filters label{font-weight:800;display:block;margin:1rem 0 0.4rem}
-  .filters select{
-    width:100%;padding:0.6rem 0.8rem;border:3px solid var(--border);
-    background:var(--bg);font-family:var(--font-mono);font-weight:700;
-  }
-  .catalog{min-width:0}
-  .catalog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap}
-  .catalog-header h2{font-family:var(--font-serif);font-size:2rem}
-  .catalog-header .stats{display:flex;gap:1rem;font-weight:800;flex-wrap:wrap}
-  .subject-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
-  .empty-state{border-style:dashed;background:var(--bg);text-align:center}
-  .empty-state h3{font-family:var(--font-serif);font-size:1.6rem;margin-bottom:0.6rem}
-  .subject-card{
-    background:var(--surface);border:4px solid var(--border);
-    box-shadow:6px 6px 0px var(--border);
-    transition:transform 0.15s, box-shadow 0.15s;
-  }
-  .subject-card:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow-hover)}
-  .learn-stats .stat-card{
-    border:3px solid var(--border);background:var(--bg);
-    padding:1rem;margin-bottom:1rem;box-shadow:4px 4px 0px var(--border);
-  }
-  .stat-label{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em}
-  .stat-value{font-family:var(--font-serif);font-size:1.4rem;font-weight:900}
-  .subject-page{margin-top:3rem}
-  .subject-page.hidden{display:none}
-  .subject-hero{
-    background:var(--surface);border:4px solid var(--border);
-    box-shadow:var(--shadow);padding:2rem;
-    display:grid;grid-template-columns:1.5fr 0.6fr;gap:2rem;margin-bottom:2rem;
-  }
-  .subject-kicker{font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent-rust);font-size:0.75rem;margin-bottom:0.6rem}
-  .subject-topics{margin-top:1rem;display:flex;flex-wrap:wrap;gap:0.5rem}
-  .subject-meta{border:3px solid var(--border);background:var(--bg);padding:1.5rem;display:grid;gap:1rem;font-weight:800}
-  .subject-meta div{display:flex;justify-content:space-between;align-items:center}
-  .subject-meta span{font-family:var(--font-serif);font-size:1.2rem}
-  .subject-sections{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
-  .subject-section{
-    background:var(--surface);border:4px solid var(--border);
-    box-shadow:4px 4px 0px var(--border);padding:1.5rem;
-  }
-  .subject-section h3{
-    font-family:var(--font-serif);font-size:1.3rem;margin-bottom:1rem;
-    background:var(--accent-amber);display:inline-block;
-    padding:0.2rem 0.8rem;border:3px solid var(--border);transform:rotate(-1deg);
-  }
-  .subject-section ul{list-style:none;padding-left:0}
-  .subject-section li{padding:0.6rem 0;border-bottom:2px dashed var(--border);font-weight:700}
-  .subject-section li:last-child{border-bottom:none}
-  .pill{padding:0.2rem 0.5rem;font-size:0.7rem;font-weight:800;border:2px solid var(--border);text-transform:uppercase;display:inline-block}
-  .pill.locked{background:#CCC}
-  .pill.in_progress{background:var(--accent-amber)}
-  .pill.done{background:var(--accent-sage);color:var(--surface)}
-  .pill.high{background:var(--accent-rust);color:var(--surface)}
-
-  /* --- TAB 2: SHOWCASE --- */
-  .code-block{background:var(--text);color:var(--accent-sage);padding:1.5rem;border:4px solid var(--border);font-size:0.9rem;overflow-x:auto;margin-bottom:1.5rem;box-shadow:inset 4px 4px 0px #000}
-  .table-wrapper{overflow-x:auto;border:4px solid var(--border);box-shadow:var(--shadow)}
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:1rem;border:2px solid var(--border);text-align:left}
-  th{background:var(--accent-amber);font-weight:800;text-transform:uppercase;border-bottom:4px solid var(--border)}
-
-  /* --- TAB 3: VIZ (Enhanced) --- */
-  .viz-container{
-    display:flex;gap:2.5rem;flex-wrap:wrap;
-  }
-  .viz-pipeline{
-    flex:1.5;min-width:320px;display:flex;flex-direction:column;gap:2.5rem;
-    position:relative;
-  }
-  .viz-line{
-    position:absolute;left:50%;top:40px;bottom:40px;
-    width:4px;background:var(--border);transform:translateX(-50%);z-index:1;
-  }
-  .viz-line-glow{
-    position:absolute;left:50%;top:40px;width:4px;
-    background:var(--accent-amber);transform:translateX(-50%);z-index:1;
-    height:0;transition:height 0.8s ease;box-shadow:0 0 12px var(--accent-amber);
-  }
-  #v-packet{
-    position:absolute;left:50%;width:28px;height:28px;
-    background:var(--accent-amber);border:3px solid var(--border);
-    border-radius:50%;transform:translateX(-50%);z-index:5;
-    opacity:0;top:40px;
-    box-shadow:0 0 20px var(--accent-amber);
-    transition:top 1s cubic-bezier(0.4,0,0.2,1),opacity 0.3s;
-  }
-  .viz-layer{
-    background:var(--surface);border:4px solid var(--border);
-    box-shadow:var(--shadow);position:relative;z-index:2;
-    transition:transform 0.3s, box-shadow 0.3s;
-  }
-  .viz-layer.active{
-    transform:scale(1.02);box-shadow:var(--shadow-hover);
-  }
-  .viz-layer h3{
-    padding:0.6rem 1rem;border-bottom:4px solid var(--border);
-    font-size:1rem;
-  }
-  .viz-layer.fe h3{background:var(--accent-amber)}
-  .viz-layer.be h3{background:var(--accent-sage);color:var(--surface)}
-  .viz-layer.db h3{background:var(--accent-rust);color:var(--surface)}
-  .viz-layer .body{padding:1.5rem;}
-
-  .viz-log{
-    flex:1;min-width:280px;
-    background:var(--bg);border:4px solid var(--border);
-    display:flex;flex-direction:column;max-height:600px;
-  }
-  .viz-log h3{
-    padding:1rem;border-bottom:4px solid var(--border);
-    background:var(--text);color:var(--surface);
-  }
-  #v-log{
-    padding:1rem;font-family:var(--font-mono);font-size:0.85rem;
-    overflow-y:auto;flex:1;white-space:pre-wrap;
-  }
-  .log-entry{display:flex;gap:0.5rem;padding:0.2rem 0;align-items:flex-start;}
-  .log-time{color:var(--accent-sage);font-size:0.7rem;min-width:4.5rem;}
-  .log-arrow{color:var(--accent-amber);}
-  .log-msg{flex:1;}
-
-  /* --- SETTINGS PANEL --- */
-  #settings-panel{
-    position:fixed;top:0;right:-420px;width:400px;height:100vh;
-    background:var(--surface);border-left:4px solid var(--border);
-    box-shadow:-10px 0 30px rgba(0,0,0,0.2);
-    z-index:200;transition:right 0.3s ease;
-    display:flex;flex-direction:column;
-  }
-  #settings-panel.open{right:0}
-  .settings-header{
-    display:flex;justify-content:space-between;align-items:center;
-    padding:1.5rem;border-bottom:4px solid var(--border);
-  }
-  .settings-header h2{font-family:var(--font-serif);font-size:1.8rem}
-  .settings-close{
-    background:none;border:none;font-size:2rem;cursor:pointer;color:var(--text);
-    padding:0.2rem 0.6rem;transition:background 0.1s;
-  }
-  .settings-close:hover{background:var(--bg);}
-  .settings-body{padding:1.5rem;overflow-y:auto;flex:1;}
-  .settings-group{margin-bottom:2rem;}
-  .settings-group h3{font-weight:800;margin-bottom:1rem;text-transform:uppercase;font-size:0.85rem;letter-spacing:0.06em;}
-  .theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;}
-  .theme-option{
-    padding:0.8rem;border:3px solid var(--border);cursor:pointer;
-    font-weight:700;font-size:0.8rem;text-align:center;transition:all 0.15s;
-  }
-  .theme-option:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0px var(--border);}
-  .theme-option.active{border-color:var(--accent-amber);background:var(--accent-amber);color:var(--text);box-shadow:3px 3px 0px var(--border);}
-  .theme-swatch{display:flex;gap:3px;justify-content:center;margin-top:0.4rem;}
-  .theme-swatch span{width:14px;height:14px;border:1px solid var(--border);border-radius:50%;}
-  .settings-toggle{display:flex;justify-content:space-between;align-items:center;padding:0.8rem 0;border-bottom:1px solid var(--border);}
-  .settings-toggle:last-child{border-bottom:none;}
-  .toggle-switch{
-    width:44px;height:24px;background:var(--bg);border:2px solid var(--border);
-    border-radius:12px;cursor:pointer;position:relative;transition:background 0.2s;
-  }
-  .toggle-switch.on{background:var(--accent-sage);}
-  .toggle-switch::after{
-    content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;
-    background:var(--text);border-radius:50%;transition:transform 0.2s;
-  }
-  .toggle-switch.on::after{transform:translateX(20px);}
-
-  /* --- READER MODE --- */
-  #reader-overlay{
-    position:fixed;inset:0;background:var(--bg);z-index:300;
-    display:none;overflow-y:auto;
-    padding:4rem max(2rem,calc(50vw - 400px));
-  }
-  #reader-overlay.open{display:block;}
-  .reader-header{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:3rem;border-bottom:4px solid var(--border);padding-bottom:1.5rem;
-  }
-  .reader-header h2{font-family:var(--font-serif);font-size:2.2rem;}
-  .reader-content{
-    max-width:800px;margin:0 auto;
-    font-size:1.2rem;line-height:1.9;font-family:var(--font-serif);
-  }
-  .reader-content p{margin-bottom:1.5rem;}
-  .reader-content h3{font-family:var(--font-mono);font-size:1.6rem;margin:2rem 0 1rem;font-weight:900;}
-  .reader-content .progress-marker{
-    background:var(--accent-sage);color:var(--surface);
-    padding:0.2rem 0.6rem;font-family:var(--font-mono);font-size:0.8rem;font-weight:800;
-  }
-
-  /* --- AUDIO PLAYER --- */
-  #audio-player{
-    position:fixed;bottom:1.5rem;left:1.5rem;z-index:150;
-    background:var(--surface);border:3px solid var(--border);
-    box-shadow:4px 4px 0px var(--border);padding:0.8rem 1rem;
-    display:flex;align-items:center;gap:0.8rem;
-    cursor:pointer;transition:all 0.2s;
-    max-width:280px;
-  }
-  #audio-player:hover{transform:translateY(-2px);box-shadow:6px 6px 0px var(--border);}
-  .audio-icon{font-size:1.3rem;min-width:1.5rem;text-align:center;}
-  .audio-info{flex:1;min-width:0;}
-  .audio-title{font-weight:800;font-size:0.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .audio-artist{font-size:0.65rem;opacity:0.6;}
-  .audio-controls{display:flex;gap:0.3rem;}
-  .audio-btn{
-    background:none;border:2px solid var(--border);padding:0.2rem 0.5rem;
-    font-size:0.8rem;cursor:pointer;color:var(--text);font-weight:800;
-    transition:background 0.1s;
-  }
-  .audio-btn:hover{background:var(--bg);}
-  .audio-btn.active{background:var(--accent-sage);color:var(--surface);}
-  .audio-volume{width:60px;height:6px;cursor:pointer;accent-color:var(--accent-sage);}
-
-  /* --- TOAST --- */
-  #toast{
-    position:fixed;bottom:2rem;right:2rem;
-    background:var(--text);color:var(--accent-amber);
-    padding:1.2rem 1.5rem;border:4px solid var(--border);
-    box-shadow:var(--shadow);display:none;z-index:400;font-weight:800;
-  }
-
-  @media(max-width:1100px){
-    .learn-layout{grid-template-columns:1fr}
-    .filters,.learn-stats{position:static}
-  }
-  @media(max-width:900px){
-    .learn-hero{grid-template-columns:1fr}
-    .subject-hero{grid-template-columns:1fr}
-    #settings-panel{width:100%;right:-100%}
-    #reader-overlay{padding:2rem 1.5rem}
-  }
-  @media(max-width:800px){
-    header{flex-direction:column;align-items:flex-start;padding:1rem 1.2rem}
-    main{padding:1.5rem}
-    .tabs{gap:1rem}
-    .user-badge{width:100%;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
-    .dashboard-grid{grid-template-columns:1fr 1fr}
-    .subject-grid{grid-template-columns:1fr}
-    .subject-sections{grid-template-columns:1fr}
-    #audio-player{left:0.5rem;bottom:0.5rem;max-width:240px}
-  }
-</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..900&family=JetBrains+Mono:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </head>
 <body>
 
+<!-- LANDING PAGE -->
+<div id="landing-page">
+  <div class="landing-bg">
+    <img src="swirl.png" alt="Swirl flow" class="swirl-img" id="swirl-img">
+  </div>
+  <div class="landing-content">
+    <div class="landing-header">
+      <div class="logo landing-logo">bri<span>o</span>.</div>
+      <button type="button" class="btn" style="padding: 0.5rem 1.5rem;" onclick="enterPlatform()">LOGIN</button>
+    </div>
+    <div class="hero-text-container">
+      <h1 class="hero-h1">Learn.<br>The Hard Way.</h1>
+      <p class="hero-sub">A high-contrast, high-performance platform engineered for intense technical mastery. Drop the fluff. Embrace the structure.</p>
+      <button type="button" class="btn sage hero-cta" onclick="enterPlatform()">ENTER PLATFORM</button>
+    </div>
+  </div>
+</div>
+
 <!-- AUTH MODAL -->
-<div id="auth-modal">
+<div id="auth-modal" style="display:none;">
   <div class="auth-box">
     <h2>brio.</h2>
     <p style="margin-bottom:0.5rem;font-weight:700;">Sign in to access your dashboard.</p>
@@ -494,7 +62,7 @@
       <li><button type="button" aria-label="System Viz" onclick="switchTab('tab-viz')">System Viz</button></li>
     </ul>
     <div style="display:flex;align-items:center;gap:0.8rem;">
-      <button type="button" class="settings-btn" onclick="toggleSettings()" aria-label="Settings">&#9881;</button>
+      <button type="button" class="settings-btn" onclick="toggleSettings()" aria-label="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
       <div class="user-badge">
         <img id="nav-avatar" src="" alt="Avatar">
         <div style="text-align:right;">
@@ -519,10 +87,10 @@
           </div>
         </div>
         <div class="dashboard-grid" id="dashboard-grid">
-          <div class="dash-card"><div class="icon">&#128218;</div><div class="value" id="dash-subjects">0</div><div class="label">Subjects Enrolled</div></div>
-          <div class="dash-card"><div class="icon">&#9989;</div><div class="value" id="dash-lessons">0</div><div class="label">Lessons Done</div><div class="sub" id="dash-lessons-sub">of 0</div></div>
-          <div class="dash-card"><div class="icon">&#128200;</div><div class="value" id="dash-pct">0%</div><div class="label">Overall Progress</div></div>
-          <div class="dash-card"><div class="icon">&#128293;</div><div class="value" id="dash-streak">0</div><div class="label">Day Streak</div></div>
+          <div class="dash-card"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="value" id="dash-subjects">0</div><div class="label">Subjects Enrolled</div></div>
+          <div class="dash-card"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="value" id="dash-lessons">0</div><div class="label">Lessons Done</div><div class="sub" id="dash-lessons-sub">of 0</div></div>
+          <div class="dash-card"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="value" id="dash-pct">0%</div><div class="label">Overall Progress</div></div>
+          <div class="dash-card"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="value" id="dash-streak">0</div><div class="label">Day Streak</div></div>
         </div>
         <div class="card" id="dash-progress-detail" style="display:none;">
           <h3 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:1rem;">Course Progress</h3>
@@ -581,51 +149,55 @@
           <div class="stat-card"><div class="stat-label">Upcoming Quizzes</div><div class="stat-value" id="stat-quizzes">0</div></div>
         </aside>
       </section>
-
-      <section id="subject-page" class="subject-page hidden">
-        <div class="subject-hero">
-          <div>
-            <div class="subject-kicker" id="subject-semester"></div>
-            <h2 id="subject-title"></h2>
-            <p id="subject-overview"></p>
-            <div class="subject-topics" id="subject-topics"></div>
-          </div>
-          <div class="subject-meta">
-            <div><strong>Credits</strong><span id="subject-credits"></span></div>
-            <div><strong>Difficulty</strong><span id="subject-difficulty"></span></div>
-          </div>
-        </div>
-        <div class="subject-sections">
-          <div class="subject-section">
-            <h3>Lessons</h3>
-            <div id="subject-lessons"></div>
-          </div>
-          <div class="subject-section">
-            <h3>Quizzes</h3>
-            <div id="subject-quizzes"></div>
-          </div>
-          <div class="subject-section">
-            <h3>Assignments</h3>
-            <ul id="subject-assignments"></ul>
-          </div>
-          <div class="subject-section">
-            <h3>Resources</h3>
-            <ul id="subject-resources"></ul>
-          </div>
-        </div>
-      </section>
     </div>
 
     <!-- TAB 2: SHOWCASE -->
     <div id="tab-showcase" class="tab-content">
+      <!-- Schema Explorer -->
+      <div class="card schema-explorer">
+        <h2 class="card-title">Database Schema Explorer</h2>
+        <p style="font-weight:600;margin-bottom:1rem;color:var(--text-secondary);">Click a table to inspect its schema and preview sample data. These are the sandbox tables that all queries below operate on.</p>
+        <div class="table-chip-grid" id="table-chips">
+          <!-- Populated by JS -->
+        </div>
+        <div class="schema-preview" id="schema-preview">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+            <div>
+              <div class="schema-label">Column Definitions</div>
+              <div class="schema-columns" id="schema-columns"></div>
+            </div>
+            <div>
+              <div class="schema-label">Sample Data (first 5 rows)</div>
+              <div class="table-wrapper" style="margin:0;">
+                <table>
+                  <thead id="sample-head"></thead>
+                  <tbody id="sample-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live SQL Console -->
+      <div class="card" style="margin-bottom: 2rem;">
+        <h2 class="card-title">Live DB Console</h2>
+        <p style="font-weight:700;margin-bottom:1.5rem;">Execute arbitrary SQL commands directly against the database tier.</p>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <textarea id="live-sql-input" placeholder="e.g. SELECT * FROM users;" style="width:100%;height:100px;padding:1rem;border:var(--border-width) solid var(--border);border-radius:var(--radius);font-family:var(--font-mono);font-size:1rem;resize:vertical;"></textarea>
+          <button type="button" class="btn" style="align-self:flex-start;padding:1rem 2.5rem;" onclick="runCustomSql()">RUN CUSTOM SQL</button>
+        </div>
+      </div>
+
+      <!-- Predefined Queries -->
       <div class="card">
-        <h2 class="card-title">SQL Command Center</h2>
+        <h2 class="card-title">Predefined Queries</h2>
         <div style="display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;">
-          <select id="query-select" style="flex:1;min-width:200px;padding:1rem;border:4px solid var(--border);font-family:var(--font-mono);font-weight:800;font-size:1rem;"></select>
+          <select id="query-select" style="flex:1;min-width:200px;padding:1rem;border:var(--border-width) solid var(--border);font-family:var(--font-mono);font-weight:800;font-size:1rem;"></select>
           <button type="button" class="btn" style="width:auto;padding:1rem 2rem;" onclick="runQuery()">EXECUTE</button>
           <button type="button" class="btn sage" style="width:auto;padding:1rem 2rem;" onclick="runTriggerDemo()">Trigger Demo</button>
         </div>
-        <div class="code-block" id="sql-display">-- Select a query to execute against brio_db</div>
+        <div class="code-block" id="sql-display">-- Output from queries will appear here</div>
         <div class="table-wrapper">
           <table>
             <thead id="results-head"><tr><th>Dataset</th></tr></thead>
@@ -638,41 +210,85 @@
     <!-- TAB 3: VIZ -->
     <div id="tab-viz" class="tab-content">
       <div class="card">
-        <h2 class="card-title">System Architecture Flow</h2>
-        <p style="font-weight:700;margin-bottom:2rem;">Interactive visualization of the Request &#8594; Logic &#8594; Storage lifecycle.</p>
-        <div class="viz-container">
-          <div class="viz-pipeline">
-            <div class="viz-line"></div>
-            <div class="viz-line-glow" id="viz-line-glow"></div>
-            <div id="v-packet"></div>
+        <h2 class="card-title">Three-Tier Architecture — Live Simulation</h2>
+        <p style="font-weight:700;margin-bottom:0.5rem;">Watch a real request flow through the system: Browser &#8594; Node.js API &#8594; MySQL Database, and back.</p>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1.5rem;">Each step is annotated with the exact code executing at that tier. Click the button to begin the simulation.</p>
 
-            <div class="viz-layer fe" id="viz-fe">
-              <h3>&#127760; 1. Frontend (Webpage)</h3>
-              <div class="body" style="text-align:center;">
-                <p style="font-weight:bold;margin-bottom:1rem;">Lesson: Authentication with JWTs</p>
-                <button type="button" class="btn sage" onclick="runVizSimulation()" style="width:auto;padding:0.8rem 2rem;">SUBMIT LESSON</button>
+        <div class="viz-outer">
+          <!-- CTA -->
+          <div class="viz-cta">
+            <button type="button" class="btn" id="viz-start-btn" onclick="runVizSimulation()" style="padding:1rem 3rem;font-size:1rem;">
+              &#9654; Run Simulation: Submit Lesson
+            </button>
+          </div>
+
+          <!-- 3-Panel Horizontal Flow -->
+          <div class="viz-flow">
+            <!-- TIER 1: Frontend -->
+            <div class="viz-tier" id="viz-t1">
+              <div class="viz-tier-header fe">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Tier 1: Frontend
+              </div>
+              <div class="viz-tier-body">
+                <div class="viz-tier-status" id="t1-status"><span class="dot"></span> Idle</div>
+                <div class="viz-tier-code" id="t1-code">// Waiting for user action...</div>
+                <div class="viz-tier-desc">The browser captures user input, serializes it as JSON, and sends an HTTP request to the backend API.</div>
               </div>
             </div>
-            <div class="viz-layer be" id="viz-be">
-              <h3>&#128187; 2. Backend (Node.js)</h3>
-              <div class="body" style="background:var(--text);color:var(--accent-sage);font-family:var(--font-mono);font-size:0.85rem;overflow-x:auto;">
-                app.post('/api/submit', async (req, res) => {<br>
-                &nbsp;&nbsp;const { lessonId } = req.body;<br>
-                &nbsp;&nbsp;<span id="v-be-code" style="color:#fff;">await pool.query('INSERT INTO submission...');</span><br>
-                });
+
+            <!-- CONNECTOR 1→2 -->
+            <div class="viz-connector" id="conn-12">
+              <svg viewBox="0 0 60 80" preserveAspectRatio="none">
+                <line class="arrow-path" x1="5" y1="40" x2="48" y2="40"/>
+                <polygon class="arrow-head" points="48,34 58,40 48,46"/>
+                <circle class="packet-dot" id="dot-12" cx="5" cy="40"/>
+              </svg>
+            </div>
+
+            <!-- TIER 2: Backend -->
+            <div class="viz-tier" id="viz-t2">
+              <div class="viz-tier-header be">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Tier 2: Backend (Node.js)
+              </div>
+              <div class="viz-tier-body">
+                <div class="viz-tier-status" id="t2-status"><span class="dot"></span> Idle</div>
+                <div class="viz-tier-code" id="t2-code">// Express server listening...</div>
+                <div class="viz-tier-desc">The Express.js API server validates the JWT, parses the request body, and builds a parameterized SQL query for the database.</div>
               </div>
             </div>
-            <div class="viz-layer db" id="viz-db">
-              <h3>&#128451; 3. MySQL Database</h3>
-              <div class="body" style="text-align:center;">
-                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom:0.5rem;"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-                <p id="v-db-status" style="font-family:var(--font-mono);font-weight:bold;">Awaiting Query...</p>
+
+            <!-- CONNECTOR 2→3 -->
+            <div class="viz-connector" id="conn-23">
+              <svg viewBox="0 0 60 80" preserveAspectRatio="none">
+                <line class="arrow-path" x1="5" y1="40" x2="48" y2="40"/>
+                <polygon class="arrow-head" points="48,34 58,40 48,46"/>
+                <circle class="packet-dot" id="dot-23" cx="5" cy="40"/>
+              </svg>
+            </div>
+
+            <!-- TIER 3: Database -->
+            <div class="viz-tier" id="viz-t3">
+              <div class="viz-tier-header db">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                Tier 3: MySQL Database
+              </div>
+              <div class="viz-tier-body">
+                <div class="viz-tier-status" id="t3-status"><span class="dot"></span> Idle</div>
+                <div class="viz-tier-code" id="t3-code">-- Awaiting query...</div>
+                <div class="viz-tier-desc">MySQL executes the INSERT, fires any AFTER INSERT triggers (e.g. trg_unlock_task), and returns the result set.</div>
               </div>
             </div>
           </div>
-          <div class="viz-log">
-            <h3>&#128214; Execution Log</h3>
-            <div id="v-log">&gt; System idle...</div>
+
+          <!-- Execution Log -->
+          <div class="viz-log-panel">
+            <div class="viz-log-header">
+              <div class="window-dots"><span></span><span></span><span></span></div>
+              Execution Log
+            </div>
+            <div id="v-log">&gt; System idle. Click "Run Simulation" to begin.</div>
           </div>
         </div>
       </div>
@@ -736,13 +352,14 @@
 
 <!-- AUDIO PLAYER -->
 <div id="audio-player" onclick="toggleAudio()">
-  <div class="audio-icon" id="audio-icon">&#9835;</div>
+  <audio id="lofi-audio" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
+  <div class="audio-icon" id="audio-icon"><svg id="audio-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
   <div class="audio-info">
-    <div class="audio-title">lofi study beats</div>
-    <div class="audio-artist">brio ambient</div>
+    <div class="audio-title">Lofi Study Stream</div>
+    <div class="audio-artist">Zeno FM Radio</div>
   </div>
   <div class="audio-controls" onclick="event.stopPropagation()">
-    <button type="button" class="audio-btn" id="audio-play-btn" onclick="toggleAudio()">&#9646;&#9646;</button>
+    <button type="button" class="audio-btn" id="audio-play-btn" onclick="toggleAudio()"><svg id="audio-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
   </div>
 </div>
 
@@ -766,76 +383,31 @@
 
   // ============ AUDIO ENGINE ============
   function initAudio() {
-    if (audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    audioGain = audioCtx.createGain();
-    audioGain.gain.value = 0.3;
-    audioGain.connect(audioCtx.destination);
-
-    // Generate lo-fi ambient noise: filtered noise + gentle tone
-    const sr = audioCtx.sampleRate;
-    const duration = 8;
-    const len = sr * duration;
-    const buffer = audioCtx.createBuffer(1, len, sr);
-    const data = buffer.getChannelData(0);
-
-    // Brown noise (lo-fi vibe)
-    let lastOut = 0;
-    for (let i = 0; i < len; i++) {
-      const white = Math.random() * 2 - 1;
-      lastOut = (lastOut + (0.02 * white)) / 1.02;
-      data[i] = lastOut * 0.3;
-
-      // Add subtle chord
-      const t = i / sr;
-      data[i] += Math.sin(2 * Math.PI * 130.81 * t) * 0.03; // C3
-      data[i] += Math.sin(2 * Math.PI * 164.81 * t) * 0.02; // E3
-      data[i] += Math.sin(2 * Math.PI * 196.00 * t) * 0.02; // G3
-      data[i] += Math.sin(2 * Math.PI * 261.63 * t) * 0.015; // C4
-      data[i] *= 0.5;
-    }
-
-    audioSource = audioCtx.createBufferSource();
-    audioSource.buffer = buffer;
-    audioSource.loop = true;
-
-    // Low-pass filter for lo-fi warmth
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 800;
-
-    audioSource.connect(filter);
-    filter.connect(audioGain);
-    audioSource.start();
-    audioPlaying = true;
+    const audio = document.getElementById('lofi-audio');
+    const vol = localStorage.getItem('brio_audio_volume') || 30;
+    audio.volume = parseInt(vol) / 100;
   }
 
   function toggleAudio() {
-    if (!audioCtx) {
+    const audio = document.getElementById('lofi-audio');
+    if (!audioPlaying) {
       initAudio();
-      document.getElementById('audio-icon').innerHTML = '&#9835;';
-      document.getElementById('audio-play-btn').innerText = '\u25C6\u25C6';
-      document.getElementById('audio-toggle').classList.add('on');
-      return;
-    }
-    if (audioPlaying) {
-      audioCtx.suspend();
-      audioPlaying = false;
-      document.getElementById('audio-icon').innerHTML = '&#9834;';
-      document.getElementById('audio-play-btn').innerText = '\u25B6';
-      document.getElementById('audio-toggle').classList.remove('on');
+      audio.play().then(() => {
+        audioPlaying = true;
+        document.getElementById('audio-btn-svg').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+        document.getElementById('audio-toggle').classList.add('on');
+      }).catch(e => console.log('Audio play failed:', e));
     } else {
-      audioCtx.resume();
-      audioPlaying = true;
-      document.getElementById('audio-icon').innerHTML = '&#9835;';
-      document.getElementById('audio-play-btn').innerText = '\u25C6\u25C6';
-      document.getElementById('audio-toggle').classList.add('on');
+      audio.pause();
+      audioPlaying = false;
+      document.getElementById('audio-btn-svg').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+      document.getElementById('audio-toggle').classList.remove('on');
     }
   }
 
   function setAudioVolume(val) {
-    const v = parseInt(val) / 100;
-    if (audioGain) audioGain.gain.value = v;
+    const audio = document.getElementById('lofi-audio');
+    if (audio) audio.volume = parseInt(val) / 100;
     localStorage.setItem('brio_audio_volume', val);
   }
 
@@ -933,7 +505,9 @@
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
-    event.currentTarget.classList.add('active');
+    if (typeof event !== 'undefined' && event && event.currentTarget) {
+      event.currentTarget.classList.add('active');
+    }
   }
 
   // ============ LOAD APP ============
@@ -1041,7 +615,6 @@
         renderSubjectsEmptyState();
         renderContinueCard();
         renderLearningStats();
-        hideSubjectPage();
         return;
       }
       renderSemesterOptions(subjectsData);
@@ -1049,7 +622,6 @@
       renderSubjectCatalog();
       renderContinueCard();
       renderLearningStats();
-      hideSubjectPage();
       renderDashboard();
     } catch (e) {
       console.error(e);
@@ -1202,90 +774,7 @@
   }
 
   function openSubject(subjectId) {
-    const subject = subjectsFlat.find(i => i.id === subjectId);
-    if (subject) renderSubjectPage(subject);
-  }
-
-  function renderSubjectPage(subject) {
-    const page = document.getElementById('subject-page');
-    if (!page) return;
-    page.style.display = 'block';
-    document.getElementById('subject-semester').innerText = subject.semester;
-    document.getElementById('subject-title').innerText = subject.title;
-    document.getElementById('subject-overview').innerText = subject.overview;
-    document.getElementById('subject-credits').innerText = subject.credits;
-    document.getElementById('subject-difficulty').innerText = subject.difficulty;
-    const topics = document.getElementById('subject-topics');
-    if (topics) topics.innerHTML = (subject.keyTopics||[]).map(t => `<span class="pill">${t}</span>`).join('');
-
-    const lessonsEl = document.getElementById('subject-lessons');
-    if (lessonsEl) {
-      const sp = getSubjectProgress(subject.id);
-      const completed = new Set(sp.completedLessons||[]);
-      lessonsEl.innerHTML = (subject.lessons||[]).map(lesson => {
-        const done = completed.has(lesson.id);
-        const label = done ? 'Completed' : (lesson.id === sp.lastLessonId ? 'Resume' : 'Start');
-        const disabled = done ? 'disabled' : '';
-        const cls = done ? 'btn sage small' : 'btn small';
-        const readBtn = lesson.content ? `<button type="button" class="btn blue small" style="margin-left:0.5rem;" onclick="event.stopPropagation();openReader('${lesson.title}','${lesson.content.replace(/'/g,"\\'").replace(/\n/g,'\\n').replace(/"/g,'&quot;')}')">Read</button>` : '';
-        return `<div class="card" style="box-shadow:none;margin-bottom:1rem;">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
-            <div>
-              <div style="font-weight:900;">${lesson.title}</div>
-              <div style="font-weight:700;">${lesson.summary}</div>
-            </div>
-            <div style="display:flex;gap:0.3rem;">
-              ${readBtn}
-              <button type="button" class="${cls}" ${disabled} onclick="markLessonComplete('${subject.id}','${lesson.id}')">${label}</button>
-            </div>
-          </div>
-        </div>`;
-      }).join('');
-    }
-
-    const quizzesEl = document.getElementById('subject-quizzes');
-    if (quizzesEl) {
-      quizzesEl.innerHTML = (subject.quizzes||[]).map(q =>
-        `<div class="card" style="box-shadow:none;margin-bottom:1rem;">
-          <div style="font-weight:900;">${q.q}</div>
-          <div style="font-weight:700;color:var(--accent-sage);">${q.a}</div>
-        </div>`
-      ).join('');
-    }
-
-    const assignmentsEl = document.getElementById('subject-assignments');
-    if (assignmentsEl) assignmentsEl.innerHTML = (subject.assignments||[]).map(i => `<li>${i}</li>`).join('');
-
-    const resourcesEl = document.getElementById('subject-resources');
-    if (resourcesEl) resourcesEl.innerHTML = (subject.resources||[]).map(i => `<li>${i}</li>`).join('');
-
-    page.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function markLessonComplete(subjectId, lessonId) {
-    const subject = subjectsFlat.find(i => i.id === subjectId);
-    if (!subject) return;
-    const store = loadProgressStore();
-    const p = getSubjectProgress(subjectId);
-    const completed = new Set(p.completedLessons||[]);
-    if (completed.has(lessonId)) return;
-    completed.add(lessonId);
-    p.completedLessons = Array.from(completed);
-    p.lastLessonId = lessonId;
-    store.subjects[subjectId] = p;
-    store.lastSubjectId = subjectId;
-    saveProgressStore(store);
-    incrementStreak();
-    renderDashboard();
-    renderLearningStats();
-    renderContinueCard();
-    renderSubjectPage(subject);
-    showToast('Lesson marked complete!');
-  }
-
-  function hideSubjectPage() {
-    const page = document.getElementById('subject-page');
-    if (page) page.style.display = 'none';
+    window.open('subject.html?id=' + subjectId, '_blank');
   }
 
   // ============ SHOWCASE ============
@@ -1323,6 +812,33 @@
     } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
   }
 
+  async function runCustomSql() {
+    const sql = document.getElementById('live-sql-input').value.trim();
+    if (!sql) return;
+    document.getElementById('sql-display').innerText = 'Executing Custom SQL...';
+    try {
+      const data = await apiFetch('/admin/execute-sql', { method: 'POST', body: JSON.stringify({ sql }) });
+      document.getElementById('sql-display').innerText = data.sql;
+      
+      // If result is an array of objects (e.g. from SELECT)
+      if (Array.isArray(data.rows) && data.rows.length > 0) {
+        const cols = Object.keys(data.rows[0]);
+        document.getElementById('results-head').innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
+        document.getElementById('results-body').innerHTML = data.rows.map(r =>
+          `<tr>${cols.map(c => `<td>${r[c] !== null ? r[c] : '<em>NULL</em>'}</td>`).join('')}</tr>`
+        ).join('');
+      } else if (data.rows && data.rows.affectedRows !== undefined) {
+        // If result is an object from an INSERT/UPDATE/DELETE
+        document.getElementById('results-head').innerHTML = `<tr><th>Action</th><th>Affected Rows</th><th>Insert ID</th></tr>`;
+        document.getElementById('results-body').innerHTML = `<tr><td>${data.sql.split(' ')[0]}</td><td>${data.rows.affectedRows}</td><td>${data.rows.insertId || '-'}</td></tr>`;
+      } else {
+        document.getElementById('results-head').innerHTML = '<tr><th>Results</th></tr>';
+        document.getElementById('results-body').innerHTML = '<tr><td>Success, but 0 rows returned.</td></tr>';
+      }
+      showToast('Custom SQL Executed');
+    } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
+  }
+
   async function runTriggerDemo() {
     try {
       const data = await apiFetch('/showcase/trigger', { method: 'POST' });
@@ -1341,79 +857,192 @@
     } catch(e) { showToast('Trigger error: ' + e.message); }
   }
 
-  // ============ VIZ (Enhanced) ============
+  // ============ VIZ — 7-Step Simulation Engine ============
+  let vizRunning = false;
+
   function runVizSimulation() {
-    const packet = document.getElementById('v-packet');
+    if (vizRunning) return;
+    vizRunning = true;
+
+    const t1 = document.getElementById('viz-t1');
+    const t2 = document.getElementById('viz-t2');
+    const t3 = document.getElementById('viz-t3');
+    const s1 = document.getElementById('t1-status');
+    const s2 = document.getElementById('t2-status');
+    const s3 = document.getElementById('t3-status');
+    const c1 = document.getElementById('t1-code');
+    const c2 = document.getElementById('t2-code');
+    const c3 = document.getElementById('t3-code');
+    const d12 = document.getElementById('dot-12');
+    const d23 = document.getElementById('dot-23');
     const log = document.getElementById('v-log');
-    const dbStatus = document.getElementById('v-db-status');
-    const beCode = document.getElementById('v-be-code');
-    const glow = document.getElementById('viz-line-glow');
-    const fe = document.getElementById('viz-fe');
-    const be = document.getElementById('viz-be');
-    const db = document.getElementById('viz-db');
+    const btn = document.getElementById('viz-start-btn');
 
-    if (!packet||!log||!dbStatus||!beCode||!glow) return;
+    btn.disabled = true;
+    btn.innerText = 'Simulation Running...';
 
-    // Reset
+    // Reset all
+    [t1,t2,t3].forEach(t => { t.classList.remove('active','success'); });
+    [d12,d23].forEach(d => { d.classList.remove('animate-fwd','animate-rev'); d.style.opacity = '0'; });
+    s1.className = 'viz-tier-status'; s1.innerHTML = '<span class="dot"></span> Idle';
+    s2.className = 'viz-tier-status'; s2.innerHTML = '<span class="dot"></span> Idle';
+    s3.className = 'viz-tier-status'; s3.innerHTML = '<span class="dot"></span> Idle';
+    c1.innerText = '// Waiting for user action...';
+    c2.innerText = '// Express server listening...';
+    c3.innerText = '-- Awaiting query...';
     log.innerHTML = '';
-    fe.classList.remove('active');
-    be.classList.remove('active');
-    db.classList.remove('active');
-    beCode.style.color = '#fff';
-    dbStatus.innerText = 'Awaiting Query...';
 
-    const timestamp = () => {
+    const ts = () => {
       const d = new Date();
-      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}.${String(d.getMilliseconds()).padStart(3,'0')}`;
     };
 
-    function addLog(msg) {
-      const entry = document.createElement('div');
-      entry.className = 'log-entry';
-      entry.innerHTML = `<span class="log-time">[${timestamp()}]</span><span class="log-arrow">&#8594;</span><span class="log-msg">${msg}</span>`;
-      log.appendChild(entry);
+    function addLog(msg, cls) {
+      const e = document.createElement('div');
+      e.className = 'log-entry';
+      e.innerHTML = `<span class="log-time">[${ts()}]</span><span class="log-arrow">&#8594;</span><span class="log-msg ${cls||''}">${msg}</span>`;
+      log.appendChild(e);
       log.scrollTop = log.scrollHeight;
     }
 
-    addLog('Initializing request...');
-    packet.style.opacity = '1';
-    packet.style.top = '40px';
+    function setStatus(el, state, text) {
+      el.className = 'viz-tier-status ' + state;
+      el.innerHTML = `<span class="dot"></span> ${text}`;
+    }
 
+    function fireDot(dot, dir) {
+      dot.classList.remove('animate-fwd','animate-rev');
+      dot.style.opacity = '0';
+      void dot.offsetWidth; // force reflow
+      dot.classList.add(dir === 'fwd' ? 'animate-fwd' : 'animate-rev');
+    }
+
+    // ─── STEP 1 (0ms): User clicks submit, frontend captures input ───
     const steps = [
-      { delay: 400, top: '40px',   layer: fe, glowH: '0%',   log: 'Frontend: Captured user input. Preparing payload...' },
-      { delay: 1000, top: '160px',  layer: be, glowH: '30%',  log: 'Backend: Received POST /api/submit', code: 'const { lessonId } = req.body;' },
-      { delay: 1800, top: '160px',  layer: be, glowH: '30%',  log: 'Backend: Validating input... Score: 88/100', code: 'if (score >= 70) { unlockTasks(); }' },
-      { delay: 2600, top: '300px',  layer: db, glowH: '70%',  log: 'Database: INSERT INTO submission...', dbMsg: 'Writing...' },
-      { delay: 3200, top: '300px',  layer: db, glowH: '100%', log: 'Database: Trigger trg_unlock_task fired!', dbMsg: 'Trigger OK' },
-      { delay: 3800, top: '180px',  layer: be, glowH: '60%',  log: 'Backend: Response 200 OK', code: 'res.json({ success: true });' },
-      { delay: 4400, top: '60px',   layer: fe, glowH: '0%',   log: 'Frontend: UI updated. Task unlocked!', last: true },
+      { delay: 0, fn: () => {
+        addLog('STEP 1: User clicks "Submit Lesson". Frontend captures form data.', 'fe-msg');
+        t1.classList.add('active');
+        setStatus(s1, 'processing', 'Capturing Input');
+        c1.innerText = 'const payload = {\n  lessonId: 4,\n  score: 88\n};\nfetch("/api/submit", {\n  method: "POST",\n  body: JSON.stringify(payload)\n});';
+      }},
+      // ─── STEP 2 (800ms): Packet animates Frontend → Backend ───
+      { delay: 800, fn: () => {
+        addLog('STEP 2: HTTP POST sent to /api/submit. Packet in transit...', 'fe-msg');
+        fireDot(d12, 'fwd');
+        setStatus(s1, 'success', 'Sent');
+        t1.classList.remove('active');
+      }},
+      // ─── STEP 3 (1600ms): Backend receives, validates JWT, parses body ───
+      { delay: 1600, fn: () => {
+        addLog('STEP 3: Backend receives POST. Validates JWT. Parses body.', 'be-msg');
+        t2.classList.add('active');
+        setStatus(s2, 'processing', 'Validating');
+        c2.innerText = 'app.post("/api/submit",\n  authenticate,\n  async (req, res) => {\n    const { lessonId, score }\n      = req.body;\n    // JWT verified ✓\n    // Input validated ✓';
+      }},
+      // ─── STEP 4 (2800ms): Backend builds SQL, sends to DB ───
+      { delay: 2800, fn: () => {
+        addLog('STEP 4: Backend builds SQL query. Sending to MySQL...', 'be-msg');
+        fireDot(d23, 'fwd');
+        c2.innerText = '    await pool.query(\n      "INSERT INTO submission\n       (user_id, lesson_id,\n        ai_score, feedback)\n       VALUES (?, ?, ?, ?)",\n      [userId, 4, 88, "Good"]\n    );';
+        setStatus(s2, 'success', 'Query Sent');
+        t2.classList.remove('active');
+      }},
+      // ─── STEP 5 (3800ms): MySQL executes INSERT + Trigger fires ───
+      { delay: 3800, fn: () => {
+        addLog('STEP 5: MySQL executes INSERT INTO submission. Rows affected: 1.', 'db-msg');
+        t3.classList.add('active');
+        setStatus(s3, 'processing', 'Executing');
+        c3.innerText = 'INSERT INTO submission\n  (user_id, sub_date,\n   lesson_id, ai_score)\nVALUES (1, NOW(), 4, 88);\n\n-- 1 row inserted';
+      }},
+      // ─── STEP 5b (4600ms): Trigger fires ───
+      { delay: 4600, fn: () => {
+        addLog('STEP 5b: TRIGGER trg_unlock_task_after_submission FIRED! Task status → in_progress.', 'db-msg');
+        c3.innerText = '-- TRIGGER FIRED:\n-- trg_unlock_task\n--   _after_submission\nUPDATE kanban_task\n  SET status = "in_progress"\n  WHERE project_id = 1\n    AND lesson_id = 4;';
+        setStatus(s3, 'success', 'Trigger OK');
+      }},
+      // ─── STEP 6 (5400ms): Response travels back DB → Backend → Frontend ───
+      { delay: 5400, fn: () => {
+        addLog('STEP 6: MySQL returns result. Response travels back through tiers.', 'be-msg');
+        t3.classList.remove('active'); t3.classList.add('success');
+        fireDot(d23, 'rev');
+        setStatus(s3, 'success', 'Complete');
+      }},
+      { delay: 6000, fn: () => {
+        t2.classList.add('active');
+        c2.innerText = '    res.json({\n      success: true,\n      message: "Mastery\n        achieved! Task\n        unlocked."\n    });';
+        setStatus(s2, 'success', '200 OK');
+        fireDot(d12, 'rev');
+      }},
+      // ─── STEP 7 (6800ms): Frontend receives 200 OK, UI updates ───
+      { delay: 6800, fn: () => {
+        addLog('STEP 7: Frontend receives 200 OK. UI updated: "Task Unlocked!"', 'fe-msg');
+        t2.classList.remove('active'); t2.classList.add('success');
+        t1.classList.add('success');
+        setStatus(s1, 'success', 'UI Updated');
+        c1.innerText = '// Response received!\n// { success: true }\n// UI state updated:\n//   "Task Unlocked!"\n//   Progress: 88%';
+        addLog('Simulation complete. All 3 tiers idle.', '');
+      }},
+      // ─── RESET (8500ms) ───
+      { delay: 8500, fn: () => {
+        [t1,t2,t3].forEach(t => t.classList.remove('active','success'));
+        setStatus(s1, '', 'Idle'); setStatus(s2, '', 'Idle'); setStatus(s3, '', 'Idle');
+        c1.innerText = '// Waiting for user action...';
+        c2.innerText = '// Express server listening...';
+        c3.innerText = '-- Awaiting query...';
+        [d12,d23].forEach(d => { d.classList.remove('animate-fwd','animate-rev'); d.style.opacity = '0'; });
+        btn.disabled = false;
+        btn.innerText = '▶ Run Simulation: Submit Lesson';
+        vizRunning = false;
+      }}
     ];
 
-    steps.forEach(step => {
-      setTimeout(() => {
-        packet.style.top = step.top;
-        if (step.layer) {
-          fe.classList.remove('active');
-          be.classList.remove('active');
-          db.classList.remove('active');
-          step.layer.classList.add('active');
-        }
-        glow.style.height = step.glowH || '0%';
-        if (step.code) beCode.innerText = step.code;
-        if (step.dbMsg) dbStatus.innerText = step.dbMsg;
-        addLog(step.log);
-        if (step.last) {
-          setTimeout(() => {
-            packet.style.opacity = '0';
-            dbStatus.innerText = 'Idle. Ready.';
-            beCode.style.color = '#fff';
-            beCode.innerText = 'await pool.query(\'INSERT INTO submission...\');';
-            fe.classList.remove('active');
-            setTimeout(() => glow.style.height = '0%', 300);
-          }, 800);
-        }
-      }, step.delay);
-    });
+    steps.forEach(s => setTimeout(s.fn, s.delay));
+  }
+
+  // ============ SCHEMA EXPLORER ============
+  async function loadTableList() {
+    try {
+      const tables = await apiFetch('/showcase/tables');
+      const grid = document.getElementById('table-chips');
+      grid.innerHTML = tables.map(t =>
+        `<button type="button" class="table-chip" onclick="showTablePreview('${t}')">${t}</button>`
+      ).join('');
+    } catch(e) { console.error('Failed to load table list:', e); }
+  }
+
+  async function showTablePreview(name) {
+    // Update active chip
+    document.querySelectorAll('.table-chip').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+
+    try {
+      const data = await apiFetch('/showcase/table/' + name);
+      const preview = document.getElementById('schema-preview');
+      preview.classList.add('visible');
+
+      // Render column definitions
+      const colsEl = document.getElementById('schema-columns');
+      colsEl.innerHTML = data.schema.map(col =>
+        `<div class="col-row">
+          <span class="col-name">${col.Field}</span>
+          <span class="col-type">${col.Type}</span>
+          <span class="col-key">${col.Key === 'PRI' ? 'PRIMARY' : col.Key === 'MUL' ? 'FK' : col.Key === 'UNI' ? 'UNIQUE' : ''}</span>
+          <span class="col-null">${col.Null === 'YES' ? 'nullable' : 'NOT NULL'}</span>
+        </div>`
+      ).join('');
+
+      // Render sample data
+      if (data.rows && data.rows.length > 0) {
+        const cols = Object.keys(data.rows[0]);
+        document.getElementById('sample-head').innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
+        document.getElementById('sample-body').innerHTML = data.rows.map(r =>
+          `<tr>${cols.map(c => `<td>${r[c] !== null ? r[c] : '<em>NULL</em>'}</td>`).join('')}</tr>`
+        ).join('');
+      } else {
+        document.getElementById('sample-head').innerHTML = '<tr><th>No Data</th></tr>';
+        document.getElementById('sample-body').innerHTML = '<tr><td>Table is empty.</td></tr>';
+      }
+    } catch(e) { showToast('Schema error: ' + e.message); }
   }
 
   // ============ TOAST ============
@@ -1440,9 +1069,51 @@
   }
 
   if (token) {
+    document.getElementById('landing-page').style.display = 'none';
     document.getElementById('auth-modal').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     loadApp();
+  } else {
+    // Run Anime.js Landing Animation
+    anime.timeline({ easing: "spring(1, 80, 10, 0)" })
+    .add({
+      targets: ".landing-logo",
+      translateY: [-50, 0], opacity: [0, 1], duration: 1000
+    })
+    .add({
+      targets: ".swirl-img",
+      scale: [1.2, 1], rotate: [15, 0], opacity: [0, 0.95],
+      duration: 2000, easing: "easeOutCubic"
+    }, "-=800")
+    .add({
+      targets: [".hero-h1", ".hero-sub", ".hero-cta"],
+      translateY: [100, 0], opacity: [0, 1],
+      delay: anime.stagger(150)
+    }, "-=1500");
+
+    // Continuous flow animation
+    anime({
+      targets: ".swirl-img",
+      rotate: "10deg", scale: 1.05,
+      direction: "alternate", loop: true,
+      easing: "easeInOutSine", duration: 8000
+    });
+  }
+
+  window.enterPlatform = function() {
+    anime({
+      targets: "#landing-page",
+      translateY: "-100vh", opacity: 0,
+      easing: "easeInOutCubic", duration: 800,
+      complete: function() {
+        document.getElementById('landing-page').style.display = 'none';
+        document.getElementById('auth-modal').style.display = 'flex';
+        anime({
+          targets: ".auth-box", scale: [0.8, 1], opacity: [0, 1],
+          easing: "spring(1, 80, 10, 0)", duration: 1000
+        });
+      }
+    });
   }
 </script>
 </body>
