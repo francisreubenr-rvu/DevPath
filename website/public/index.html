@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>brio. — The Unified Learning Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..900&family=JetBrains+Mono:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+<body>
+
+<!-- LANDING PAGE -->
+<div id="landing-page">
+  <div class="landing-bg">
+    <img src="swirl.png" alt="Swirl flow" class="swirl-img" id="swirl-img">
+  </div>
+  <div class="landing-content">
+    <div class="landing-header">
+      <div class="logo landing-logo">bri<span>o</span>.</div>
+      <button type="button" class="btn" style="padding: 0.5rem 1.5rem;" onclick="enterPlatform()">LOGIN</button>
+    </div>
+    <div class="hero-text-container">
+      <h1 class="hero-h1">Learn.<br>The Hard Way.</h1>
+      <p class="hero-sub">A high-contrast, high-performance platform engineered for intense technical mastery. Drop the fluff. Embrace the structure.</p>
+      <button type="button" class="btn sage hero-cta" onclick="enterPlatform()">ENTER PLATFORM</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal" style="display:none;">
+  <div class="auth-box">
+    <h2>brio.</h2>
+    <p style="margin-bottom:0.5rem;font-weight:700;">Sign in to access your dashboard.</p>
+    <p style="margin-bottom:1.5rem;font-size:0.8rem;opacity:0.7;">All accounts use password: <strong>password123</strong></p>
+    <input type="email" id="email" placeholder="Email" value="aarav.sharma@demo.io">
+    <input type="password" id="password" placeholder="Password" value="password123">
+    <button type="button" class="btn" onclick="login()">ENTER PLATFORM</button>
+    <div id="auth-error" style="color:var(--accent-rust);margin-top:1rem;font-weight:800;display:none;"></div>
+    <details class="demo-accounts">
+      <summary>Demo Accounts (click to fill)</summary>
+      <div class="demo-account-row" onclick="fillAccount('aarav.sharma@demo.io')"><span class="name">Aarav Sharma</span><span class="email">aarav.sharma@demo.io</span><span style="font-size:0.7rem;">80%</span></div>
+      <div class="demo-account-row" onclick="fillAccount('priya.verma@demo.io')"><span class="name">Priya Verma</span><span class="email">priya.verma@demo.io</span><span style="font-size:0.7rem;">65%</span></div>
+      <div class="demo-account-row" onclick="fillAccount('rohan.patel@demo.io')"><span class="name">Rohan Patel</span><span class="email">rohan.patel@demo.io</span><span style="font-size:0.7rem;">25%</span></div>
+      <div class="demo-account-row" onclick="fillAccount('ananya.reddy@demo.io')"><span class="name">Ananya Reddy</span><span class="email">ananya.reddy@demo.io</span><span style="font-size:0.7rem;">45%</span></div>
+      <div class="demo-account-row" onclick="fillAccount('vikram.singh@demo.io')"><span class="name">Vikram Singh</span><span class="email">vikram.singh@demo.io</span><span style="font-size:0.7rem;">55%</span></div>
+      <div style="border-top:2px dashed var(--border);margin-top:0.3rem;padding-top:0.3rem;font-size:0.7rem;opacity:0.5;">Original accounts also work (james.wilson@devpath.io, etc.)</div>
+    </details>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <header>
+    <div class="logo">bri<span>o</span>.</div>
+    <ul class="tabs">
+      <li><button type="button" class="active" aria-label="Learning Platform" onclick="switchTab('tab-platform')">Platform</button></li>
+      <li><button type="button" aria-label="DBMS Showcase" onclick="switchTab('tab-showcase')">Showcase</button></li>
+      <li><button type="button" aria-label="System Viz" onclick="switchTab('tab-viz')">System Viz</button></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:0.8rem;">
+      <button type="button" class="settings-btn" onclick="toggleSettings()" aria-label="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      <div class="user-badge">
+        <img id="nav-avatar" src="" alt="Avatar">
+        <div style="text-align:right;">
+          <div id="nav-name">User Name</div>
+          <div style="font-size:0.7rem;color:var(--accent-rust);" id="nav-tier">PRO</div>
+        </div>
+        <button type="button" class="btn sage small" onclick="logout()">LOGOUT</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: PLATFORM -->
+    <div id="tab-platform" class="tab-content active">
+
+      <!-- DASHBOARD -->
+      <section id="dashboard-section">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+          <h2 style="font-family:var(--font-serif);font-size:2rem;" id="dash-greeting">Welcome back!</h2>
+          <div style="display:flex;gap:1rem;font-weight:800;font-size:0.85rem;">
+            <span id="dash-date"></span>
+          </div>
+        </div>
+        <div class="dashboard-grid" id="dashboard-grid">
+          <div class="dash-card"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="value" id="dash-subjects">0</div><div class="label">Subjects Enrolled</div></div>
+          <div class="dash-card"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div><div class="value" id="dash-lessons">0</div><div class="label">Lessons Done</div><div class="sub" id="dash-lessons-sub">of 0</div></div>
+          <div class="dash-card"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="value" id="dash-pct">0%</div><div class="label">Overall Progress</div></div>
+          <div class="dash-card"><div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="value" id="dash-streak">0</div><div class="label">Day Streak</div></div>
+        </div>
+        <div class="card" id="dash-progress-detail" style="display:none;">
+          <h3 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:1rem;">Course Progress</h3>
+          <div id="dash-course-list"></div>
+        </div>
+      </section>
+
+      <section class="learn-hero">
+        <div>
+          <div class="hero-kicker">Brio Learning Hub</div>
+          <h1>Continue your semester journey</h1>
+          <p>Pick up where you left off with curated lessons built from your course materials.</p>
+        </div>
+        <div class="continue-card">
+          <div class="continue-title">Continue Learning</div>
+          <div class="continue-lesson" id="continue-lesson">No lesson selected yet</div>
+          <div class="progress-bar"><span id="continue-progress"></span></div>
+          <button type="button" class="btn small" id="continue-btn" style="width:auto;">Start Learning</button>
+        </div>
+      </section>
+
+      <section class="learn-layout">
+        <aside class="filters">
+          <div class="filter-title">Filters</div>
+          <label>Semester</label>
+          <select id="filter-semester"></select>
+          <label>Difficulty</label>
+          <select id="filter-difficulty">
+            <option value="all">All</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+          <label>Type</label>
+          <select id="filter-type">
+            <option value="all">All</option>
+            <option value="Theory">Theory</option>
+            <option value="Lab">Lab</option>
+          </select>
+        </aside>
+
+        <div class="catalog">
+          <div class="catalog-header">
+            <h2>Subject Catalog</h2>
+            <div class="stats">
+              <div><span id="stat-subjects">0</span> Subjects</div>
+              <div><span id="stat-lessons">0</span> Lessons</div>
+            </div>
+          </div>
+          <div class="subject-grid" id="subject-grid"></div>
+        </div>
+
+        <aside class="learn-stats">
+          <div class="stat-card"><div class="stat-label">Streak</div><div class="stat-value" id="stat-streak">0 days</div></div>
+          <div class="stat-card"><div class="stat-label">Completion</div><div class="stat-value" id="stat-completion">0%</div></div>
+          <div class="stat-card"><div class="stat-label">Upcoming Quizzes</div><div class="stat-value" id="stat-quizzes">0</div></div>
+        </aside>
+      </section>
+    </div>
+
+    <!-- TAB 2: SHOWCASE -->
+    <div id="tab-showcase" class="tab-content">
+      <!-- Schema Explorer -->
+      <div class="card schema-explorer">
+        <h2 class="card-title">Database Schema Explorer</h2>
+        <p style="font-weight:600;margin-bottom:1rem;color:var(--text-secondary);">Click a table to inspect its schema and preview sample data. These are the sandbox tables that all queries below operate on.</p>
+        <div class="table-chip-grid" id="table-chips">
+          <!-- Populated by JS -->
+        </div>
+        <div class="schema-preview" id="schema-preview">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+            <div>
+              <div class="schema-label">Column Definitions</div>
+              <div class="schema-columns" id="schema-columns"></div>
+            </div>
+            <div>
+              <div class="schema-label">Sample Data (first 5 rows)</div>
+              <div class="table-wrapper" style="margin:0;">
+                <table>
+                  <thead id="sample-head"></thead>
+                  <tbody id="sample-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Predefined Queries -->
+      <div class="card">
+        <h2 class="card-title">Predefined Queries</h2>
+        <div style="display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;">
+          <select id="query-select" style="flex:1;min-width:200px;padding:1rem;border:var(--border-width) solid var(--border);font-family:var(--font-mono);font-weight:800;font-size:1rem;"></select>
+          <button type="button" class="btn" style="width:auto;padding:1rem 2rem;" onclick="runQuery()">EXECUTE</button>
+          <button type="button" class="btn sage" style="width:auto;padding:1rem 2rem;" onclick="runTriggerDemo()">Trigger Demo</button>
+        </div>
+        <div class="code-block" id="sql-display">-- Output from queries will appear here</div>
+        <div class="table-wrapper">
+          <table>
+            <thead id="results-head"><tr><th>Dataset</th></tr></thead>
+            <tbody id="results-body"><tr><td>Run a query to view results.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: VIZ -->
+    <div id="tab-viz" class="tab-content">
+      <div class="card">
+        <h2 class="card-title">Three-Tier Architecture — Live Simulation</h2>
+        <p style="font-weight:700;margin-bottom:0.5rem;">Watch a real request flow through the system: Browser &#8594; Node.js API &#8594; MySQL Database, and back.</p>
+        <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1.5rem;">Each step is annotated with the exact code executing at that tier. Click the button to begin the simulation.</p>
+
+        <div class="viz-outer">
+          <!-- CTA -->
+          <div class="viz-cta">
+            <button type="button" class="btn" id="viz-start-btn" onclick="runVizSimulation()" style="padding:1rem 3rem;font-size:1rem;">
+              &#9654; Run Simulation: Submit Lesson
+            </button>
+          </div>
+
+          <!-- 3-Panel Horizontal Flow -->
+          <div class="viz-flow">
+            <!-- TIER 1: Frontend -->
+            <div class="viz-tier" id="viz-t1">
+              <div class="viz-tier-header fe">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Tier 1: Frontend
+              </div>
+              <div class="viz-tier-body">
+                <div class="viz-tier-status" id="t1-status"><span class="dot"></span> Idle</div>
+                <div class="viz-tier-code" id="t1-code">// Waiting for user action...</div>
+                <div class="viz-tier-desc">The browser captures user input, serializes it as JSON, and sends an HTTP request to the backend API.</div>
+              </div>
+            </div>
+
+            <!-- CONNECTOR 1→2 -->
+            <div class="viz-connector" id="conn-12">
+              <svg viewBox="0 0 60 80" preserveAspectRatio="none">
+                <line class="arrow-path" x1="5" y1="40" x2="48" y2="40"/>
+                <polygon class="arrow-head" points="48,34 58,40 48,46"/>
+                <circle class="packet-dot" id="dot-12" cx="5" cy="40"/>
+              </svg>
+            </div>
+
+            <!-- TIER 2: Backend -->
+            <div class="viz-tier" id="viz-t2">
+              <div class="viz-tier-header be">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Tier 2: Backend (Node.js)
+              </div>
+              <div class="viz-tier-body">
+                <div class="viz-tier-status" id="t2-status"><span class="dot"></span> Idle</div>
+                <div class="viz-tier-code" id="t2-code">// Express server listening...</div>
+                <div class="viz-tier-desc">The Express.js API server validates the JWT, parses the request body, and builds a parameterized SQL query for the database.</div>
+              </div>
+            </div>
+
+            <!-- CONNECTOR 2→3 -->
+            <div class="viz-connector" id="conn-23">
+              <svg viewBox="0 0 60 80" preserveAspectRatio="none">
+                <line class="arrow-path" x1="5" y1="40" x2="48" y2="40"/>
+                <polygon class="arrow-head" points="48,34 58,40 48,46"/>
+                <circle class="packet-dot" id="dot-23" cx="5" cy="40"/>
+              </svg>
+            </div>
+
+            <!-- TIER 3: Database -->
+            <div class="viz-tier" id="viz-t3">
+              <div class="viz-tier-header db">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                Tier 3: MySQL Database
+              </div>
+              <div class="viz-tier-body">
+                <div class="viz-tier-status" id="t3-status"><span class="dot"></span> Idle</div>
+                <div class="viz-tier-code" id="t3-code">-- Awaiting query...</div>
+                <div class="viz-tier-desc">MySQL executes the INSERT, fires any AFTER INSERT triggers (e.g. trg_unlock_task), and returns the result set.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Execution Log -->
+          <div class="viz-log-panel">
+            <div class="viz-log-header">
+              <div class="window-dots"><span></span><span></span><span></span></div>
+              Execution Log
+            </div>
+            <div id="v-log">&gt; System idle. Click "Run Simulation" to begin.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div id="settings-panel">
+  <div class="settings-header">
+    <h2>Settings</h2>
+    <button type="button" class="settings-close" onclick="toggleSettings()">&times;</button>
+  </div>
+  <div class="settings-body">
+    <div class="settings-group">
+      <h3>Theme</h3>
+      <div class="theme-grid" id="theme-grid">
+        <div class="theme-option active" data-theme="cream" onclick="setTheme('cream')">Cream<div class="theme-swatch"><span style="background:#F5EDD8;"></span><span style="background:#E9A21B;"></span><span style="background:#6B8F71;"></span></div></div>
+        <div class="theme-option" data-theme="midnight" onclick="setTheme('midnight')">Midnight<div class="theme-swatch"><span style="background:#0D1117;"></span><span style="background:#D29922;"></span><span style="background:#3FB950;"></span></div></div>
+        <div class="theme-option" data-theme="ocean" onclick="setTheme('ocean')">Ocean<div class="theme-swatch"><span style="background:#0F172A;"></span><span style="background:#F59E0B;"></span><span style="background:#3B82F6;"></span></div></div>
+        <div class="theme-option" data-theme="forest" onclick="setTheme('forest')">Forest<div class="theme-swatch"><span style="background:#ECFDF5;"></span><span style="background:#059669;"></span><span style="background:#064E3B;"></span></div></div>
+        <div class="theme-option" data-theme="sunset" onclick="setTheme('sunset')">Sunset<div class="theme-swatch"><span style="background:#FEF2F2;"></span><span style="background:#EA580C;"></span><span style="background:#8B5CF6;"></span></div></div>
+        <div class="theme-option" data-theme="lavender" onclick="setTheme('lavender')">Lavender<div class="theme-swatch"><span style="background:#F5F3FF;"></span><span style="background:#9333EA;"></span><span style="background:#7C3AED;"></span></div></div>
+      </div>
+    </div>
+    <div class="settings-group">
+      <h3>Audio</h3>
+      <div class="settings-toggle">
+        <span>Lo-fi Background Music</span>
+        <div class="toggle-switch on" id="audio-toggle" onclick="toggleAudio()"></div>
+      </div>
+      <div class="settings-toggle">
+        <span>Volume</span>
+        <input type="range" class="audio-volume" id="audio-volume" min="0" max="100" value="30" oninput="setAudioVolume(this.value)">
+      </div>
+      <div style="font-size:0.75rem;opacity:0.6;margin-top:0.5rem;">Track: <span id="audio-track-name">lofi-study-112bpm</span></div>
+    </div>
+    <div class="settings-group">
+      <h3>Reading</h3>
+      <div class="settings-toggle">
+        <span>Reader Mode (distraction-free)</span>
+        <div class="toggle-switch" id="reader-toggle" onclick="toggleReaderMode()"></div>
+      </div>
+    </div>
+    <div class="settings-group">
+      <h3>Account</h3>
+      <p style="font-size:0.85rem;margin-bottom:0.5rem;">All demo accounts use password: <strong>password123</strong></p>
+      <button type="button" class="btn rust small" onclick="logout()" style="width:auto;">Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- READER MODE OVERLAY -->
+<div id="reader-overlay">
+  <div class="reader-header">
+    <h2 id="reader-title">Lesson Title</h2>
+    <button type="button" class="btn small" onclick="closeReader()" style="width:auto;">&#10005; Close Reader</button>
+  </div>
+  <div class="reader-content" id="reader-content"></div>
+</div>
+
+<!-- AUDIO PLAYER -->
+<div id="audio-player" onclick="toggleAudio()">
+  <audio id="lofi-audio" loop src="https://stream.zeno.fm/f3wvbbqmdg8uv"></audio>
+  <div class="audio-icon" id="audio-icon"><svg id="audio-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+  <div class="audio-info">
+    <div class="audio-title">Lofi Study Stream</div>
+    <div class="audio-artist">Zeno FM Radio</div>
+  </div>
+  <div class="audio-controls" onclick="event.stopPropagation()">
+    <button type="button" class="audio-btn" id="audio-play-btn" onclick="toggleAudio()"><svg id="audio-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+  const API_URL = 'http://localhost:3000/api';
+  const SUBJECTS_URL = './content/subjects.json';
+  const PROGRESS_KEY = 'brio_progress_v1';
+  let token = localStorage.getItem('brio_token');
+  let subjectsData = null;
+  let subjectsFlat = [];
+  let filtersReady = false;
+  let progressStore = null;
+  let audioCtx = null;
+  let audioSource = null;
+  let audioGain = null;
+  let audioPlaying = false;
+  let readerMode = false;
+
+  // ============ AUDIO ENGINE ============
+  function initAudio() {
+    const audio = document.getElementById('lofi-audio');
+    const vol = localStorage.getItem('brio_audio_volume') || 30;
+    audio.volume = parseInt(vol) / 100;
+  }
+
+  function toggleAudio() {
+    const audio = document.getElementById('lofi-audio');
+    if (!audioPlaying) {
+      initAudio();
+      audio.play().then(() => {
+        audioPlaying = true;
+        document.getElementById('audio-btn-svg').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+        document.getElementById('audio-toggle').classList.add('on');
+      }).catch(e => console.log('Audio play failed:', e));
+    } else {
+      audio.pause();
+      audioPlaying = false;
+      document.getElementById('audio-btn-svg').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+      document.getElementById('audio-toggle').classList.remove('on');
+    }
+  }
+
+  function setAudioVolume(val) {
+    const audio = document.getElementById('lofi-audio');
+    if (audio) audio.volume = parseInt(val) / 100;
+    localStorage.setItem('brio_audio_volume', val);
+  }
+
+  // ============ THEMES ============
+  function setTheme(name) {
+    document.documentElement.setAttribute('data-theme', name);
+    localStorage.setItem('brio_theme', name);
+    document.querySelectorAll('.theme-option').forEach(o => {
+      o.classList.toggle('active', o.dataset.theme === name);
+    });
+  }
+
+  function loadTheme() {
+    const t = localStorage.getItem('brio_theme') || 'cream';
+    setTheme(t);
+  }
+
+  // ============ SETTINGS ============
+  function toggleSettings() {
+    document.getElementById('settings-panel').classList.toggle('open');
+  }
+
+  // ============ READER MODE ============
+  function openReader(title, content) {
+    document.getElementById('reader-title').innerText = title;
+    const contentEl = document.getElementById('reader-content');
+    contentEl.innerHTML = content.split('\n').filter(l => l.trim()).map(p => `<p>${p}</p>`).join('');
+    document.getElementById('reader-overlay').classList.add('open');
+  }
+
+  function closeReader() {
+    document.getElementById('reader-overlay').classList.remove('open');
+  }
+
+  function toggleReaderMode() {
+    readerMode = !readerMode;
+    document.getElementById('reader-toggle').classList.toggle('on', readerMode);
+    localStorage.setItem('brio_reader', readerMode ? '1' : '0');
+    if (readerMode) showToast('Reader mode enabled');
+    else showToast('Reader mode disabled');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeReader();
+      document.getElementById('settings-panel').classList.remove('open');
+    }
+  });
+
+  // ============ AUTH ============
+  function fillAccount(email) {
+    document.getElementById('email').value = email;
+  }
+
+  async function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    try {
+      const data = await apiFetch('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+      token = data.token;
+      localStorage.setItem('brio_token', token);
+      document.getElementById('auth-modal').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadApp();
+    } catch(err) {
+      document.getElementById('auth-error').innerText = err.message;
+      document.getElementById('auth-error').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    token = null;
+    localStorage.removeItem('brio_token');
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('auth-modal').style.display = 'flex';
+    document.getElementById('settings-panel').classList.remove('open');
+    closeReader();
+  }
+
+  // ============ API ============
+  async function apiFetch(endpoint, options = {}) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+    const data = await res.json();
+    if (!res.ok) {
+      if (res.status === 401) logout();
+      throw new Error(data.error || 'API Error');
+    }
+    return data;
+  }
+
+  // ============ TABS ============
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    if (typeof event !== 'undefined' && event && event.currentTarget) {
+      event.currentTarget.classList.add('active');
+    }
+  }
+
+  // ============ LOAD APP ============
+  async function loadApp() {
+    try {
+      const { profile, stats } = await apiFetch('/profile/me');
+      const avatarSeed = profile.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(profile.f_name)}`;
+      document.getElementById('nav-avatar').src = avatarSeed;
+      document.getElementById('nav-name').innerText = `${profile.f_name} ${profile.l_name}`;
+      document.getElementById('nav-tier').innerText = profile.sub_tier.toUpperCase();
+
+      // Greeting
+      const hour = new Date().getHours();
+      let greet = 'Good evening';
+      if (hour < 12) greet = 'Good morning';
+      else if (hour < 17) greet = 'Good afternoon';
+      document.getElementById('dash-greeting').innerText = `${greet}, ${profile.f_name}!`;
+      document.getElementById('dash-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+
+      await loadSubjects();
+      await loadQueries();
+    } catch(e) { console.error(e); }
+  }
+
+  // ============ DASHBOARD ============
+  function renderDashboard() {
+    if (!subjectsFlat.length) return;
+    const store = loadProgressStore();
+    const totalSubjects = subjectsFlat.length;
+    const totalLessons = subjectsFlat.reduce((t, s) => t + (s.lessons || []).length, 0);
+    let completedLessons = 0;
+    subjectsFlat.forEach(s => {
+      const p = store.subjects[s.id];
+      if (p && p.completedLessons) completedLessons += new Set(p.completedLessons).size;
+    });
+    const pct = totalLessons ? Math.round((completedLessons / totalLessons) * 100) : 0;
+    const streak = parseInt(localStorage.getItem('brio_streak_v1') || '0', 10) || 0;
+
+    document.getElementById('dash-subjects').innerText = totalSubjects;
+    document.getElementById('dash-lessons').innerText = completedLessons;
+    document.getElementById('dash-lessons-sub').innerText = `of ${totalLessons}`;
+    document.getElementById('dash-pct').innerText = `${pct}%`;
+    document.getElementById('dash-streak').innerText = streak;
+
+    // Course progress detail
+    const detail = document.getElementById('dash-progress-detail');
+    const list = document.getElementById('dash-course-list');
+    if (subjectsFlat.length > 1) {
+      detail.style.display = 'block';
+      list.innerHTML = subjectsFlat.map(s => {
+        const p = store.subjects[s.id];
+        const done = p && p.completedLessons ? new Set(p.completedLessons).size : 0;
+        const total = (s.lessons || []).length;
+        const spct = total ? Math.round((done / total) * 100) : 0;
+        return `<div class="course-progress-item">
+          <div class="cp-name">${s.title}</div>
+          <div class="cp-bar"><div class="cp-fill" style="width:${spct}%"></div></div>
+          <div class="cp-pct">${spct}%</div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // ============ PROGRESS ============
+  function loadProgressStore() {
+    if (progressStore) return progressStore;
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    let parsed = null;
+    try { parsed = raw ? JSON.parse(raw) : null; } catch(e) { parsed = null; }
+    progressStore = {
+      lastSubjectId: parsed && parsed.lastSubjectId ? parsed.lastSubjectId : null,
+      subjects: parsed && parsed.subjects ? parsed.subjects : {}
+    };
+    return progressStore;
+  }
+
+  function saveProgressStore(store) {
+    progressStore = store;
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(store));
+  }
+
+  function getSubjectProgress(subjectId) {
+    const store = loadProgressStore();
+    if (!store.subjects[subjectId]) {
+      store.subjects[subjectId] = { completedLessons: [], lastLessonId: null };
+    }
+    return store.subjects[subjectId];
+  }
+
+  function incrementStreak() {
+    const current = parseInt(localStorage.getItem('brio_streak_v1') || '0', 10);
+    const next = Number.isNaN(current) ? 1 : current + 1;
+    localStorage.setItem('brio_streak_v1', String(next));
+    return next;
+  }
+
+  // ============ SUBJECTS ============
+  async function loadSubjects() {
+    try {
+      const res = await fetch(SUBJECTS_URL);
+      if (!res.ok) throw new Error('Unable to load subjects catalog');
+      subjectsData = await res.json();
+      subjectsFlat = flattenSubjects(subjectsData);
+      if (!subjectsFlat.length) {
+        renderSubjectsEmptyState();
+        renderContinueCard();
+        renderLearningStats();
+        return;
+      }
+      renderSemesterOptions(subjectsData);
+      bindFilters();
+      renderSubjectCatalog();
+      renderContinueCard();
+      renderLearningStats();
+      renderDashboard();
+    } catch (e) {
+      console.error(e);
+      renderSubjectsEmptyState();
+      showToast('Unable to load subjects catalog');
+    }
+  }
+
+  function flattenSubjects(data) {
+    if (!data || !data.semesters) return [];
+    return data.semesters.flatMap(semester =>
+      semester.subjects.map(s => ({ ...s, semester: semester.name }))
+    );
+  }
+
+  function renderSemesterOptions(data) {
+    const sel = document.getElementById('filter-semester');
+    if (!sel) return;
+    sel.innerHTML = '<option value="all">All</option>';
+    if (!data || !data.semesters) return;
+    data.semesters.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.name;
+      opt.textContent = s.name;
+      sel.appendChild(opt);
+    });
+  }
+
+  function bindFilters() {
+    if (filtersReady) return;
+    ['filter-semester','filter-difficulty','filter-type'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', () => { renderSubjectCatalog(); renderContinueCard(); });
+    });
+    filtersReady = true;
+  }
+
+  function currentFilters() {
+    return {
+      semester: document.getElementById('filter-semester')?.value || 'all',
+      difficulty: document.getElementById('filter-difficulty')?.value || 'all',
+      type: document.getElementById('filter-type')?.value || 'all'
+    };
+  }
+
+  function applySubjectFilters(subjects, filters) {
+    return subjects.filter(s => {
+      if (filters.semester !== 'all' && s.semester !== filters.semester) return false;
+      if (filters.difficulty !== 'all' && s.difficulty !== filters.difficulty) return false;
+      if (filters.type !== 'all' && s.type !== filters.type) return false;
+      return true;
+    });
+  }
+
+  function renderSubjectCatalog() {
+    const grid = document.getElementById('subject-grid');
+    if (!grid) return;
+    if (!subjectsFlat.length) { renderSubjectsEmptyState(); return; }
+    const filters = currentFilters();
+    const filtered = applySubjectFilters(subjectsFlat, filters);
+    grid.innerHTML = '';
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="card">No subjects match the current filters.</div>';
+      updateCatalogStats(filtered);
+      return;
+    }
+    filtered.forEach(subject => {
+      const card = document.createElement('div');
+      card.className = 'card subject-card';
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+          <div>
+            <div style="font-size:0.85rem;font-weight:800;color:var(--accent-rust);">${subject.semester} &bull; ${subject.type}</div>
+            <div style="font-family:var(--font-serif);font-size:1.6rem;font-weight:900;margin:0.5rem 0;">${subject.title}</div>
+            <div style="font-weight:700;">${subject.overview}</div>
+          </div>
+          <div style="text-align:right;min-width:100px;">
+            <div style="font-weight:800;">${subject.credits} Credits</div>
+            <div style="font-size:0.85rem;font-weight:800;color:var(--accent-sage);">${subject.difficulty}</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+          ${(subject.keyTopics||[]).slice(0,4).map(t => `<span class="pill">${t}</span>`).join('')}
+        </div>
+        <div style="margin-top:1.5rem;display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-weight:800;font-size:0.9rem;">${(subject.lessons||[]).length} lessons &bull; ${(subject.quizzes||[]).length} quizzes</div>
+          <button type="button" class="btn small" onclick="openSubject('${subject.id}')">View Subject</button>
+        </div>`;
+      grid.appendChild(card);
+    });
+    updateCatalogStats(filtered);
+  }
+
+  function updateCatalogStats(subjects) {
+    const sc = subjects.length;
+    const lc = subjects.reduce((t,s) => t + (s.lessons||[]).length, 0);
+    const se = document.getElementById('stat-subjects');
+    const le = document.getElementById('stat-lessons');
+    if (se) se.innerText = sc;
+    if (le) le.innerText = lc;
+  }
+
+  function renderContinueCard() {
+    const lessonEl = document.getElementById('continue-lesson');
+    const progressEl = document.getElementById('continue-progress');
+    const continueBtn = document.getElementById('continue-btn');
+    if (!lessonEl||!progressEl||!continueBtn) return;
+    const filters = currentFilters();
+    const filtered = applySubjectFilters(subjectsFlat, filters);
+    const store = loadProgressStore();
+    const lastSubject = subjectsFlat.find(i => i.id === store.lastSubjectId);
+    const subject = lastSubject || filtered[0] || subjectsFlat[0];
+    if (!subject) {
+      lessonEl.innerText = 'No lesson selected yet';
+      progressEl.style.width = '0%';
+      continueBtn.disabled = true;
+      return;
+    }
+    const sp = getSubjectProgress(subject.id);
+    const lessons = subject.lessons || [];
+    const lesson = lessons.find(i => i.id === sp.lastLessonId) || lessons[0];
+    const completedCount = (sp.completedLessons||[]).length;
+    const pct = lessons.length ? Math.round((completedCount/lessons.length)*100) : 0;
+    lessonEl.innerText = lesson ? `${lesson.title} (${subject.title})` : subject.title;
+    progressEl.style.width = `${pct}%`;
+    continueBtn.disabled = false;
+    continueBtn.innerText = sp.lastLessonId ? 'Resume Learning' : 'Start Learning';
+    continueBtn.onclick = () => openSubject(subject.id);
+  }
+
+  function renderLearningStats() {
+    const streakEl = document.getElementById('stat-streak');
+    const completionEl = document.getElementById('stat-completion');
+    const quizzesEl = document.getElementById('stat-quizzes');
+    const store = loadProgressStore();
+    const totalQuizzes = subjectsFlat.reduce((t,s) => t + (s.quizzes||[]).length, 0);
+    const totals = subjectsFlat.reduce((acc, s) => {
+      const lessons = s.lessons||[];
+      const p = store.subjects[s.id];
+      const completed = p && p.completedLessons ? new Set(p.completedLessons).size : 0;
+      acc.totalLessons += lessons.length;
+      acc.completedLessons += Math.min(completed, lessons.length);
+      return acc;
+    }, { totalLessons: 0, completedLessons: 0 });
+    const pct = totals.totalLessons ? Math.round((totals.completedLessons/totals.totalLessons)*100) : 0;
+    const streak = parseInt(localStorage.getItem('brio_streak_v1')||'0',10)||0;
+    if (streakEl) streakEl.innerText = `${streak} days`;
+    if (completionEl) completionEl.innerText = `${pct}%`;
+    if (quizzesEl) quizzesEl.innerText = totalQuizzes;
+  }
+
+  function openSubject(subjectId) {
+    window.open('subject.html?id=' + subjectId, '_blank');
+  }
+
+  // ============ SHOWCASE ============
+  async function loadQueries() {
+    const queries = await apiFetch('/showcase/queries');
+    const sel = document.getElementById('query-select');
+    sel.innerHTML = '';
+    queries.forEach(q => sel.innerHTML += `<option value="${q.id}">${q.name}</option>`);
+  }
+
+  async function runQuery() {
+    const qid = document.getElementById('query-select').value;
+    if (!qid) return;
+    document.getElementById('sql-display').innerText = 'Executing...';
+    try {
+      const data = await apiFetch('/showcase/query', { method: 'POST', body: JSON.stringify({ queryId: qid }) });
+      document.getElementById('sql-display').innerText = data.sql;
+      if (data.rows && data.rows.length > 0) {
+        const cols = Object.keys(data.rows[0]);
+        document.getElementById('results-head').innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
+        document.getElementById('results-body').innerHTML = data.rows.map(r =>
+          `<tr>${cols.map(c => {
+            let val = r[c];
+            if (c === 'status' || c === 'project_status') {
+              const pClass = val === 'done'||val==='shipped'?'done':(val==='locked'?'locked':'in_progress');
+              return `<td><span class="pill ${pClass}">${val}</span></td>`;
+            }
+            return `<td>${val !== null ? val : '<em>NULL</em>'}</td>`;
+          }).join('')}</tr>`
+        ).join('');
+      } else {
+        document.getElementById('results-head').innerHTML = '<tr><th>Results</th></tr>';
+        document.getElementById('results-body').innerHTML = '<tr><td>0 rows returned.</td></tr>';
+      }
+    } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
+  }
+
+  async function runCustomSql() {
+    const sql = document.getElementById('live-sql-input').value.trim();
+    if (!sql) return;
+    document.getElementById('sql-display').innerText = 'Executing Custom SQL...';
+    try {
+      const data = await apiFetch('/admin/execute-sql', { method: 'POST', body: JSON.stringify({ sql }) });
+      document.getElementById('sql-display').innerText = data.sql;
+      
+      // If result is an array of objects (e.g. from SELECT)
+      if (Array.isArray(data.rows) && data.rows.length > 0) {
+        const cols = Object.keys(data.rows[0]);
+        document.getElementById('results-head').innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
+        document.getElementById('results-body').innerHTML = data.rows.map(r =>
+          `<tr>${cols.map(c => `<td>${r[c] !== null ? r[c] : '<em>NULL</em>'}</td>`).join('')}</tr>`
+        ).join('');
+      } else if (data.rows && data.rows.affectedRows !== undefined) {
+        // If result is an object from an INSERT/UPDATE/DELETE
+        document.getElementById('results-head').innerHTML = `<tr><th>Action</th><th>Affected Rows</th><th>Insert ID</th></tr>`;
+        document.getElementById('results-body').innerHTML = `<tr><td>${data.sql.split(' ')[0]}</td><td>${data.rows.affectedRows}</td><td>${data.rows.insertId || '-'}</td></tr>`;
+      } else {
+        document.getElementById('results-head').innerHTML = '<tr><th>Results</th></tr>';
+        document.getElementById('results-body').innerHTML = '<tr><td>Success, but 0 rows returned.</td></tr>';
+      }
+      showToast('Custom SQL Executed');
+    } catch(e) { document.getElementById('sql-display').innerText = 'ERROR: ' + e.message; }
+  }
+
+  async function runTriggerDemo() {
+    try {
+      const data = await apiFetch('/showcase/trigger', { method: 'POST' });
+      document.getElementById('sql-display').innerText = '-- Trigger Demo: trg_unlock_task_after_submission\n-- BEFORE: task was locked\n-- AFTER: task auto-unlocked (in_progress)';
+      const heads = ['Task (Before)', 'Status (Before)', 'Task (After)', 'Status (After)'];
+      document.getElementById('results-head').innerHTML = `<tr>${heads.map(h => `<th>${h}</th>`).join('')}</tr>`;
+      const before = data.before[0] || {};
+      const after = data.after[0] || {};
+      document.getElementById('results-body').innerHTML = `<tr>
+        <td>${before.task_name||'N/A'}</td>
+        <td><span class="pill locked">${before.status||'N/A'}</span></td>
+        <td>${after.task_name||'N/A'}</td>
+        <td><span class="pill in_progress">${after.status||'N/A'}</span></td>
+      </tr>`;
+      showToast('Trigger demo executed!');
+    } catch(e) { showToast('Trigger error: ' + e.message); }
+  }
+
+  // ============ VIZ — 7-Step Simulation Engine ============
+  let vizRunning = false;
+
+  function runVizSimulation() {
+    if (vizRunning) return;
+    vizRunning = true;
+
+    const t1 = document.getElementById('viz-t1');
+    const t2 = document.getElementById('viz-t2');
+    const t3 = document.getElementById('viz-t3');
+    const s1 = document.getElementById('t1-status');
+    const s2 = document.getElementById('t2-status');
+    const s3 = document.getElementById('t3-status');
+    const c1 = document.getElementById('t1-code');
+    const c2 = document.getElementById('t2-code');
+    const c3 = document.getElementById('t3-code');
+    const d12 = document.getElementById('dot-12');
+    const d23 = document.getElementById('dot-23');
+    const log = document.getElementById('v-log');
+    const btn = document.getElementById('viz-start-btn');
+
+    btn.disabled = true;
+    btn.innerText = 'Simulation Running...';
+
+    // Reset all
+    [t1,t2,t3].forEach(t => { t.classList.remove('active','success'); });
+    [d12,d23].forEach(d => { d.classList.remove('animate-fwd','animate-rev'); d.style.opacity = '0'; });
+    s1.className = 'viz-tier-status'; s1.innerHTML = '<span class="dot"></span> Idle';
+    s2.className = 'viz-tier-status'; s2.innerHTML = '<span class="dot"></span> Idle';
+    s3.className = 'viz-tier-status'; s3.innerHTML = '<span class="dot"></span> Idle';
+    c1.innerText = '// Waiting for user action...';
+    c2.innerText = '// Express server listening...';
+    c3.innerText = '-- Awaiting query...';
+    log.innerHTML = '';
+
+    const ts = () => {
+      const d = new Date();
+      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}.${String(d.getMilliseconds()).padStart(3,'0')}`;
+    };
+
+    function addLog(msg, cls) {
+      const e = document.createElement('div');
+      e.className = 'log-entry';
+      e.innerHTML = `<span class="log-time">[${ts()}]</span><span class="log-arrow">&#8594;</span><span class="log-msg ${cls||''}">${msg}</span>`;
+      log.appendChild(e);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function setStatus(el, state, text) {
+      el.className = 'viz-tier-status ' + state;
+      el.innerHTML = `<span class="dot"></span> ${text}`;
+    }
+
+    function fireDot(dot, dir) {
+      dot.classList.remove('animate-fwd','animate-rev');
+      dot.style.opacity = '0';
+      void dot.offsetWidth; // force reflow
+      dot.classList.add(dir === 'fwd' ? 'animate-fwd' : 'animate-rev');
+    }
+
+    // ─── STEP 1 (0ms): User clicks submit, frontend captures input ───
+    const steps = [
+      { delay: 0, fn: () => {
+        addLog('STEP 1: User clicks "Submit Lesson". Frontend captures form data.', 'fe-msg');
+        t1.classList.add('active');
+        setStatus(s1, 'processing', 'Capturing Input');
+        c1.innerText = 'const payload = {\n  lessonId: 4,\n  score: 88\n};\nfetch("/api/submit", {\n  method: "POST",\n  body: JSON.stringify(payload)\n});';
+      }},
+      // ─── STEP 2 (800ms): Packet animates Frontend → Backend ───
+      { delay: 800, fn: () => {
+        addLog('STEP 2: HTTP POST sent to /api/submit. Packet in transit...', 'fe-msg');
+        fireDot(d12, 'fwd');
+        setStatus(s1, 'success', 'Sent');
+        t1.classList.remove('active');
+      }},
+      // ─── STEP 3 (1600ms): Backend receives, validates JWT, parses body ───
+      { delay: 1600, fn: () => {
+        addLog('STEP 3: Backend receives POST. Validates JWT. Parses body.', 'be-msg');
+        t2.classList.add('active');
+        setStatus(s2, 'processing', 'Validating');
+        c2.innerText = 'app.post("/api/submit",\n  authenticate,\n  async (req, res) => {\n    const { lessonId, score }\n      = req.body;\n    // JWT verified ✓\n    // Input validated ✓';
+      }},
+      // ─── STEP 4 (2800ms): Backend builds SQL, sends to DB ───
+      { delay: 2800, fn: () => {
+        addLog('STEP 4: Backend builds SQL query. Sending to MySQL...', 'be-msg');
+        fireDot(d23, 'fwd');
+        c2.innerText = '    await pool.query(\n      "INSERT INTO submission\n       (user_id, lesson_id,\n        ai_score, feedback)\n       VALUES (?, ?, ?, ?)",\n      [userId, 4, 88, "Good"]\n    );';
+        setStatus(s2, 'success', 'Query Sent');
+        t2.classList.remove('active');
+      }},
+      // ─── STEP 5 (3800ms): MySQL executes INSERT + Trigger fires ───
+      { delay: 3800, fn: () => {
+        addLog('STEP 5: MySQL executes INSERT INTO submission. Rows affected: 1.', 'db-msg');
+        t3.classList.add('active');
+        setStatus(s3, 'processing', 'Executing');
+        c3.innerText = 'INSERT INTO submission\n  (user_id, sub_date,\n   lesson_id, ai_score)\nVALUES (1, NOW(), 4, 88);\n\n-- 1 row inserted';
+      }},
+      // ─── STEP 5b (4600ms): Trigger fires ───
+      { delay: 4600, fn: () => {
+        addLog('STEP 5b: TRIGGER trg_unlock_task_after_submission FIRED! Task status → in_progress.', 'db-msg');
+        c3.innerText = '-- TRIGGER FIRED:\n-- trg_unlock_task\n--   _after_submission\nUPDATE kanban_task\n  SET status = "in_progress"\n  WHERE project_id = 1\n    AND lesson_id = 4;';
+        setStatus(s3, 'success', 'Trigger OK');
+      }},
+      // ─── STEP 6 (5400ms): Response travels back DB → Backend → Frontend ───
+      { delay: 5400, fn: () => {
+        addLog('STEP 6: MySQL returns result. Response travels back through tiers.', 'be-msg');
+        t3.classList.remove('active'); t3.classList.add('success');
+        fireDot(d23, 'rev');
+        setStatus(s3, 'success', 'Complete');
+      }},
+      { delay: 6000, fn: () => {
+        t2.classList.add('active');
+        c2.innerText = '    res.json({\n      success: true,\n      message: "Mastery\n        achieved! Task\n        unlocked."\n    });';
+        setStatus(s2, 'success', '200 OK');
+        fireDot(d12, 'rev');
+      }},
+      // ─── STEP 7 (6800ms): Frontend receives 200 OK, UI updates ───
+      { delay: 6800, fn: () => {
+        addLog('STEP 7: Frontend receives 200 OK. UI updated: "Task Unlocked!"', 'fe-msg');
+        t2.classList.remove('active'); t2.classList.add('success');
+        t1.classList.add('success');
+        setStatus(s1, 'success', 'UI Updated');
+        c1.innerText = '// Response received!\n// { success: true }\n// UI state updated:\n//   "Task Unlocked!"\n//   Progress: 88%';
+        addLog('Simulation complete. All 3 tiers idle.', '');
+      }},
+      // ─── RESET (8500ms) ───
+      { delay: 8500, fn: () => {
+        [t1,t2,t3].forEach(t => t.classList.remove('active','success'));
+        setStatus(s1, '', 'Idle'); setStatus(s2, '', 'Idle'); setStatus(s3, '', 'Idle');
+        c1.innerText = '// Waiting for user action...';
+        c2.innerText = '// Express server listening...';
+        c3.innerText = '-- Awaiting query...';
+        [d12,d23].forEach(d => { d.classList.remove('animate-fwd','animate-rev'); d.style.opacity = '0'; });
+        btn.disabled = false;
+        btn.innerText = '▶ Run Simulation: Submit Lesson';
+        vizRunning = false;
+      }}
+    ];
+
+    steps.forEach(s => setTimeout(s.fn, s.delay));
+  }
+
+  // ============ SCHEMA EXPLORER ============
+  async function loadTableList() {
+    try {
+      const tables = await apiFetch('/showcase/tables');
+      const grid = document.getElementById('table-chips');
+      grid.innerHTML = tables.map(t =>
+        `<button type="button" class="table-chip" onclick="showTablePreview('${t}')">${t}</button>`
+      ).join('');
+    } catch(e) { console.error('Failed to load table list:', e); }
+  }
+
+  async function showTablePreview(name) {
+    // Update active chip
+    document.querySelectorAll('.table-chip').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+
+    try {
+      const data = await apiFetch('/showcase/table/' + name);
+      const preview = document.getElementById('schema-preview');
+      preview.classList.add('visible');
+
+      // Render column definitions
+      const colsEl = document.getElementById('schema-columns');
+      colsEl.innerHTML = data.schema.map(col =>
+        `<div class="col-row">
+          <span class="col-name">${col.Field}</span>
+          <span class="col-type">${col.Type}</span>
+          <span class="col-key">${col.Key === 'PRI' ? 'PRIMARY' : col.Key === 'MUL' ? 'FK' : col.Key === 'UNI' ? 'UNIQUE' : ''}</span>
+          <span class="col-null">${col.Null === 'YES' ? 'nullable' : 'NOT NULL'}</span>
+        </div>`
+      ).join('');
+
+      // Render sample data
+      if (data.rows && data.rows.length > 0) {
+        const cols = Object.keys(data.rows[0]);
+        document.getElementById('sample-head').innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
+        document.getElementById('sample-body').innerHTML = data.rows.map(r =>
+          `<tr>${cols.map(c => `<td>${r[c] !== null ? r[c] : '<em>NULL</em>'}</td>`).join('')}</tr>`
+        ).join('');
+      } else {
+        document.getElementById('sample-head').innerHTML = '<tr><th>No Data</th></tr>';
+        document.getElementById('sample-body').innerHTML = '<tr><td>Table is empty.</td></tr>';
+      }
+    } catch(e) { showToast('Schema error: ' + e.message); }
+  }
+
+  // ============ TOAST ============
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+  }
+
+  // ============ INIT ============
+  loadTheme();
+
+  // Restore audio volume
+  const savedVol = localStorage.getItem('brio_audio_volume');
+  if (savedVol) {
+    document.getElementById('audio-volume').value = savedVol;
+  }
+
+  // Restore reader mode
+  if (localStorage.getItem('brio_reader') === '1') {
+    readerMode = true;
+    document.getElementById('reader-toggle').classList.add('on');
+  }
+
+  if (token) {
+    document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('auth-modal').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadApp();
+  } else {
+    // Run Anime.js Landing Animation
+    anime.timeline({ easing: "spring(1, 80, 10, 0)" })
+    .add({
+      targets: ".landing-logo",
+      translateY: [-50, 0], opacity: [0, 1], duration: 1000
+    })
+    .add({
+      targets: ".swirl-img",
+      scale: [1.2, 1], rotate: [15, 0], opacity: [0, 0.95],
+      duration: 2000, easing: "easeOutCubic"
+    }, "-=800")
+    .add({
+      targets: [".hero-h1", ".hero-sub", ".hero-cta"],
+      translateY: [100, 0], opacity: [0, 1],
+      delay: anime.stagger(150)
+    }, "-=1500");
+
+    // Continuous flow animation
+    anime({
+      targets: ".swirl-img",
+      rotate: "10deg", scale: 1.05,
+      direction: "alternate", loop: true,
+      easing: "easeInOutSine", duration: 8000
+    });
+  }
+
+  window.enterPlatform = function() {
+    anime({
+      targets: "#landing-page",
+      translateY: "-100vh", opacity: 0,
+      easing: "easeInOutCubic", duration: 800,
+      complete: function() {
+        document.getElementById('landing-page').style.display = 'none';
+        document.getElementById('auth-modal').style.display = 'flex';
+        anime({
+          targets: ".auth-box", scale: [0.8, 1], opacity: [0, 1],
+          easing: "spring(1, 80, 10, 0)", duration: 1000
+        });
+      }
+    });
+  }
+</script>
+</body>
+</html>

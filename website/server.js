@@ -141,6 +141,8 @@ app.post('/api/showcase/query', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+
+
 app.post('/api/showcase/trigger', async (req, res) => {
   try {
     const userId = 4; const lessonId = 9; const projectId = 5;
