@@ -40,6 +40,6 @@ This repository contains the Database Management System (DBMS) project for the c
 - **3-in-1 Dashboard:** Manage your Kanban board, execute live SQL queries, and watch an animated system architecture flow all in one place.
 
 ## Team
-- Michael Smith
 - Francis Reuben R
-- David Miller
+- Darshan Jain
+- Harshith B A
