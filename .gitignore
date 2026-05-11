@@ -10,3 +10,15 @@ memory/
 .env
 f Sem 1/
 f Sem 2/
+
+# Report artifacts
+report/*.aux
+report/*.log
+report/*.out
+report/*.pdf
+report/*.toc
+
+# IDE & Tooling
+.claude/settings.local.json
+.DS_Store
+

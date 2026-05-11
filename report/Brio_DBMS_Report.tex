@@ -1,0 +1,835 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{float}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstdefinelanguage{SQL}{
+    keywords={SELECT, FROM, WHERE, JOIN, LEFT, RIGHT, INNER, OUTER, ON, GROUP, BY, ORDER,
+              HAVING, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, VIEW,
+              TRIGGER, AFTER, BEFORE, FOR, EACH, ROW, BEGIN, END, IF, THEN, ELSE,
+              CASE, WHEN, CONCAT, COUNT, SUM, AVG, ROUND, DISTINCT, NOT, NULL, IN,
+              AND, OR, AS, PRIMARY, KEY, FOREIGN, REFERENCES, UNIQUE, DEFAULT, INDEX,
+              USE, DATABASE, DROP, ALTER, DELIMITER, CALL, PROCEDURE},
+    sensitive=false,
+    morecomment=[l]{--},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]',
+    morestring=[b]"
+}
+
+\hypersetup{
+    colorlinks  = true,
+    linkcolor   = black,
+    citecolor   = black,
+    urlcolor    = blue,
+    pdfauthor   = {Francis Reuben R, Darshan Jain, Harshith B A},
+    pdftitle    = {Brio: A Project-Driven Programming Learning Platform}
+}
+
+\onehalfspacing
+\pagestyle{plain}
+
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\itshape}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+% ============================================
+% COVER PAGE
+% ============================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    {\Large\bfseries BRIO: A PROJECT-DRIVEN PROGRAMMING\\
+    LEARNING PLATFORM\par}
+
+    \vspace{0.8cm}
+
+    {\large A PROJECT REPORT\par}
+
+    \vspace{0.8cm}
+
+    {\large Submitted by\par}
+
+    \vspace{0.4cm}
+
+    {\large
+    Francis Reuben R.\ (1RUA25CSE0168)\\
+    Darshan Jain (1RUA25CSE0148)\\
+    Harshith B A (1RUA25CSE0185)\par}
+
+    \vspace{0.6cm}
+
+    {\normalsize\itshape as part of the Continuous Internal Evaluation\par}
+
+    \vspace{0.4cm}
+
+    {\normalsize for the course\par}
+
+    \vspace{0.2cm}
+
+    {\large\bfseries CS1211 Database Management System\par}
+
+    \vspace{0.4cm}
+
+    {\normalsize\itshape Offered in\par}
+    {\large\bfseries Semester II\par}
+    {\normalsize\itshape of\par}
+    {\large\bfseries B.Tech (Hons)\par}
+
+    \vspace{0.6cm}
+
+    \includegraphics[width=0.28\textwidth]{logo}
+
+    \vspace{0.5cm}
+
+    {\large\bfseries School of Computer Science and Engineering\\
+    RV University\\
+    RV Vidyaniketan, 8th Mile, Mysore Road, Bengaluru, Karnataka,\\
+    India -- 560059\par}
+
+    \vspace{0.4cm}
+
+    {\large May 2026\par}
+
+\end{titlepage}
+
+% ============================================
+% FRONT MATTER
+% ============================================
+\pagenumbering{roman}
+
+% ============================================
+% DECLARATION
+% ============================================
+\newpage
+\section*{DECLARATION}
+\addcontentsline{toc}{section}{DECLARATION}
+
+We, Francis Reuben R.\ (1RUA25CSE0168), Darshan Jain (1RUA25CSE0148), and Harshith B A
+(1RUA25CSE0185), students of 2nd semester B.Tech in Computer Science \& Engineering, at the
+School of Computer Science and Engineering, RV University, hereby declare that the project work
+titled ``\textbf{Brio: A Project-Driven Programming Learning Platform}'' has been carried out by
+us and submitted in partial fulfillment for the award of degree in Bachelor of Technology in
+Computer Science \& Engineering during the academic year 2025--2026. Further, the matter presented
+in the project has not been submitted previously by anybody for the award of any degree or any
+diploma to any other University, to the best of our knowledge and faith.
+
+\vspace{2cm}
+
+\begin{tabular}{ll}
+Name: Francis Reuben R.  & Signature: \underline{\hspace{5cm}} \\
+USN: 1RUA25CSE0168       & \\[0.6em]
+Name: Darshan Jain       & Signature: \underline{\hspace{5cm}} \\
+USN: 1RUA25CSE0148       & \\[0.6em]
+Name: Harshith B A       & Signature: \underline{\hspace{5cm}} \\
+USN: 1RUA25CSE0185       & \\
+\end{tabular}
+
+\vspace{1cm}
+
+Place: Bengaluru
+
+Date: \underline{\hspace{5cm}}
+
+% ============================================
+% CERTIFICATE
+% ============================================
+\newpage
+\begin{center}
+{\large\bfseries School of Computer Science and Engineering\\
+RV University\\
+RV Vidyaniketan, 8th Mile, Mysore Road, Bengaluru, Karnataka, India -- 560059}
+\end{center}
+
+\vspace{1cm}
+
+\section*{CERTIFICATE}
+\addcontentsline{toc}{section}{CERTIFICATE}
+
+This is to certify that the project work titled ``\textbf{Brio: A Project-Driven Programming
+Learning Platform}'' is performed by Francis Reuben R.\ (1RUA25CSE0168), Darshan Jain
+(1RUA25CSE0148), and Harshith B A (1RUA25CSE0185), bonafide students of Bachelor of Technology
+at the School of Computer Science and Engineering, RV University, Bengaluru as part of the Final
+Examination component for the course CS1211 Database Management System offered in Semester II of
+Bachelor of Technology in Computer Science \& Engineering, during the academic year 2025--2026.
+
+\vspace{3cm}
+
+Name of Course Faculty: \underline{\hspace{7cm}}
+
+\vspace{1cm}
+
+Signature with date of Faculty: \underline{\hspace{7cm}}
+
+% ============================================
+% TABLE OF CONTENTS
+% ============================================
+\newpage
+\tableofcontents
+
+% ============================================
+% MAIN CONTENT
+% ============================================
+\newpage
+\pagenumbering{arabic}
+
+% ============================================
+\section{INTRODUCTION}
+% ============================================
+
+Brio is a full-stack, project-driven programming learning platform built as the final examination
+project for CS1211 Database Management System. The platform is designed around a single central
+insight: learners retain programming knowledge more effectively when new concepts unlock tangible
+project milestones rather than merely progressing through a linear curriculum. Every lesson
+completed on Brio is not just a checkbox --- it is a key that can unlock a blocked task on a real
+software project.
+
+The platform demonstrates all major database concepts covered in CS1211: schema design in Third
+Normal Form (3NF), SQL views for aggregated dashboards, triggers for automated business logic,
+transactions for atomic multi-table operations, and parameterized queries for safe data access.
+The frontend provides a live interface where all of these database operations are observable in
+real time, making it a complete demonstration of the full-stack lifecycle from user interaction
+to database row.
+
+\subsection{Problem Statement}
+
+Existing programming education platforms treat learning progress and project work as separate
+concerns. A learner may complete a course on authentication but have no direct incentive to
+apply that knowledge to a real project. Brio bridges this gap by storing lesson submissions in
+the database and using triggers to automatically unlock project tasks when the learner's AI
+evaluation score meets the required threshold.
+
+The system therefore answers the question: \textit{how can a relational database serve as the
+engine for automated skill-gating in a project-based learning environment?}
+
+\subsection{Objectives}
+
+The primary objectives of the Brio project are as follows:
+
+\begin{enumerate}[label=\arabic*., itemsep=4pt]
+    \item Design a normalized (3NF) relational schema in MySQL 8 that models learners, courses,
+          lessons, teams, projects, and automated skill-gate logic.
+    \item Implement three SQL views that aggregate complex multi-table joins into reusable query
+          interfaces for the API layer.
+    \item Implement three MySQL triggers that automate task-unlock events, team-size enforcement,
+          and project auto-shipping.
+    \item Build a Node.js/Express backend that exposes the database through a REST API with JWT
+          authentication and parameterized queries.
+    \item Build a responsive single-page frontend that demonstrates all database operations live,
+          including a query showcase, chaos sandbox, schema explorer, and admin user management.
+    \item Satisfy the core exam objective: adding a user from the frontend reflects immediately
+          in MySQL, and deleting a user from MySQL immediately invalidates their session on the
+          frontend.
+\end{enumerate}
+
+\subsection{Scope}
+
+Brio covers the full stack of a production-grade web application while remaining focused on the
+database layer. The in-scope deliverables are: the MySQL schema and seed data, the Express REST
+API, the vanilla JavaScript frontend, a live query showcase with fifteen curated SQL queries,
+and a schema explorer. Out of scope for this project are mobile applications, real AI evaluation,
+and integration with third-party payment gateways.
+
+% ============================================
+\section{SYSTEM DESIGN}
+% ============================================
+
+\subsection{Technology Stack}
+
+Table~\ref{tab:stack} summarises the technologies used in Brio and their roles within the system.
+
+\begin{table}[H]
+\centering
+\caption{Technology Stack}
+\label{tab:stack}
+\begin{tabular}{>{\bfseries}p{3cm} p{4.5cm} p{6cm}}
+\toprule
+Layer & Technology & Purpose \\
+\midrule
+Database & MySQL 8.x & Primary relational store; hosts \texttt{brio\_db} \\
+ORM/Driver & mysql2/promise & Parameterised async queries, connection pooling \\
+Backend & Node.js + Express 5 & HTTP server, REST API, middleware \\
+Auth & JSON Web Token (JWT) & Stateless session tokens (24-hour expiry) \\
+Hashing & bcrypt & Password hashing (cost factor 10) \\
+Validation & Zod & Input schema validation on all write endpoints \\
+Frontend & Vanilla HTML/CSS/JS & Single-page app, no build step \\
+Animations & Anime.js & Entrance animations and page transitions \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{High-Level Architecture}
+
+The application follows a classical three-tier architecture: a browser-based presentation layer,
+a Node.js application layer, and a MySQL data layer. The entire application layer is contained
+within a single \texttt{server.js} monolith --- an intentional design choice for an educational
+context, where readability and traceability are prioritised over microservice boundaries.
+
+The application layer maintains two separate MySQL connection pools. The primary pool (10
+connections, read-write) serves all authenticated endpoints. A dedicated read-only pool (5
+connections) serves the chaos sandbox, which allows users to execute arbitrary \texttt{SELECT}
+queries against the database from the browser. Isolating the chaos sandbox to a read-only
+connection ensures that user-supplied queries cannot mutate or drop data.
+
+\subsection{Authentication Flow}
+
+On login, the server verifies the supplied password against the stored bcrypt hash. On success,
+it issues a JWT containing the user's \texttt{user\_id} and \texttt{role}. Every subsequent
+request to a protected endpoint passes through the \texttt{authenticate()} middleware, which:
+
+\begin{enumerate}[label=\arabic*., itemsep=2pt]
+    \item Extracts the \texttt{Authorization: Bearer <token>} header.
+    \item Verifies the JWT signature and expiry.
+    \item Queries \texttt{SELECT user\_id FROM users WHERE user\_id = ?} to confirm the account
+          still exists in the database.
+    \item Returns HTTP 401 if the user has been deleted, even if the token is still within its
+          24-hour window.
+\end{enumerate}
+
+This last step is the implementation of the core exam objective: deleting a user from MySQL
+Workbench immediately causes the frontend to receive a 401 on the user's next API call, which
+triggers automatic logout.
+
+% ============================================
+\section{DATABASE SCHEMA}
+% ============================================
+
+\subsection{Design Principles}
+
+The schema is designed in Third Normal Form (3NF): every non-key attribute depends on the whole
+key and only the key. Strong entities use surrogate integer primary keys (with the exception of
+junction and weak-entity tables, which use composite keys). Multivalued attributes are separated
+into their own tables. Derived attributes (e.g., AI generation flag on blueprints) are computed
+at query time and not stored.
+
+All foreign keys include an \texttt{ON DELETE CASCADE} or \texttt{ON DELETE RESTRICT} clause
+appropriate to the relationship's participation constraint. Total participation relationships
+(e.g., a lesson cannot exist without a course) are modelled with cascading deletes.
+
+\subsection{Entity--Relationship Overview}
+
+The schema contains 13 tables organised into four categories:
+
+\begin{enumerate}[label=\arabic*., itemsep=2pt]
+    \item \textbf{Strong entities} (5): \texttt{users}, \texttt{course}, \texttt{lesson},
+          \texttt{team}, \texttt{blueprint}
+    \item \textbf{Weak entities} (2): \texttt{project} (depends on \texttt{users} and
+          \texttt{blueprint}), \texttt{kanban\_task} (depends on \texttt{project})
+    \item \textbf{Junction / relationship tables} (3): \texttt{submission},
+          \texttt{enrollment}, \texttt{team\_member}
+    \item \textbf{Multivalued attribute tables} (3): \texttt{lesson\_tag},
+          \texttt{blueprint\_tech}, \texttt{team\_role}
+\end{enumerate}
+
+\subsection{Table Descriptions}
+
+Table~\ref{tab:schema} provides a summary of each table's purpose and primary/foreign key
+relationships.
+
+\begin{longtable}{>{\bfseries}p{3.2cm} p{5cm} p{5.5cm}}
+\caption{Schema Table Summary}
+\label{tab:schema} \\
+\toprule
+Table & Purpose & Key Columns \\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}{\tablename\ \thetable{} -- continued} \\
+\toprule
+Table & Purpose & Key Columns \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{Continued on next page\ldots} \\
+\endfoot
+\bottomrule
+\endlastfoot
+users & All platform participants (learners, mentors, admins) &
+    PK: \texttt{user\_id}; UNIQUE: \texttt{email}; ENUM: \texttt{role}, \texttt{sub\_tier} \\[4pt]
+course & Structured programming learning tracks &
+    PK: \texttt{course\_id}; ENUM: \texttt{difficulty} \\[4pt]
+lesson & Individual learning units within a course &
+    PK: \texttt{lesson\_id}; FK: \texttt{course\_id}; UNIQUE: \texttt{(course\_id, lesson\_no)} \\[4pt]
+team & Collaborative learner groups (2--4 members) &
+    PK: \texttt{team\_id}; UNIQUE: \texttt{team\_name}; CHECK: \texttt{max\_members 2--4} \\[4pt]
+blueprint & AI-generated project specification &
+    PK: \texttt{blueprint\_id}; tech recommendations in \texttt{blueprint\_tech} \\[4pt]
+project & A learner's software project (owned by one user) &
+    PK: \texttt{project\_id}; FK: \texttt{user\_id}, \texttt{blueprint\_id}, \texttt{team\_id} \\[4pt]
+kanban\_task & Tasks within a project, skill-gated by lessons &
+    PK: \texttt{task\_id}; FK: \texttt{project\_id}, \texttt{lesson\_id}; ENUM: \texttt{status} \\[4pt]
+submission & A learner's lesson attempt with AI score &
+    PK: \texttt{sub\_id}; FK: \texttt{user\_id}, \texttt{lesson\_id}; UNIQUE: \texttt{(user\_id, sub\_date)} \\[4pt]
+enrollment & Junction between users and courses &
+    Composite PK: \texttt{(user\_id, course\_id)}; \texttt{progress} 0--100 \\[4pt]
+team\_member & Junction between teams and users &
+    Composite PK: \texttt{(team\_id, user\_id)}; FK: both \\[4pt]
+lesson\_tag & Multivalued tags per lesson &
+    PK: \texttt{tag\_id}; FK: \texttt{lesson\_id}; VARCHAR: \texttt{tag} \\[4pt]
+blueprint\_tech & Multivalued technology recommendations per blueprint &
+    PK: \texttt{bt\_id}; FK: \texttt{blueprint\_id}; VARCHAR: \texttt{tech} \\[4pt]
+team\_role & Multivalued roles per team member &
+    PK: \texttt{tr\_id}; FK: \texttt{team\_id}, \texttt{user\_id}; VARCHAR: \texttt{role\_name} \\[4pt]
+\end{longtable}
+
+\subsection{Normalisation}
+
+The schema satisfies 3NF throughout. Key normalisation decisions include:
+
+\begin{itemize}[itemsep=4pt]
+    \item \textbf{Lesson tags} are not stored as a comma-separated column on \texttt{lesson}.
+          Each tag is a separate row in \texttt{lesson\_tag}, eliminating repeating groups
+          (1NF violation) and allowing efficient tag-cloud queries via \texttt{GROUP\_CONCAT}.
+    \item \textbf{Technology recommendations} for blueprints follow the same pattern in
+          \texttt{blueprint\_tech}, keeping \texttt{blueprint} in 2NF.
+    \item \textbf{Progress} is stored on the \texttt{enrollment} junction table, not on
+          \texttt{users} or \texttt{course}, because progress is a property of the relationship,
+          not of either entity.
+    \item \textbf{AI score} is stored on \texttt{submission} and never cached on \texttt{users}
+          --- aggregated values like average score are computed by the \texttt{learner\_dashboard\_view}.
+\end{itemize}
+
+% ============================================
+\section{VIEWS, TRIGGERS, AND TRANSACTIONS}
+% ============================================
+
+\subsection{Views}
+
+Three views abstract complex multi-table joins behind reusable query interfaces. Each view is
+called directly by an API endpoint, eliminating the need for long inline SQL in the application
+layer.
+
+\subsubsection{learner\_dashboard\_view}
+
+Aggregates per-learner statistics by joining \texttt{users}, \texttt{enrollment},
+\texttt{submission}, and \texttt{project}. Returns one row per learner with: total courses
+enrolled, average course progress, total submissions, average AI score, and projects owned.
+Used by \texttt{GET /api/profile/me}.
+
+\begin{lstlisting}[language=SQL, caption={learner\_dashboard\_view (abbreviated)}]
+CREATE OR REPLACE VIEW learner_dashboard_view AS
+SELECT
+    u.user_id,
+    CONCAT(u.f_name, ' ', u.l_name)  AS full_name,
+    COUNT(DISTINCT e.course_id)       AS courses_enrolled,
+    ROUND(AVG(e.progress), 1)         AS avg_course_progress,
+    COUNT(DISTINCT s.sub_date)        AS total_submissions,
+    ROUND(AVG(s.ai_score), 1)         AS avg_ai_score,
+    COUNT(DISTINCT p.project_id)      AS projects_owned
+FROM users u
+LEFT JOIN enrollment e ON u.user_id = e.user_id
+LEFT JOIN submission s ON u.user_id = s.user_id
+LEFT JOIN project p    ON u.user_id = p.user_id
+WHERE u.role = 'learner'
+GROUP BY u.user_id, u.f_name, u.l_name, u.sub_tier;
+\end{lstlisting}
+
+\subsubsection{project\_kanban\_view}
+
+Joins \texttt{project}, \texttt{users}, \texttt{team}, and \texttt{kanban\_task} to produce a
+per-project summary: total tasks, done count, in-progress count, locked count, and completion
+percentage. Used by \texttt{GET /api/projects} and \texttt{GET /api/kanban/:projectId}.
+
+\subsubsection{skill\_gate\_compliance\_view}
+
+Shows every locked kanban task alongside its gating lesson and the gate status for the project
+owner: \textit{Eligible to unlock} (score $\geq$ 70), \textit{Score too low}, or
+\textit{Lesson not submitted yet}. This view makes the skill-gate mechanism observable without
+running multiple queries.
+
+\subsection{Triggers}
+
+\subsubsection{trg\_unlock\_task\_after\_submission}
+
+Fires \texttt{AFTER INSERT ON submission}. If the inserted \texttt{ai\_score} is 70 or above,
+the trigger updates all \texttt{kanban\_task} rows in the project owner's projects from
+\texttt{locked} to \texttt{in\_progress} where the gating \texttt{lesson\_id} matches the
+submitted lesson. This implements the skill-gate logic without any application-layer code.
+
+\begin{lstlisting}[language=SQL, caption={trg\_unlock\_task\_after\_submission (abbreviated)}]
+CREATE TRIGGER trg_unlock_task_after_submission
+AFTER INSERT ON submission
+FOR EACH ROW
+BEGIN
+    IF NEW.ai_score >= 70 THEN
+        UPDATE kanban_task kt
+        JOIN project p ON kt.project_id = p.project_id
+        SET kt.status = 'in_progress'
+        WHERE kt.status = 'locked'
+          AND kt.lesson_id = NEW.lesson_id
+          AND p.user_id = NEW.user_id;
+    END IF;
+END;
+\end{lstlisting}
+
+\subsubsection{trg\_enforce\_team\_size}
+
+Fires \texttt{BEFORE INSERT ON team\_member}. Counts the current number of members in the
+target team and raises a signal error if adding another member would exceed the team's
+\texttt{max\_members} limit. This enforces the business rule at the database level, preventing
+any application-layer bypass.
+
+\subsubsection{trg\_auto\_ship\_project}
+
+Fires \texttt{AFTER UPDATE ON kanban\_task}. After any task status change, the trigger checks
+whether all tasks in the project have status \texttt{done}. If so, it updates the parent
+\texttt{project.status} to \texttt{shipped} automatically. This creates a complete trigger
+chain: submission $\rightarrow$ task unlock $\rightarrow$ project auto-ship.
+
+\subsection{Transactions}
+
+Three transaction demonstrations are included in \texttt{04\_VIEWS\_TRIGGERS\_TRANSACTIONS.sql}:
+
+\begin{enumerate}[label=\arabic*., itemsep=4pt]
+    \item \textbf{Course Enrollment Transaction}: Atomically inserts an enrollment record and
+          updates the learner's progress to 0 in a single transaction, ensuring a learner is
+          never partially enrolled.
+    \item \textbf{Team Assignment Transaction}: Atomically inserts a team member and assigns
+          their role, so a user is never in a team without a role.
+    \item \textbf{Rollback Demonstration}: Illustrates explicit \texttt{ROLLBACK} by attempting
+          an enrollment into a non-existent course, catching the FK constraint error, and
+          restoring the previous database state.
+\end{enumerate}
+
+% ============================================
+\section{BACKEND ARCHITECTURE}
+% ============================================
+
+\subsection{Server Structure}
+
+The entire backend resides in \texttt{website/server.js}. Express 5 is used with the
+\texttt{mysql2/promise} driver for all database interactions. A Zod schema validates every
+write endpoint's request body before any SQL is executed. A global error handler at the bottom
+of the file catches all unhandled throws and normalises them to
+\texttt{\{"error": "message"\}} (500) or \texttt{\{"error": "Validation failed", "details":
+[...]\}} (400).
+
+\subsection{API Endpoints}
+
+Table~\ref{tab:api} documents all REST endpoints exposed by the server.
+
+\begin{longtable}{>{\ttfamily}p{5cm} p{1.5cm} p{6cm}}
+\caption{REST API Endpoints}
+\label{tab:api} \\
+\toprule
+Route & Auth & Purpose \\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}{\tablename\ \thetable{} -- continued} \\
+\toprule
+Route & Auth & Purpose \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+POST /api/auth/login & None & bcrypt verify + JWT issue \\[4pt]
+GET /api/profile/me & JWT & Profile + dashboard view stats \\[4pt]
+POST /api/profile/update & JWT & Update bio field \\[4pt]
+GET /api/projects & JWT & Projects via kanban view \\[4pt]
+GET /api/kanban/:projectId & JWT & Task list ordered by priority \\[4pt]
+GET /api/lessons & JWT & Enrolled lessons + submission scores \\[4pt]
+POST /api/submit & JWT & Insert submission, triggers fire \\[4pt]
+GET /api/showcase/stats & None & Public counts (users/projects/submissions) \\[4pt]
+GET /api/showcase/tables & None & List all tables (SHOW TABLES) \\[4pt]
+GET /api/showcase/table/:name & None & DESCRIBE + SELECT LIMIT 5 for a table \\[4pt]
+GET /api/showcase/queries & None & Fifteen curated query descriptors \\[4pt]
+POST /api/showcase/query & None & Execute query by ID (Q1--Q15 + 3 views) \\[4pt]
+POST /api/showcase/chaos-sandbox & None & Arbitrary SELECT via read-only pool \\[4pt]
+POST /api/showcase/trigger & None & Demo trigger execution \\[4pt]
+GET /api/admin/users & None & List all users for admin panel \\[4pt]
+POST /api/admin/users & None & Create user (Zod + bcrypt) \\[4pt]
+DELETE /api/admin/users/:id & None & Delete user by ID \\[4pt]
+\end{longtable}
+
+\subsection{SQL Injection Prevention}
+
+All database queries use the \texttt{?} placeholder syntax provided by \texttt{mysql2}. User
+input is never interpolated into query strings. The schema explorer endpoint validates the table
+name against a whitelist obtained from \texttt{SHOW TABLES} before constructing the
+\texttt{DESCRIBE} statement, adding a second layer of protection even for the one case where a
+table name must appear in the query structure.
+
+\subsection{The Skill-Gate Trigger Chain}
+
+The most architecturally significant flow in Brio is the trigger chain that connects a lesson
+submission to automatic project progression:
+
+\begin{enumerate}[label=\arabic*., itemsep=4pt]
+    \item The frontend calls \texttt{POST /api/submit} with a lesson ID and score.
+    \item The server executes \texttt{INSERT INTO submission (...) VALUES (...) ON DUPLICATE KEY
+          UPDATE ...}.
+    \item MySQL fires \texttt{trg\_unlock\_task\_after\_submission}. If \texttt{ai\_score}
+          $\geq$ 70, locked kanban tasks gated by this lesson are set to \texttt{in\_progress}.
+    \item MySQL fires \texttt{trg\_auto\_ship\_project}. If all tasks in the project are
+          \texttt{done}, the project status is set to \texttt{shipped}.
+\end{enumerate}
+
+The entire chain executes within the original \texttt{INSERT} statement's transaction, meaning
+the API response is only sent after all trigger side effects have committed successfully.
+
+% ============================================
+\section{FRONTEND ARCHITECTURE}
+% ============================================
+
+\subsection{Single-Page Application Design}
+
+The frontend is a vanilla JavaScript single-page application served statically by Express from
+\texttt{website/public/}. There is no build step and no JavaScript framework. The SPA is
+organised into three tab panels within a single \texttt{index.html} file:
+
+\begin{itemize}[itemsep=4pt]
+    \item \textbf{Platform Tab}: The authenticated learning dashboard. Displays the user's
+          enrolled lessons, project kanban board, and progress statistics fetched from the
+          JWT-protected API endpoints.
+    \item \textbf{Showcase Tab}: Public, no-login-required database demonstration interface.
+          Contains the 15-query showcase, three view demos, the chaos sandbox (arbitrary SELECT),
+          the trigger demo, the schema explorer, and the admin user management panel.
+    \item \textbf{System Viz Tab}: Static architecture diagrams illustrating the ER model, the
+          skill-gate trigger chain, and the API layer.
+\end{itemize}
+
+\subsection{Client-Side State Management}
+
+The frontend stores all persistent state in \texttt{localStorage}:
+
+\begin{itemize}[itemsep=2pt]
+    \item \textbf{JWT token}: stored on login, cleared on logout or 401 response.
+    \item \textbf{Learning progress}: lesson completion, streak counter, and last-visited
+          subject, stored in \texttt{brio\_progress\_v1}.
+    \item \textbf{Theme preference}: light/dark toggle.
+\end{itemize}
+
+The subject catalog (course syllabi, lesson content, quizzes) is loaded from a static
+\texttt{public/content/subjects.json} file. It is not stored in the database, keeping the
+catalog editable without requiring SQL migrations during development.
+
+\subsection{Landing Page and Authentication UX}
+
+The landing page uses CSS custom properties and Anime.js for a staggered entrance animation
+across eight elements: navigation, background, decorative swirl, headline, sub-headline,
+call-to-action buttons, statistics, and floating colour orbs. The three orbs use CSS keyframe
+animations (\texttt{orb-float} at 14 seconds and \texttt{orb-drift} at 22 seconds) with
+\texttt{mix-blend-mode: multiply} for visual layering. The login transition animates the orbs
+expanding and fading, then slides the landing page upward to reveal the dashboard beneath,
+using Anime.js timeline sequencing.
+
+% ============================================
+\section{QUERY SHOWCASE}
+% ============================================
+
+Fifteen SQL queries from the CS1211 curriculum are implemented and served live through the
+showcase interface. Table~\ref{tab:queries} lists all fifteen queries and the primary SQL
+concepts each demonstrates.
+
+\begin{longtable}{>{\bfseries}p{1cm} p{5cm} p{7.5cm}}
+\caption{Curated Query Showcase}
+\label{tab:queries} \\
+\toprule
+ID & Description & Primary SQL Concepts \\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}{\tablename\ \thetable{} -- continued} \\
+\toprule
+ID & Description & Primary SQL Concepts \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+Q1 & All users with their role and tier & Basic \texttt{SELECT}, \texttt{ORDER BY} \\[3pt]
+Q2 & Courses by difficulty & \texttt{WHERE}, \texttt{ORDER BY} \\[3pt]
+Q3 & Lessons per course with count & \texttt{JOIN}, \texttt{GROUP BY}, \texttt{COUNT} \\[3pt]
+Q4 & User enrollments with progress & \texttt{JOIN} (3 tables), \texttt{ORDER BY} \\[3pt]
+Q5 & Projects with blueprint descriptions & \texttt{JOIN}, \texttt{LIKE} \\[3pt]
+Q6 & Submissions with AI score above average & Subquery, \texttt{AVG} \\[3pt]
+Q7 & Team details with members and roles & 3-table \texttt{JOIN}, \texttt{GROUP\_CONCAT} \\[3pt]
+Q8 & Kanban tasks by status per project & \texttt{GROUP BY}, \texttt{CASE WHEN} \\[3pt]
+Q9 & Submissions with lesson and user details & \texttt{LEFT JOIN} \\[3pt]
+Q10 & Learners not enrolled in any course & \texttt{LEFT JOIN}, \texttt{IS NULL} \\[3pt]
+Q11 & Tag cloud per lesson & \texttt{GROUP\_CONCAT}, \texttt{DISTINCT} \\[3pt]
+Q12 & Users enrolled in auth-tagged courses & \texttt{IN} with correlated subquery \\[3pt]
+Q13 & Projects recommending React & \texttt{IN} with correlated subquery \\[3pt]
+Q14 & Top scorer by average AI score & \texttt{HAVING}, nested subquery \\[3pt]
+Q15 & Full submission history for all users & \texttt{RIGHT JOIN}, \texttt{COALESCE} \\[3pt]
+\end{longtable}
+
+% ============================================
+\section{RESULTS AND DEMONSTRATION}
+% ============================================
+
+\subsection{Exam Objective 1: Frontend to Database}
+
+The Admin User Management panel in the Showcase tab provides a form to create a new user with
+fields for first name, last name, email, password, role, and subscription tier. Submitting the
+form invokes \texttt{POST /api/admin/users}, which validates the input with Zod, hashes the
+password with bcrypt, and executes \texttt{INSERT INTO users (...) VALUES (...)}. The new row
+is immediately visible in MySQL Workbench under \texttt{brio\_db.users} without any page
+refresh or database restart.
+
+\subsection{Exam Objective 2: Database to Frontend}
+
+Deleting a user row from MySQL Workbench (via \texttt{DELETE FROM users WHERE user\_id = X})
+immediately renders the deleted user's JWT invalid. On the user's next click within the
+authenticated Platform tab, \texttt{authenticate()} queries the \texttt{users} table, finds
+zero rows for the deleted ID, and returns HTTP 401. The frontend's global \texttt{apiFetch()}
+wrapper calls \texttt{logout()} on any 401 response, clearing the JWT from
+\texttt{localStorage} and returning the user to the landing page.
+
+\subsection{Schema Explorer}
+
+The schema explorer lists all thirteen tables in \texttt{brio\_db}. Clicking any table name
+calls \texttt{GET /api/showcase/table/:name}, which returns the \texttt{DESCRIBE} output
+alongside the first five rows. This makes the entire schema browsable from the frontend without
+requiring MySQL Workbench access.
+
+\subsection{Chaos Sandbox}
+
+The chaos sandbox accepts any \texttt{SELECT} statement and executes it against the read-only
+connection pool, returning results in a formatted table. The read-only pool prevents any
+\texttt{INSERT}, \texttt{UPDATE}, \texttt{DELETE}, or \texttt{DROP} from executing even if
+the user attempts them.
+
+\subsection{Trigger Chain Demonstration}
+
+The trigger demo endpoint inserts a test submission with a configurable score and returns the
+before-and-after state of the affected kanban tasks and project status, demonstrating all three
+triggers in a single operation.
+
+% ============================================
+\section{CONCLUSION}
+% ============================================
+
+Brio successfully demonstrates all major concepts of CS1211 Database Management System within
+a cohesive, functional application. The schema achieves 3NF normalisation across 13 tables,
+three SQL views abstract the most complex joins behind clean query interfaces, three triggers
+implement automated business logic entirely within the database layer, and three transaction
+demonstrations illustrate atomicity and rollback semantics.
+
+The two primary exam objectives are both demonstrable: a user created through the frontend
+admin panel immediately appears as a row in MySQL, and a user deleted from MySQL immediately
+invalidates their frontend session via the JWT middleware's live database check.
+
+The fifteen-query showcase provides a structured walkthrough of \texttt{SELECT}, \texttt{JOIN},
+\texttt{GROUP BY}, subqueries, \texttt{GROUP\_CONCAT}, \texttt{CASE WHEN}, and outer-join
+patterns. The schema explorer and chaos sandbox make the underlying database directly observable
+without any external tooling.
+
+% ============================================
+\section{FUTURE SCOPE}
+% ============================================
+
+Several features are identified as extensions beyond the current project scope:
+
+\begin{enumerate}[label=\arabic*., itemsep=4pt]
+    \item \textbf{User Registration}: A public \texttt{POST /api/auth/register} endpoint and
+          signup form would allow learners to self-onboard, removing the dependency on an
+          admin to create accounts.
+    \item \textbf{Course Enrollment UI}: An interface to enroll and unenroll from courses
+          directly from the Platform tab, backed by the \texttt{enrollment} table, would
+          replace the current seed-data-only enrollment.
+    \item \textbf{Database-Backed Progress}: Lesson completion events are currently stored in
+          \texttt{localStorage}. Persisting them to the \texttt{submission} table and the
+          \texttt{enrollment.progress} column would make progress device-independent and
+          queryable.
+    \item \textbf{Real AI Evaluation}: The current submission flow assigns a random AI score.
+          Integrating a real code evaluation API would make the skill-gate meaningful rather
+          than demonstrative.
+    \item \textbf{Course Management Admin CRUD}: An interface to add, edit, and delete courses
+          and lessons from the browser would eliminate the need to modify \texttt{02\_DML.sql}
+          and re-seed the database for content changes.
+    \item \textbf{Leaderboard}: A public leaderboard ranking learners by average AI score and
+          submission count, drawing on the \texttt{learner\_dashboard\_view}, would add a
+          competitive dimension to the platform.
+\end{enumerate}
+
+% ============================================
+% REFERENCES
+% ============================================
+\newpage
+\addcontentsline{toc}{section}{REFERENCES}
+\begin{thebibliography}{99}
+
+\bibitem{mysql8}
+Oracle Corporation (2024).
+\textit{MySQL 8.0 Reference Manual}.
+Available at: \url{https://dev.mysql.com/doc/refman/8.0/en/}
+
+\bibitem{express5}
+OpenJS Foundation (2024).
+\textit{Express.js 5 Documentation}.
+Available at: \url{https://expressjs.com/en/5x/api.html}
+
+\bibitem{mysql2}
+Sidorenko, A. (2024).
+\textit{mysql2: Fast MySQL driver for Node.js}.
+
+\bibitem{jwt}
+Jones, M., Bradley, J., and Sakimura, N. (2015).
+\textit{JSON Web Token (JWT)}, RFC 7519.
+Internet Engineering Task Force.
+Available at: \url{https://tools.ietf.org/html/rfc7519}
+
+\bibitem{zod}
+Erikson, C. (2024).
+\textit{Zod: TypeScript-first Schema Validation}.
+Available at: \url{https://zod.dev/}
+
+\bibitem{bcrypt}
+Provos, N., and Mazieres, D. (1999).
+\textit{A Future-Adaptable Password Scheme}.
+Proceedings of the USENIX Annual Technical Conference.
+
+\bibitem{3nf}
+Codd, E.~F. (1972).
+Further Normalisation of the Data Base Relational Model.
+\textit{Data Base Systems}, Courant Computer Science Symposia Series 6,
+Prentice-Hall.
+
+\bibitem{animejs}
+Dassault, J. (2024).
+\textit{Anime.js --- JavaScript Animation Engine}.
+Available at: \url{https://animejs.com/}
+
+\end{thebibliography}
+
+\end{document}

@@ -14,20 +14,53 @@
 
 <!-- LANDING PAGE -->
 <div id="landing-page">
+  <!-- Animated colour orbs -->
+  <div class="landing-orb landing-orb-1"></div>
+  <div class="landing-orb landing-orb-2"></div>
+  <div class="landing-orb landing-orb-3"></div>
+
+  <!-- Right panel: continuously rotating swirl -->
   <div class="landing-bg">
-    <img src="swirl.png" alt="Swirl flow" class="swirl-img" id="swirl-img">
+    <img src="swirl.png" alt="" class="swirl-img" id="swirl-img">
   </div>
+
   <div class="landing-content">
+    <!-- Nav -->
     <div class="landing-header">
       <div class="logo landing-logo">bri<span>o</span>.</div>
-      <button type="button" class="btn" style="padding: 0.5rem 1.5rem;" onclick="enterPlatform()">LOGIN</button>
+      <button type="button" class="landing-nav-btn" onclick="enterPlatform()">Sign In &rarr;</button>
     </div>
+
+    <!-- Hero -->
     <div class="hero-text-container">
       <h1 class="hero-h1">Learn.<br>The Hard Way.</h1>
       <p class="hero-sub">A high-contrast, high-performance platform engineered for intense technical mastery. Drop the fluff. Embrace the structure.</p>
-      <button type="button" class="btn sage hero-cta" onclick="enterPlatform()">ENTER PLATFORM</button>
+
+      <div class="hero-cta-group">
+        <button type="button" class="btn sage hero-cta" onclick="enterPlatform()">Enter Platform &rarr;</button>
+        <button type="button" class="hero-cta-ghost" onclick="enterPlatform()">View Demo</button>
+      </div>
+
+      <!-- Live DB stats fetched on load -->
+      <div class="landing-stats" id="landing-stats">
+        <div class="landing-stat">
+          <span class="landing-stat-val" id="lstat-users">—</span>
+          <span class="landing-stat-label">Active Users</span>
+        </div>
+        <div class="landing-stat">
+          <span class="landing-stat-val" id="lstat-projects">—</span>
+          <span class="landing-stat-label">Projects Built</span>
+        </div>
+        <div class="landing-stat">
+          <span class="landing-stat-val" id="lstat-submissions">—</span>
+          <span class="landing-stat-label">Submissions</span>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Directional hint -->
+  <div class="landing-scroll-hint">Click to enter &rarr;</div>
 </div>
 
 <!-- AUTH MODAL -->
@@ -205,6 +238,50 @@
             <tbody id="results-body"><tr><td>Run a query to view results.</td></tr></tbody>
           </table>
         </div>
+      </div>
+
+      <!-- Admin: User Management -->
+      <div class="card" style="border-color:var(--accent-rust);">
+        <h2 class="card-title">User Management <span style="font-size:0.75rem;color:var(--accent-rust);font-weight:800;vertical-align:middle;margin-left:0.5rem;">ADMIN — LIVE DB</span></h2>
+        <p style="font-weight:700;margin-bottom:1.5rem;">Add or delete users. Changes write directly to <code>brio_db.users</code> — verify in MySQL Workbench in real time. Deleting an active user immediately invalidates their session.</p>
+
+        <!-- Add User Form -->
+        <div style="background:var(--glass-bg);border:var(--border-width) solid var(--border);padding:1.5rem;margin-bottom:1.5rem;">
+          <div style="font-weight:900;font-size:1rem;margin-bottom:1rem;">Add New User</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+            <input type="text" id="admin-fname" placeholder="First Name" style="padding:0.75rem;border:var(--border-width) solid var(--border);font-family:var(--font-mono);font-size:0.9rem;background:var(--bg);">
+            <input type="text" id="admin-lname" placeholder="Last Name" style="padding:0.75rem;border:var(--border-width) solid var(--border);font-family:var(--font-mono);font-size:0.9rem;background:var(--bg);">
+            <input type="email" id="admin-email" placeholder="Email" style="padding:0.75rem;border:var(--border-width) solid var(--border);font-family:var(--font-mono);font-size:0.9rem;background:var(--bg);">
+            <input type="password" id="admin-password" placeholder="Password (min 6 chars)" style="padding:0.75rem;border:var(--border-width) solid var(--border);font-family:var(--font-mono);font-size:0.9rem;background:var(--bg);">
+            <select id="admin-role" style="padding:0.75rem;border:var(--border-width) solid var(--border);font-family:var(--font-mono);font-size:0.9rem;background:var(--bg);">
+              <option value="learner">learner</option>
+              <option value="mentor">mentor</option>
+              <option value="admin">admin</option>
+            </select>
+            <select id="admin-tier" style="padding:0.75rem;border:var(--border-width) solid var(--border);font-family:var(--font-mono);font-size:0.9rem;background:var(--bg);">
+              <option value="starter">starter</option>
+              <option value="pro">pro</option>
+              <option value="team">team</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+            <button type="button" class="btn" style="width:auto;padding:0.75rem 2rem;" onclick="adminAddUser()">ADD USER TO DB</button>
+            <span id="admin-add-msg" style="font-weight:800;font-size:0.85rem;"></span>
+          </div>
+        </div>
+
+        <!-- User List -->
+        <div style="font-weight:900;font-size:1rem;margin-bottom:0.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+          <span>Current Users in <code>brio_db.users</code></span>
+          <button type="button" class="btn small sage" style="width:auto;" onclick="adminLoadUsers()">REFRESH LIST</button>
+        </div>
+        <div class="table-wrapper" style="margin:0;">
+          <table>
+            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Tier</th><th>Joined</th><th>Action</th></tr></thead>
+            <tbody id="admin-users-body"><tr><td colspan="7" style="text-align:center;opacity:0.6;">Click REFRESH LIST to load</td></tr></tbody>
+          </table>
+        </div>
+        <p style="font-size:0.75rem;margin-top:0.75rem;opacity:0.6;">Tip for exam demo: delete a user who is logged in on another tab — their next API call will return a 401 error immediately.</p>
       </div>
     </div>
 
@@ -530,6 +607,7 @@
 
       await loadSubjects();
       await loadQueries();
+      await loadTableList();
     } catch(e) { console.error(e); }
   }
 
@@ -1051,6 +1129,70 @@
     setTimeout(() => t.style.display = 'none', 3000);
   }
 
+  // ============ ADMIN USER MANAGEMENT ============
+  async function adminLoadUsers() {
+    const tbody = document.getElementById('admin-users-body');
+    tbody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
+    try {
+      const rows = await apiFetch('/admin/users');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7">No users found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(u => `
+        <tr>
+          <td>${u.user_id}</td>
+          <td>${u.f_name} ${u.l_name}</td>
+          <td>${u.email}</td>
+          <td><span class="pill">${u.role}</span></td>
+          <td>${u.sub_tier}</td>
+          <td style="font-size:0.8rem;">${new Date(u.joined_at).toLocaleDateString()}</td>
+          <td><button type="button" class="btn small rust" style="width:auto;" onclick="adminDeleteUser(${u.user_id}, '${u.f_name} ${u.l_name}')">DELETE</button></td>
+        </tr>`).join('');
+    } catch(e) {
+      tbody.innerHTML = `<tr><td colspan="7" style="color:var(--accent-rust);">Error: ${e.message}</td></tr>`;
+    }
+  }
+
+  async function adminAddUser() {
+    const msg = document.getElementById('admin-add-msg');
+    const payload = {
+      f_name: document.getElementById('admin-fname').value.trim(),
+      l_name: document.getElementById('admin-lname').value.trim(),
+      email: document.getElementById('admin-email').value.trim(),
+      password: document.getElementById('admin-password').value,
+      role: document.getElementById('admin-role').value,
+      sub_tier: document.getElementById('admin-tier').value
+    };
+    if (!payload.f_name || !payload.l_name || !payload.email || !payload.password) {
+      msg.style.color = 'var(--accent-rust)';
+      msg.innerText = 'All fields are required.';
+      return;
+    }
+    try {
+      const data = await apiFetch('/admin/users', { method: 'POST', body: JSON.stringify(payload) });
+      msg.style.color = 'var(--accent-sage)';
+      msg.innerText = `✓ ${data.message} (ID: ${data.user_id}) — check MySQL Workbench!`;
+      ['admin-fname','admin-lname','admin-email','admin-password'].forEach(id => document.getElementById(id).value = '');
+      adminLoadUsers();
+      showToast('User added to brio_db.users');
+    } catch(e) {
+      msg.style.color = 'var(--accent-rust)';
+      msg.innerText = `Error: ${e.message}`;
+    }
+  }
+
+  async function adminDeleteUser(id, name) {
+    if (!confirm(`Delete user "${name}" (ID: ${id})? This is irreversible and immediately invalidates their session.`)) return;
+    try {
+      const data = await apiFetch(`/admin/users/${id}`, { method: 'DELETE' });
+      showToast(data.message);
+      adminLoadUsers();
+    } catch(e) {
+      showToast('Delete failed: ' + e.message);
+    }
+  }
+
   // ============ INIT ============
   loadTheme();
 
@@ -1066,52 +1208,92 @@
     document.getElementById('reader-toggle').classList.add('on');
   }
 
+  // Fetch live stats for the landing page (public endpoint, no auth needed)
+  async function loadLandingStats() {
+    try {
+      const res = await fetch(`${API_URL}/showcase/stats`);
+      if (!res.ok) return;
+      const data = await res.json();
+      document.getElementById('lstat-users').innerText = data.users;
+      document.getElementById('lstat-projects').innerText = data.projects;
+      document.getElementById('lstat-submissions').innerText = data.submissions;
+    } catch(e) { /* silently skip if server not yet ready */ }
+  }
+
   if (token) {
     document.getElementById('landing-page').style.display = 'none';
     document.getElementById('auth-modal').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     loadApp();
   } else {
-    // Run Anime.js Landing Animation
-    anime.timeline({ easing: "spring(1, 80, 10, 0)" })
-    .add({
-      targets: ".landing-logo",
-      translateY: [-50, 0], opacity: [0, 1], duration: 1000
-    })
-    .add({
-      targets: ".swirl-img",
-      scale: [1.2, 1], rotate: [15, 0], opacity: [0, 0.95],
-      duration: 2000, easing: "easeOutCubic"
-    }, "-=800")
-    .add({
-      targets: [".hero-h1", ".hero-sub", ".hero-cta"],
-      translateY: [100, 0], opacity: [0, 1],
-      delay: anime.stagger(150)
-    }, "-=1500");
+    loadLandingStats();
 
-    // Continuous flow animation
-    anime({
-      targets: ".swirl-img",
-      rotate: "10deg", scale: 1.05,
-      direction: "alternate", loop: true,
-      easing: "easeInOutSine", duration: 8000
-    });
+    // Entrance sequence — staggered, spring-physics feel
+    const tl = anime.timeline({ easing: 'spring(1, 90, 12, 0)' });
+
+    // 1. Nav fades down
+    tl.add({
+      targets: '.landing-header',
+      translateY: [-24, 0], opacity: [0, 1], duration: 800
+    })
+    // 2. Right panel sweeps in
+    .add({
+      targets: '.landing-bg',
+      translateX: [60, 0], opacity: [0, 1], duration: 900,
+      easing: 'easeOutCubic'
+    }, '-=600')
+    // 3. Swirl image reveals (CSS animation takes over after)
+    .add({
+      targets: '.swirl-img',
+      opacity: [0, 0.9], scale: [1.12, 1], duration: 1200,
+      easing: 'easeOutQuart'
+    }, '-=700')
+    // 4. Hero headline
+    .add({
+      targets: '.hero-h1',
+      translateY: [60, 0], rotate: ['-3deg', '-1.5deg'], opacity: [0, 1],
+      duration: 700
+    }, '-=900')
+    // 5. Subtext
+    .add({
+      targets: '.hero-sub',
+      translateY: [40, 0], opacity: [0, 1], duration: 600
+    }, '-=400')
+    // 6. CTA group
+    .add({
+      targets: '.hero-cta-group',
+      translateY: [30, 0], opacity: [0, 1], duration: 500
+    }, '-=350')
+    // 7. Stats row
+    .add({
+      targets: '.landing-stats',
+      translateY: [20, 0], opacity: [0, 1], duration: 500
+    }, '-=300')
+    // 8. Orbs float in gently
+    .add({
+      targets: ['.landing-orb-1', '.landing-orb-2', '.landing-orb-3'],
+      scale: [0.6, 1], opacity: [0, 1],
+      delay: anime.stagger(180), duration: 1200,
+      easing: 'easeOutQuart'
+    }, '-=900');
   }
 
   window.enterPlatform = function() {
-    anime({
-      targets: "#landing-page",
-      translateY: "-100vh", opacity: 0,
-      easing: "easeInOutCubic", duration: 800,
-      complete: function() {
-        document.getElementById('landing-page').style.display = 'none';
-        document.getElementById('auth-modal').style.display = 'flex';
-        anime({
-          targets: ".auth-box", scale: [0.8, 1], opacity: [0, 1],
-          easing: "spring(1, 80, 10, 0)", duration: 1000
-        });
-      }
-    });
+    anime.timeline({ easing: 'easeInOutQuart', duration: 600 })
+      .add({ targets: '.landing-orb', scale: [1, 1.3], opacity: [null, 0], duration: 400 })
+      .add({
+        targets: '#landing-page',
+        translateY: '-100vh', opacity: [1, 0], duration: 700,
+        complete: function() {
+          document.getElementById('landing-page').style.display = 'none';
+          document.getElementById('auth-modal').style.display = 'flex';
+          anime({
+            targets: '.auth-box',
+            scale: [0.88, 1], opacity: [0, 1],
+            easing: 'spring(1, 80, 10, 0)', duration: 900
+          });
+        }
+      }, '-=200');
   }
 </script>
 </body>
